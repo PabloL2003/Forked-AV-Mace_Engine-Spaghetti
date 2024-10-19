@@ -11,7 +11,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MyGame_PC", "MyGame_PC\MyGa
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FC55AC0D-0723-466F-9283-3E75DFFF9A5F}"
 	ProjectSection(SolutionItems) = preProject
-		vcpkg.json = vcpkg.json
+		..\vcpkg.json = ..\vcpkg.json
 	EndProjectSection
 EndProject
 Global
