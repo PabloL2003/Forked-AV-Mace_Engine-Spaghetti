@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\vcpkg.D.Downloads.AVMaceEngine.vcpkg.1.0.0\build\native\vcpkg.D.Downloads.AVMaceEngine.vcpkg.props" Condition="Exists('..\packages\vcpkg.D.Downloads.AVMaceEngine.vcpkg.1.0.0\build\native\vcpkg.D.Downloads.AVMaceEngine.vcpkg.props')" />
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -144,22 +143,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\MyGameEngine\MyGameEngine.vcxproj">
       <Project>{04de6511-ede1-4406-a04c-72f5491a42d5}</Project>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\vcpkg.D.Downloads.AVMaceEngine.vcpkg.1.0.0\build\native\vcpkg.D.Downloads.AVMaceEngine.vcpkg.targets" Condition="Exists('..\packages\vcpkg.D.Downloads.AVMaceEngine.vcpkg.1.0.0\build\native\vcpkg.D.Downloads.AVMaceEngine.vcpkg.targets')" />
-  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>Este proyecto hace referencia a los paquetes NuGet que faltan en este equipo. Use la restauración de paquetes NuGet para descargarlos. Para obtener más información, consulte http://go.microsoft.com/fwlink/?LinkID=322105. El archivo que falta es {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\vcpkg.D.Downloads.AVMaceEngine.vcpkg.1.0.0\build\native\vcpkg.D.Downloads.AVMaceEngine.vcpkg.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\vcpkg.D.Downloads.AVMaceEngine.vcpkg.1.0.0\build\native\vcpkg.D.Downloads.AVMaceEngine.vcpkg.props'))" />
-    <Error Condition="!Exists('..\packages\vcpkg.D.Downloads.AVMaceEngine.vcpkg.1.0.0\build\native\vcpkg.D.Downloads.AVMaceEngine.vcpkg.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\vcpkg.D.Downloads.AVMaceEngine.vcpkg.1.0.0\build\native\vcpkg.D.Downloads.AVMaceEngine.vcpkg.targets'))" />
   </Target>
 </Project>
