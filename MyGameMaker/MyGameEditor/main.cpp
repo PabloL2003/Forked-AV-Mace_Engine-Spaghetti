@@ -212,6 +212,7 @@ int main(int argc, char* argv[]) {
 	MyWindow window("SDL2 Simple Example", WINDOW_WIDTH, WINDOW_HEIGHT);
 	MyGUI gui(window.windowPtr(), window.contextPtr());
 	Input input;
+	input.SetEventProcessor(&gui);
 	
 	init_opengl();
 
@@ -224,7 +225,7 @@ int main(int argc, char* argv[]) {
 	bakerHouse.LoadFBX("../MyGameEngine/BakerHouse.fbx");
 	bakerHouse.transform.pos() = vec3(0, 0, 0);
 
-	while (window.processEvents(&gui) && input.GetWindowEvent(WE_QUIT) != true) {
+	while (input.GetWindowEvent(WE_QUIT) != true) {
 
 		display_func();
 		reshape_func(window.width(), window.height());

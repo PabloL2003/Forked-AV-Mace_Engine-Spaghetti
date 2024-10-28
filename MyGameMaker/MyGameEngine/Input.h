@@ -5,6 +5,13 @@
 #define NUM_MOUSE_BUTTONS 5
 //#define LAST_KEYS_PRESSED_BUFFER 50
 
+#include <SDL2/SDL_events.h>
+
+class IEventProcessor {
+public:
+	virtual void processEvent(const SDL_Event& event) = 0;
+};
+
 struct SDL_Rect;
 
 enum EventWindow
@@ -65,6 +72,10 @@ public:
 
 	void ResetMouseButtonState();
 
+	void SetEventProcessor(IEventProcessor* processor) {
+		event_processor = processor;
+	}
+
 private:
 	bool windowEvents[WE_COUNT];
 	KeyState*	keyboard;
@@ -73,6 +84,7 @@ private:
 	int mouseMotionY;
 	int mouseX;
 	int mouseY;
+	IEventProcessor* event_processor = nullptr;
 };
 
 #endif // __INPUT_H__

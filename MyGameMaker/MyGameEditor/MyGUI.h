@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MyGameEngine/MyWindow.h"
+#include "MyGameEngine/input.h"
 
 class MyGUI : public IEventProcessor
 {

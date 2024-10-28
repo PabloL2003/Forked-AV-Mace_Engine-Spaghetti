@@ -5,10 +5,10 @@
 
 #include "types.h"
 
-class IEventProcessor {
-public:
-	virtual void processEvent(const SDL_Event& event) = 0;
-};
+//class IEventProcessor {
+//public:
+//	virtual void processEvent(const SDL_Event& event) = 0;
+//};
 
 class MyWindow {
 
@@ -36,7 +36,7 @@ public:
 	void close();
 	bool isOpen() const { return _window; }
 
-	bool processEvents(IEventProcessor* event_processor = nullptr);
+	/*bool processEvents(IEventProcessor* event_processor = nullptr);*/
 	void swapBuffers() const;
 
 };

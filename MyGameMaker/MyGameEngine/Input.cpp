@@ -77,6 +77,9 @@ bool Input::PreUpdate()
 
 	while(SDL_PollEvent(&event) != 0)
 	{
+
+		if (event_processor) event_processor->processEvent(event);
+
 		switch(event.type)
 		{
 			case SDL_QUIT:
