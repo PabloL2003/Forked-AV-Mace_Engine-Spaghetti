@@ -3,8 +3,7 @@
 #include <SDL2/SDL_video.h>
 #include <SDL2/SDL_events.h>
 
-#define WINDOW_WIDTH 1280
-#define WINDOW_HEIGHT 720
+#include "types.h"
 
 class IEventProcessor {
 public:

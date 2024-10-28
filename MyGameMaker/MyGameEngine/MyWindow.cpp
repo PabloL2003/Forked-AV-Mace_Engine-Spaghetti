@@ -44,13 +44,13 @@ void MyWindow::swapBuffers() const {
 }
 
 bool MyWindow::processEvents(IEventProcessor* event_processor) {
-	SDL_Event e;
+	/*SDL_Event e;
 	while (SDL_PollEvent(&e)) {
 		if (event_processor) event_processor->processEvent(e);
 		switch (e.type) {
 		case SDL_QUIT: close(); return false;
 		}
-    }
+    }*/
     return true;
 }
 
