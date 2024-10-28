@@ -13,3 +13,10 @@ namespace Colors {
 	const glm::u8vec3 Green( 0, 255, 0);
 	const glm::u8vec3 Blue( 0, 0, 255);
 };
+
+// TYPEDEFS ----------------------------------------------------------------------
+typedef unsigned int uint;
+typedef unsigned long ulong;
+typedef unsigned __int16 uint16;
+typedef unsigned __int32 uint32;
+typedef unsigned __int64 uint64;

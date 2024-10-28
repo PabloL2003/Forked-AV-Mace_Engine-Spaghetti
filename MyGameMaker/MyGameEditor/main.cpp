@@ -13,6 +13,8 @@
 #include "MyGameEngine/Texture.h"
 #include "MyGameEngine/Shader.h"
 
+#include "Log.h"
+
 using namespace std;
 
 static Camera camera;
@@ -324,7 +326,7 @@ float pitch = 0.0f;
 
 int main(int argc, char* argv[]) {
 	MyWindow window("SDL2 Simple Example", WINDOW_WIDTH, WINDOW_HEIGHT);
-
+	
 	init_opengl();
 
 	// Init camera
