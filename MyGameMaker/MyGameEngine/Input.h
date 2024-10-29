@@ -76,6 +76,14 @@ public:
 		event_processor = processor;
 	}
 
+	void GetMouseWheel(int& y) {
+		y = mouseWheel;
+	}
+
+	void GetMouseWheelMotion(bool& scrolling) {
+		scrolling = mouseWheelScrolling;
+	}
+
 private:
 	bool windowEvents[WE_COUNT];
 	KeyState*	keyboard;
@@ -85,6 +93,7 @@ private:
 	int mouseX;
 	int mouseY;
 	int mouseWheel;
+	bool mouseWheelScrolling;
 	IEventProcessor* event_processor = nullptr;
 };
 

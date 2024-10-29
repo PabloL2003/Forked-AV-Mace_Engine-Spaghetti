@@ -45,6 +45,9 @@ bool Input::Start()
 // Called each loop iteration
 bool Input::PreUpdate()
 {
+
+	mouseWheelScrolling = false;
+
 	static SDL_Event event;
 
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
@@ -126,7 +129,7 @@ bool Input::PreUpdate()
 			break;
 
 			case SDL_MOUSEWHEEL:
-				std::cout << "Mouse wheel: " << event.wheel.preciseY << std::endl;
+				mouseWheelScrolling = true;
 				mouseWheel = event.wheel.y;
 				break;
 		}

@@ -200,6 +200,7 @@ static void reshape_func(int width, int height) {
 	glLoadMatrixd(&camera.projection()[0][0]);
 }
 
+//camera movement variables
 bool rightMouse = false;
 int lastMouseX = -1;
 int lastMouseY = -1;
@@ -207,6 +208,11 @@ int mouseX = 0;
 int mouseY = 0;
 float yaw = 0.0f;
 float pitch = 0.0f;
+
+//camera zoom variables
+float fovModifier = 0;
+float zoomValue = 0;
+bool isZooming = false;
 
 int main(int argc, char* argv[]) {
 	//start engine
@@ -295,6 +301,22 @@ int main(int argc, char* argv[]) {
 			camera.transform().setUp(glm::normalize(glm::cross(camera.transform().fwd(), camera.transform().right())));
 
 			engine.input->GetMousePosition(lastMouseX, lastMouseY);
+		}
+
+		Engine::Instance().input->GetMouseWheelMotion(isZooming);
+		if (isZooming) {
+			Engine::Instance().input->GetMouseWheel((int&)zoomValue);
+			if (zoomValue > 0) {
+				if (fovModifier > -30.0) {
+					fovModifier -= 1.0;
+				}
+			}
+			else {
+				if (fovModifier < 0) {
+					fovModifier += 1.0;
+				}
+			}
+			camera.fov = glm::radians(60 + fovModifier);
 		}
 
 		gui.render();
