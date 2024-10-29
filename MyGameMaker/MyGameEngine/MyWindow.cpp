@@ -18,6 +18,7 @@ MyWindow::~MyWindow() {
 }
 
 void MyWindow::Awake() {
+    LOG(LogType::LOG_INFO, "# Setting Window Atributes...");
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
@@ -27,13 +28,13 @@ void MyWindow::Awake() {
 
 void MyWindow::Start()
 {
-    LOG(LogType::LOG_INFO, "Creating Window");
+    LOG(LogType::LOG_INFO, "# Creating Window...");
 
     if (isOpen()) return;
     _window = SDL_CreateWindow("Editor", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _width, _height, SDL_WINDOW_OPENGL);
     if (!_window) throw exception(SDL_GetError());
 
-    LOG(LogType::LOG_INFO, "Creating OpenGL context");
+    LOG(LogType::LOG_INFO, "# Creating OpenGL context...");
 
     _ctx = SDL_GL_CreateContext(_window);
     if (!_ctx) throw exception(SDL_GetError());

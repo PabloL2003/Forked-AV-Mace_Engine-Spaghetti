@@ -3,6 +3,7 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 
+#include "Engine.h"
 #include "types.h"
 
 #define MAX_KEYS 300
@@ -23,6 +24,8 @@ Input::~Input()
 // Called before render is available
 bool Input::Awake()
 {
+
+	LOG(LogType::LOG_INFO, "# Initializing Input Subsystem...");
 
 	bool ret = true;
 	SDL_Init(0);

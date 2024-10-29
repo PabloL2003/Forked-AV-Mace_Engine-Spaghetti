@@ -23,6 +23,6 @@ void Log(const char file[], int line, LogType type, const char* format, ...)
 
 	// Log to Editor Console
 	sprintf_s(tmpString2, BUFFER_SIZE, "%s", tmpString1);
-	Engine::Instance().AddLog(LogType::LOG_INFO, tmpString2);
+	Engine::Instance().AddLog(type, tmpString2);
 	
 }

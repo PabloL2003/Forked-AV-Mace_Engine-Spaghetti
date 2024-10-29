@@ -1,6 +1,8 @@
 #include "Renderer.h"
 
 #include <iostream>
+#include <string>
+#include "Engine.h"
 
 using namespace std;
 
@@ -22,6 +24,24 @@ bool GLLogCall(const char* function, const char* file, int line)
 void Renderer::Clear() const
 {
     GLCall(glClear(GL_COLOR_BUFFER_BIT));
+}
+
+void Renderer::Start() const
+{
+    glewInit();
+    LOG(LogType::LOG_INFO, "# Succesfully initialized glew!");
+    LOG(LogType::LOG_APPINFO, "Glew Versio: %s", (char*)glewGetString(GLEW_VERSION));
+    LOG(LogType::LOG_INFO, "# Setting OpenGL Attributes...");
+    if (!GLEW_VERSION_3_0) throw exception("OpenGL 3.0 API is not available.");
+    GLCall(glEnable(GL_DEPTH_TEST));
+    GLCall(glClearColor(0.5, 0.5, 0.5, 1.0));
+	GLCall(glEnable(GL_BLEND));
+	GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+
+    LOG(LogType::LOG_APPINFO, "Vendor: %s", (char*)glGetString(GL_VENDOR));
+    LOG(LogType::LOG_APPINFO, "Renderer: %s", (char*)glGetString(GL_RENDERER));
+    LOG(LogType::LOG_APPINFO, "OpenGL version supported: %s", (char*)glGetString(GL_VERSION));
+    LOG(LogType::LOG_APPINFO, "GLSL version: %s", (char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
 }
 
 //void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const {

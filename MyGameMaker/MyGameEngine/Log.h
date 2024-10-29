@@ -8,7 +8,8 @@
 enum class LogType
 {
 	LOG_INFO,
-	LOG_ASSIMP
+	LOG_APPINFO,
+	LOG_CHANGEENV
 };
 
 struct LogInfo

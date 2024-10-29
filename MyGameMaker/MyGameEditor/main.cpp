@@ -220,13 +220,13 @@ int main(int argc, char* argv[]) {
 	engine.Awake();
 	engine.Start();
 
-	//start opengl
-	init_opengl();
-
 	//strat myGUI
 	MyGUI& gui = MyGUI::Instance();
 	gui.Awake(engine.window->windowPtr(), engine.window->contextPtr());
 	engine.input->SetEventProcessor(&gui);
+
+	//Start Editor Application
+	LOG(LogType::LOG_CHANGEENV, "-------------- Application Start --------------");
 
 	// Init camera
 	camera.transform().pos() = vec3(0, 1, 4);

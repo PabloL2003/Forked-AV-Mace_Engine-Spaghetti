@@ -8,6 +8,7 @@
 
 class MyWindow;
 class Input;
+class Renderer;
 
 class Engine
 {
@@ -40,6 +41,7 @@ public:
 
 	MyWindow* window = nullptr;
 	Input* input = nullptr;
+	Renderer* renderer = nullptr;
 
 private:
 	// Constructor y destructor privados para el singleton
