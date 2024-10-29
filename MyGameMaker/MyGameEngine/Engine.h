@@ -12,8 +12,6 @@ class Input;
 class Engine
 {
 public:
-
-	// Métodos públicos de la clase
 	static Engine& Instance() {
 		static Engine instance;  // La instancia única de la clase Engine
 		return instance;

@@ -6,9 +6,9 @@
 #include <vector>
 #include <string.h>
 
-
 class PanelConsole : public Panel
 {
+
 public:
 	PanelConsole(PanelType type, std::string name);
 	~PanelConsole();

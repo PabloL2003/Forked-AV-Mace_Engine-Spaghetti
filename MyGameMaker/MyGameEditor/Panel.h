@@ -6,8 +6,9 @@
 
 enum class PanelType
 {
-	ABOUT,
+	MENU,
 	CONSOLE,
+	CONFIGURATION,
 	HIERARCHY,
 	INSPECTOR,
 
@@ -39,6 +40,7 @@ protected:
 	PanelType type = PanelType::UNKNOWN;
 	std::string name;
 	bool enabled = false;
+	int width, height;
 };
 
 #endif // !__PANEL_H__

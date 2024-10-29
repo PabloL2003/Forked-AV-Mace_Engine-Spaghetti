@@ -5,6 +5,9 @@
 #include <imgui_impl_sdl2.h>
 #include <imgui_impl_opengl3.h>
 
+#include "PanelConsole.h"
+#include "PanelMenu.h"
+
 MyGUI::MyGUI(SDL_Window* window, void* context) {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -14,6 +17,12 @@ MyGUI::MyGUI(SDL_Window* window, void* context) {
 	ImGui::StyleColorsDark();
 	ImGui_ImplSDL2_InitForOpenGL(window, context);
 	ImGui_ImplOpenGL3_Init();
+
+	_console = new PanelConsole(PanelType::CONSOLE, "Console");
+	_menu = new PanelMenu(PanelType::MENU, "Menu");
+
+	addPanel(_console);
+	addPanel(_menu);
 }
 
 MyGUI::~MyGUI() {
@@ -26,11 +35,24 @@ void MyGUI::render() {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
-	ImGui::ShowDemoWindow();
+	
+	for (const auto& panel : _panels)
+	{
+		if (panel->GetState() == false)
+			continue;
+		
+		panel->Draw();
+	}
+
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
 void MyGUI::processEvent(const SDL_Event& event) {
 	ImGui_ImplSDL2_ProcessEvent(&event);
+}
+
+void MyGUI::addPanel(Panel* panel)
+{
+	_panels.push_back(panel);
 }
