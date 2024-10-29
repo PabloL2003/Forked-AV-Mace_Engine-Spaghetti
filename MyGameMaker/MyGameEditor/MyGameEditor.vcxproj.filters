@@ -21,10 +21,10 @@
     <ClCompile Include="Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Log.cpp">
+    <ClCompile Include="MyGUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MyGUI.cpp">
+    <ClCompile Include="PanelConsole.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,10 +32,13 @@
     <ClInclude Include="Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Log.h">
+    <ClInclude Include="MyGUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MyGUI.h">
+    <ClInclude Include="Panel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelConsole.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

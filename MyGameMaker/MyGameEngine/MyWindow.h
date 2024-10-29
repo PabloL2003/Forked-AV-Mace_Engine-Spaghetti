@@ -5,11 +5,6 @@
 
 #include "types.h"
 
-//class IEventProcessor {
-//public:
-//	virtual void processEvent(const SDL_Event& event) = 0;
-//};
-
 class MyWindow {
 
 	SDL_Window* _window = nullptr;
@@ -26,17 +21,19 @@ public:
 	auto* windowPtr() const { return _window; }
 	auto* contextPtr() const { return _ctx; }
 
-	MyWindow(const char* title, unsigned short width, unsigned short height);
+	MyWindow();
 	MyWindow(MyWindow&&) noexcept = delete;
 	MyWindow(const MyWindow&) = delete;
 	MyWindow& operator=(const MyWindow&) = delete;
 	~MyWindow();
 
+	void Awake();
+	void Start();
+
 	void open(const char* title, unsigned short width, unsigned short height);
 	void close();
 	bool isOpen() const { return _window; }
 
-	/*bool processEvents(IEventProcessor* event_processor = nullptr);*/
 	void swapBuffers() const;
 
 };

@@ -84,6 +84,7 @@ private:
 	int mouseMotionY;
 	int mouseX;
 	int mouseY;
+	int mouseWheel;
 	IEventProcessor* event_processor = nullptr;
 };
 

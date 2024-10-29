@@ -3,6 +3,8 @@
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
 
+#define BUFFER_SIZE 4096
+
 #include <glm/glm.hpp>
 
 using uint = unsigned int;

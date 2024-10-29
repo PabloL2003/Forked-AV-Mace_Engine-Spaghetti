@@ -2,6 +2,8 @@
 
 #include "MyGameEngine/input.h"
 
+#include <list>
+
 class MyGUI : public IEventProcessor
 {
 public:

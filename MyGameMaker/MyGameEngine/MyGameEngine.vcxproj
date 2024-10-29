@@ -134,8 +134,10 @@
     <ClInclude Include="BufferObject.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="Engine.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Log.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MyWindow.h" />
     <ClInclude Include="Renderer.h" />
@@ -149,8 +151,10 @@
     <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="BufferObject.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Engine.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Log.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MyWindow.cpp" />
     <ClCompile Include="Renderer.cpp" />

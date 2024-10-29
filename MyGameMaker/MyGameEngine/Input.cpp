@@ -1,6 +1,7 @@
 #include "Input.h"
 
 #include <SDL2/SDL.h>
+#include <iostream>
 
 #include "types.h"
 
@@ -123,6 +124,11 @@ bool Input::PreUpdate()
 				mouseY = event.motion.y;
 				//LOG("Mouse motion x %d y %d", mouse_motion_x, mouse_motion_y);
 			break;
+
+			case SDL_MOUSEWHEEL:
+				std::cout << "Mouse wheel: " << event.wheel.preciseY << std::endl;
+				mouseWheel = event.wheel.y;
+				break;
 		}
 	}
 

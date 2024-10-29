@@ -11,6 +11,9 @@
 //opengl
 #include "MyGameEngine/Renderer.h"
 
+//engine
+#include "MyGameEngine/Engine.h"
+
 //modules
 #include "MyGameEngine/MyWindow.h"
 #include "MyGameEngine/Input.h"
@@ -20,7 +23,9 @@
 #include "MyGameEngine/Texture.h"
 #include "MyGameEngine/Shader.h"
 
-#include "Log.h"
+//panels
+#include "Panel.h"
+#include "PanelConsole.h"
 
 using namespace std;
 
@@ -38,8 +43,6 @@ struct BakerHouse {
 	std::unique_ptr<Texture> m_Texture;
 
 	unsigned int numM = 0;
-
-	const aiScene* scene = nullptr;
 
 	void LoadFBX(const std::string& pFile) {
 		// Create an instance of the Importer class
@@ -71,10 +74,7 @@ struct BakerHouse {
 
 				for (unsigned int j = 0; j < mesh->mNumVertices; j++) {
 					aiVector3D vertex = mesh->mVertices[j];
-					vec3 aux;
-					aux.x = vertex.x;
-					aux.y = vertex.y;
-					aux.z = vertex.z;
+					vec3 aux = vec3(vertex.x, vertex.y, vertex.z);	
 					vertex_positions[i].push_back(aux);
 
 					// Coordenadas UV (si existen)
@@ -209,12 +209,21 @@ float yaw = 0.0f;
 float pitch = 0.0f;
 
 int main(int argc, char* argv[]) {
-	MyWindow window("SDL2 Simple Example", WINDOW_WIDTH, WINDOW_HEIGHT);
-	MyGUI gui(window.windowPtr(), window.contextPtr());
-	Input input;
-	input.SetEventProcessor(&gui);
-	
+	//start engine
+	Engine& engine = Engine::Instance();
+	engine.Awake();
+	engine.Start();
+
+	//start opengl
 	init_opengl();
+
+	//start imgui
+	MyGUI gui(engine.window->windowPtr(), engine.window->contextPtr());
+	engine.input->SetEventProcessor(&gui);
+
+	//Panels
+	PanelConsole console(PanelType::CONSOLE, "Console");
+	
 
 	// Init camera
 	camera.transform().pos() = vec3(0, 1, 4);
@@ -225,41 +234,41 @@ int main(int argc, char* argv[]) {
 	bakerHouse.LoadFBX("../MyGameEngine/BakerHouse.fbx");
 	bakerHouse.transform.pos() = vec3(0, 0, 0);
 
-	while (input.GetWindowEvent(WE_QUIT) != true) {
+	while (engine.input->GetWindowEvent(WE_QUIT) != true) {
 
 		display_func();
-		reshape_func(window.width(), window.height());
+		reshape_func(engine.window->width(), engine.window->height());
 
-		input.PreUpdate();
+		engine.input->PreUpdate();
 
 		//camera movement
-		if (input.GetKey(SDL_SCANCODE_W) == KEY_REPEAT) { 
+		if (engine.input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
 			camera.transform().translate(vec3(0, 0, 0.05)); 
 		}
-		if (input.GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+		if (engine.input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 			camera.transform().translate(vec3(0.05, 0, 0));
 		}
-		if (input.GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+		if (engine.input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
 			camera.transform().translate(vec3(0, 0, -0.05));
 		}
-		if (input.GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+		if (engine.input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 			camera.transform().translate(vec3(-0.05, 0, 0));
 		}
 
 		//camera rotation
-		if (input.GetMouseButtonDown(3) == KEY_DOWN) {
+		if (engine.input->GetMouseButtonDown(3) == KEY_DOWN) {
 			rightMouse = true;
-			input.GetMousePosition(lastMouseX, lastMouseY);
+			engine.input->GetMousePosition(lastMouseX, lastMouseY);
 		}
-		else if (input.GetMouseButtonDown(3) == KEY_UP) {
+		else if (engine.input->GetMouseButtonDown(3) == KEY_UP) {
 			rightMouse = false;
 		}
 
 		if (rightMouse) {
-			input.GetMousePosition(mouseX, mouseY);
+			engine.input->GetMousePosition(mouseX, mouseY);
 
-			float dx = mouseX - lastMouseX;
-			float dy = mouseY - lastMouseY;
+			float dx = (float)(mouseX - lastMouseX);
+			float dy = (float)(mouseY - lastMouseY);
 
 			// Ajusta la sensibilidad
 			float sensitivity = 0.5f;
@@ -288,12 +297,12 @@ int main(int argc, char* argv[]) {
 			camera.transform().setRigth(glm::normalize(glm::cross(vec3(0, 1, 0), camera.transform().fwd())));
 			camera.transform().setUp(glm::normalize(glm::cross(camera.transform().fwd(), camera.transform().right())));
 
-			input.GetMousePosition(lastMouseX, lastMouseY);
+			engine.input->GetMousePosition(lastMouseX, lastMouseY);
 		}
 
 		gui.render();
 
-		window.swapBuffers();
+		engine.window->swapBuffers();
 
 	}
 
