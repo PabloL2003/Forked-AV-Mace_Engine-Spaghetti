@@ -3,6 +3,8 @@
 
 #include "MyGUI.h"
 
+#include "PanelConsole.h"
+
 PanelMenu::PanelMenu(PanelType type, std::string name) : Panel(type, name)
 {
 	SwitchState();
@@ -111,6 +113,7 @@ bool PanelMenu::Draw()
                 }
                 if (ImGui::MenuItem("Console", nullptr, show_console)) {
 					show_console = !show_console;
+                    MyGUI::Instance().console().SwitchState();
 
                 }
 				if (ImGui::MenuItem("Inspector", nullptr, show_inspector)) {

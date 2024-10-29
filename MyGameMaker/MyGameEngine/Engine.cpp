@@ -51,3 +51,11 @@ void Engine::CleanLogs()
 {
     logs.clear();
 }
+
+Engine::~Engine()
+{
+	window->close();
+    input->CleanUp();
+	delete window;
+	delete input;
+}

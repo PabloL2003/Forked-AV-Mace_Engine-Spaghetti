@@ -8,7 +8,15 @@
 #include "PanelConsole.h"
 #include "PanelMenu.h"
 
-MyGUI::MyGUI(SDL_Window* window, void* context) {
+
+MyGUI::~MyGUI() {
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
+}
+
+void MyGUI::Awake(SDL_Window* window, void* context)
+{
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -23,12 +31,6 @@ MyGUI::MyGUI(SDL_Window* window, void* context) {
 
 	addPanel(_console);
 	addPanel(_menu);
-}
-
-MyGUI::~MyGUI() {
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplSDL2_Shutdown();
-	ImGui::DestroyContext();
 }
 
 void MyGUI::render() {

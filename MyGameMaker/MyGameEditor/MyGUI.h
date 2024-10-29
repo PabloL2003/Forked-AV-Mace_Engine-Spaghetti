@@ -21,14 +21,9 @@ public:
 	// Evita la copia y asignación del singleton
 	MyGUI(const MyGUI&) = delete;
 	MyGUI& operator=(const MyGUI&) = delete;
-
-	MyGUI(SDL_Window* window, void* context);
 	MyGUI(MyGUI&&) noexcept = delete;
-	MyGUI(const MyGUI&) = delete;
-	MyGUI& operator=(const MyGUI&) = delete;
-	~MyGUI();
 
-
+	void Awake(SDL_Window* window, void* context);
 
 	void render();
 
@@ -37,6 +32,8 @@ public:
 	PanelConsole& console() const { return *_console; }
 
 private:
+	MyGUI() = default;
+	~MyGUI();
 	//List of panels
 	PanelConsole* _console = nullptr;
 	PanelMenu* _menu = nullptr;

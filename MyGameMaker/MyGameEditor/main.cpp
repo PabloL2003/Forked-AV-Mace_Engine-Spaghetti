@@ -214,15 +214,12 @@ int main(int argc, char* argv[]) {
 	engine.Awake();
 	engine.Start();
 
-	//strat myGUI
-	MyGUI& gui = MyGUI::Instance();
-	gui.Start(engine.window->windowPtr(), engine.window->contextPtr());
-
 	//start opengl
 	init_opengl();
 
-	//start imgui
-	MyGUI gui(engine.window->windowPtr(), engine.window->contextPtr());
+	//strat myGUI
+	MyGUI& gui = MyGUI::Instance();
+	gui.Awake(engine.window->windowPtr(), engine.window->contextPtr());
 	engine.input->SetEventProcessor(&gui);
 
 	// Init camera

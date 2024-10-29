@@ -44,7 +44,7 @@ public:
 private:
 	// Constructor y destructor privados para el singleton
 	Engine() = default;
-	~Engine() = default;
+	~Engine();
 	// Logs
 	LogInfo logInfo;
 	std::vector<LogInfo> logs;
