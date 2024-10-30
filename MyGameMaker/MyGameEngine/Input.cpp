@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "Engine.h"
+#include "MyWindow.h"
 #include "types.h"
 
 #define MAX_KEYS 300
@@ -110,6 +111,11 @@ bool Input::PreUpdate()
 					case SDL_WINDOWEVENT_RESTORED:
 					windowEvents[WE_SHOW] = true;
 					break;
+
+					case SDL_WINDOWEVENT_SIZE_CHANGED:
+						Engine::Instance().window->setWidth(event.window.data1);
+						Engine::Instance().window->setHeight(event.window.data2);
+						break;
 				}
 			break;
 

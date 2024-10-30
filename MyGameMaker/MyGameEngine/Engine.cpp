@@ -25,12 +25,18 @@ void Engine::Start()
 
 bool Engine::PreUpdate()
 {
+    input->PreUpdate();
     return true;
 }
 
-void Engine::Update(double dt)
+void Engine::Update(double& dt)
 {
     this->dt = dt;
+}
+
+void Engine::PostUpdate()
+{
+	window->swapBuffers();
 }
 
 void Engine::CleanUp()

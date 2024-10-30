@@ -3,6 +3,7 @@
 #include <imgui.h>
 
 #include "MyGameEngine/Engine.h"
+#include "MyGameEngine/MyWindow.h"
 #include "MyGameEngine/types.h"
 
 PanelInspector::PanelInspector(PanelType type, std::string name) : Panel(type, name)
@@ -16,14 +17,14 @@ PanelInspector::~PanelInspector() {}
 
 bool PanelInspector::Draw()
 {
-	ImGui::SetNextWindowSize(ImVec2(width, height));
-	ImGui::SetNextWindowPos(ImVec2(WINDOW_WIDTH - width, 0));
+	ImGui::SetNextWindowSize(ImVec2(width, Engine::Instance().window->height() - 200));
+	ImGui::SetNextWindowPos(ImVec2(Engine::Instance().window->width() - width, 0));
 
 	glm::vec3 position = { 0, 0, 0 };
 	glm::vec3 rotation = { 0, 0, 0 };
 	glm::vec3 scale = { 1, 1, 1 };
 
-	ImGui::Begin("Inspector", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+	ImGui::Begin("Inspector", &showWindow, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
 	ImGui::Checkbox("##active", &openHeader);
 	ImGui::SameLine();
 
@@ -165,5 +166,11 @@ bool PanelInspector::Draw()
 		ImGui::Separator();
 	}
     ImGui::End();
+
+
+    if (!showWindow) {
+        SwitchState();
+    }
+
 	return true;
 }

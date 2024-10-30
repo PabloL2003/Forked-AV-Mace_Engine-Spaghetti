@@ -240,17 +240,22 @@ int main(int argc, char* argv[]) {
 	//time
 	const int maxFPS = 240;
 	const float frameDelay = 1000.0f / maxFPS;  // Duración mínima de cada frame en milisegundos (5 ms)
-
-	PerfTimer timer;
+	float fps = 0;
 	double dT = 0.0f;
+	PerfTimer timer;
+	engine.SetFps(&fps);
 
+	//game loop
 	while (engine.input->GetWindowEvent(WE_QUIT) != true) {
 
 		//time start
 		timer.Start();
 
-		//logic
-		engine.input->PreUpdate();
+		//Preupdate
+		engine.PreUpdate();
+
+		//Update
+		engine.Update(dT);
 
 		//camera speed
 		if (engine.input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) {
@@ -320,9 +325,9 @@ int main(int argc, char* argv[]) {
 		}
 
 		//camera zoom
-		Engine::Instance().input->GetMouseWheelMotion(isZooming);
+		engine.input->GetMouseWheelMotion(isZooming);
 		if (isZooming) {
-			Engine::Instance().input->GetMouseWheel((int&)zoomValue);
+			engine.input->GetMouseWheel((int&)zoomValue);
 			if (zoomValue > 0) {
 				if (fovModifier > -30.0) {
 					fovModifier -= 1.0;
@@ -336,25 +341,24 @@ int main(int argc, char* argv[]) {
 			camera.fov = glm::radians(60 + fovModifier);
 		}
 
-		//draw
+		//draw/Postupdate
 		display_func();
 		reshape_func(engine.window->width(), engine.window->height());
 
 		gui.render();
 
-		engine.window->swapBuffers();
+		engine.PostUpdate(); //mirar de acabar de posar tots els draws aqui
 
 		//time control
+		//current time
 		double frameTime = timer.ReadMs();  // Tiempo que tardó el frame en ms
 		if (frameTime < frameDelay)
 		{
 			uint32 ms = frameDelay - frameTime;
 			timer.Delay(ms);  // Esperar el tiempo restante
 		}
-
 		dT = timer.ReadMs() / 1000.0;
-
-		float fps = 1000.0f / (frameTime + (frameTime < frameDelay ? (frameDelay - frameTime) : 0));
+		fps = 1000.0f / (frameTime + (frameTime < frameDelay ? (frameDelay - frameTime) : 0));
 
 	}
 

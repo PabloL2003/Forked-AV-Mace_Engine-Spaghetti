@@ -33,7 +33,10 @@ public:
 
 	virtual bool GetState() { return enabled; }
 	virtual void SetState(bool state) { this->enabled = state; }
-	virtual void SwitchState() { enabled = !enabled; }
+	virtual void SwitchState() { 
+		enabled = !enabled; 
+		showWindow = enabled;
+	}
 
 protected:
 
@@ -41,6 +44,7 @@ protected:
 	std::string name;
 	bool enabled = false;
 	int width, height;
+	bool showWindow = true;
 };
 
 #endif // !__PANEL_H__

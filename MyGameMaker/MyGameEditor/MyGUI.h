@@ -9,6 +9,7 @@ class PanelConsole;
 class PanelMenu;
 class PanelInspector;
 class PanelHierarchy;
+class PanelConfiguration;
 
 class MyGUI : public IEventProcessor
 {
@@ -34,6 +35,9 @@ public:
 	PanelConsole& console() const { return *_console; }
 	PanelInspector& inspector() const { return *_inspector; }
 	PanelHierarchy& hierarchy() const { return *_hierarchy; }
+	PanelConfiguration& configuration() const { return *_configuration; }
+
+	void cleanUp();
 
 private:
 	MyGUI() = default;
@@ -44,6 +48,7 @@ private:
 	PanelMenu* _menu = nullptr;
 	PanelInspector* _inspector = nullptr;
 	PanelHierarchy* _hierarchy = nullptr;
+	PanelConfiguration* _configuration = nullptr;
 	
 	void addPanel(Panel* panel);
 };

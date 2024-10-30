@@ -6,6 +6,7 @@
 #include "PanelConsole.h"
 #include "PanelInspector.h"
 #include "PanelHierarchy.h"
+#include "PanelConfiguration.h"
 
 PanelMenu::PanelMenu(PanelType type, std::string name) : Panel(type, name)
 {
@@ -90,7 +91,7 @@ bool PanelMenu::Draw()
             }
             ImGui::Separator();
             if (ImGui::MenuItem("Settings...")) {
-
+				MyGUI::Instance().configuration().SwitchState();
             }
             ImGui::EndMenu();
         }
@@ -107,19 +108,16 @@ bool PanelMenu::Draw()
                 if (ImGui::MenuItem("Toolbar", nullptr, nullptr, false)) {
                     // Action for "Undo" item
                 }
-                if (ImGui::MenuItem("Hierarchy", nullptr, show_hierarchy)) {
-					show_hierarchy = !show_hierarchy;
+                if (ImGui::MenuItem("Hierarchy", nullptr, MyGUI::Instance().hierarchy().GetState())) {
 					MyGUI::Instance().hierarchy().SwitchState();
                 }
                 if (ImGui::MenuItem("Project", nullptr, nullptr, false)) {
                     // Action for "Undo" item
                 }
-                if (ImGui::MenuItem("Console", nullptr, show_console)) {
-					show_console = !show_console;
+                if (ImGui::MenuItem("Console", nullptr, MyGUI::Instance().console().GetState())) {
                     MyGUI::Instance().console().SwitchState();
                 }
-				if (ImGui::MenuItem("Inspector", nullptr, show_inspector)) {
-					show_inspector = !show_inspector;
+				if (ImGui::MenuItem("Inspector", nullptr, MyGUI::Instance().inspector().GetState())) {
 					MyGUI::Instance().inspector().SwitchState();
 				}
                 if (ImGui::MenuItem("Scene", nullptr, nullptr, false)) {

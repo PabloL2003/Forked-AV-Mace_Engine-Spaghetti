@@ -22,7 +22,8 @@ public:
 	void Start();
 
 	bool PreUpdate();
-	void Update(double dt);
+	void Update(double& dt);
+	void PostUpdate();
 
 	void CleanUp();
 
@@ -34,10 +35,15 @@ public:
 	Engine(const Engine&) = delete;
 	Engine& operator=(const Engine&) = delete;
 
+	void SetFps(float* fps) { this->fps = fps; }
+
+	float* GetFps() { return fps; }
+
 public:
 
 	double dt = 0;
 	bool vsync = false;
+	float* fps;
 
 	MyWindow* window = nullptr;
 	Input* input = nullptr;

@@ -3,6 +3,7 @@
 #include <imgui.h>
 
 #include "MyGameEngine/Engine.h"
+#include "MyGameEngine/MyWindow.h"
 #include "MyGameEngine/types.h"
 
 PanelConsole::PanelConsole(PanelType type, std::string name) : Panel(type, name) 
@@ -16,10 +17,10 @@ PanelConsole::~PanelConsole() {}
 
 bool PanelConsole::Draw()
 {
-	ImGui::SetNextWindowSize(ImVec2(width, height));
-	ImGui::SetNextWindowPos(ImVec2(0, WINDOW_HEIGHT - height));
+	ImGui::SetNextWindowSize(ImVec2(Engine::Instance().window->width(), height));
+	ImGui::SetNextWindowPos(ImVec2(0, Engine::Instance().window->height() - height));
 
-	ImGui::Begin("Console", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+	ImGui::Begin("Console", &showWindow, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
 
 	ImVec4 color = ImVec4(1, 1, 1, 1);
 	for (size_t i = 0; i < Engine::Instance().GetLogs().size(); i++)
@@ -44,6 +45,11 @@ bool PanelConsole::Draw()
 	}
 	
 	ImGui::End();
+
+
+	if (!showWindow) {
+		SwitchState();
+	}
 
 	return true;
 }
