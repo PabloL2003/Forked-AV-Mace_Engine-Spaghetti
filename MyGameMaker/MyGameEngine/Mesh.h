@@ -20,7 +20,6 @@ class Model
 {
 public:
 	Model() {}
-	Model(const std::string& path);
 	~Model() {}
 
 	const std::string& GetMeshName() const { return meshName; }
@@ -46,6 +45,7 @@ class Mesh : public Component
 
 	//la nostra manera de carregar un model
 	std::vector<Model> models;
+	int numMeshes;
 
 public:
 	Mesh() {}
@@ -66,6 +66,8 @@ public:
 	void loadModel(const std::string& path);
 	void loadToOpenGL();
 	void drawModel() const;
-
+	int& getNumMeshes() { return numMeshes; }
+	void setMesh(const Model& model) { models.push_back(model); }
+	std::vector<Model>& getModels() { return models; }
 };
 

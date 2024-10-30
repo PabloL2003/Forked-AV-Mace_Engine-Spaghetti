@@ -15,7 +15,6 @@ public:
 	~Scene() {}
 
 	Camera _camera;
-	GameObject bakerhouse = GameObject("Baker House");
 
 	void Start();
 	void Update(double& dT);

@@ -5,6 +5,7 @@
 
 #include "Engine.h"
 #include "MyWindow.h"
+#include "Scene.h"
 #include "types.h"
 
 #define MAX_KEYS 300
@@ -140,6 +141,11 @@ bool Input::PreUpdate()
 			case SDL_MOUSEWHEEL:
 				mouseWheelScrolling = true;
 				mouseWheel = event.wheel.y;
+				break;
+
+			case SDL_DROPFILE:
+				Engine::Instance().scene->loadGameObjectByPath(event.drop.file);
+				SDL_free(event.drop.file);
 				break;
 		}
 	}

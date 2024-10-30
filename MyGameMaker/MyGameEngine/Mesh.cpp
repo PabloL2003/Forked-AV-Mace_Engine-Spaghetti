@@ -59,7 +59,7 @@ void Mesh::loadModel(const std::string& path)
 		std::cout << importer.GetErrorString() << std::endl;
 	}
 	else {
-
+		numMeshes = scene->mNumMeshes;
 		models.resize(scene->mNumMeshes);
 
 		for (unsigned int i = 0; i < scene->mNumMeshes; i++) {
@@ -181,4 +181,3 @@ void Mesh::draw() const {
 	if (_normals_buffer.id()) glDisableClientState(GL_NORMAL_ARRAY);
 	if (_texCoords_buffer.id()) glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 }
-

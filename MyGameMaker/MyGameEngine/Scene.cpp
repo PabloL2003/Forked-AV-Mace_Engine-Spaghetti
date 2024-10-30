@@ -3,6 +3,7 @@
 #include "Camera.h"
 
 #include <glm/glm.hpp>
+#include <memory>
 
 #include "Engine.h"
 #include "Input.h"
@@ -29,15 +30,21 @@ void Scene::Start()
 	_camera.transform().pos() = vec3(0, 1, 4);
 	_camera.transform().rotate(glm::radians(180.0), vec3(0, 1, 0));
 
-	bakerhouse.CreateComponent(ComponentType::Transform, &bakerhouse);
-	bakerhouse.GetComponent<Transform>()->pos() = vec3(0, 0, 0);
-	bakerhouse.CreateComponent(ComponentType::Mesh, &bakerhouse);
-	bakerhouse.GetComponent<Mesh>()->loadModel("../MyGameEngine/BakerHouse.fbx");
-	bakerhouse.GetComponent<Mesh>()->loadToOpenGL();
-	bakerhouse.CreateComponent(ComponentType::Material, &bakerhouse);
-	bakerhouse.GetComponent<Material>()->m_Texture = std::make_unique<Texture>("../MyGameEngine/Baker_house.png");
-	bakerhouse.GetComponent<Material>()->m_Shader = std::make_unique<Shader>("../MyGameEngine/Basic.shader");
-	addChild(bakerhouse);
+	Mesh mesh;
+	mesh.loadModel("../MyGameEngine/BakerHouse.fbx");
+	for (size_t i = 0; i < mesh.getNumMeshes(); i++)
+	{
+		std::shared_ptr<GameObject> go = std::make_shared<GameObject>("Baker House");
+		go->CreateComponent(ComponentType::Transform, go.get());
+		go->GetComponent<Transform>()->pos() = vec3(0, 0, 0);
+		go->CreateComponent(ComponentType::Mesh, go.get());
+		go->GetComponent<Mesh>()->setMesh(mesh.getModels()[i]);
+		go->GetComponent<Mesh>()->loadToOpenGL();
+		go->CreateComponent(ComponentType::Material, go.get());
+		go->GetComponent<Material>()->m_Texture = std::make_unique<Texture>("../MyGameEngine/Baker_house.png");
+		go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("../MyGameEngine/Basic.shader");
+		addChild(go);
+	}
 	
 }
 
@@ -146,19 +153,25 @@ void Scene::Draw()
 {
 	for (auto& child : children())
 	{
-		child.GetComponent<Mesh>()->drawModel();
+		child->GetComponent<Mesh>()->drawModel();
 	}
 }
 
 void Scene::loadGameObjectByPath(const std::string& path)
 {
-	GameObject go = GameObject("Unknown");
-	go.CreateComponent(ComponentType::Transform, &go);
-	go.CreateComponent(ComponentType::Mesh, &go);
-	go.GetComponent<Mesh>()->loadModel(path);
-	go.GetComponent<Mesh>()->loadToOpenGL();
-	go.CreateComponent(ComponentType::Material, &go);
-	go.GetComponent<Material>()->m_Texture = std::make_unique<Texture>("../MyGameEngine/Baker_house.png");
-	go.GetComponent<Material>()->m_Shader = std::make_unique<Shader>("../MyGameEngine/Basic.shader");
-	addChild(go);
+	Mesh mesh;
+	mesh.loadModel(path);
+	for (size_t i = 0; i < mesh.getNumMeshes(); i++)
+	{
+		std::shared_ptr<GameObject> go = std::make_shared<GameObject>("Baker House");
+		go->CreateComponent(ComponentType::Transform, go.get());
+		go->GetComponent<Transform>()->pos() = vec3(5, 0, 0);
+		go->CreateComponent(ComponentType::Mesh, go.get());
+		go->GetComponent<Mesh>()->setMesh(mesh.getModels()[i]);
+		go->GetComponent<Mesh>()->loadToOpenGL();
+		go->CreateComponent(ComponentType::Material, go.get());
+		go->GetComponent<Material>()->m_Texture = std::make_unique<Texture>("../MyGameEngine/Baker_house.png");
+		go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("../MyGameEngine/Basic.shader");
+		addChild(go);
+	}
 }
