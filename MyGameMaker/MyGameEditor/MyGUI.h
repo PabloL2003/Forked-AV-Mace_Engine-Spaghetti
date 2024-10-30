@@ -7,6 +7,7 @@
 
 class PanelConsole;
 class PanelMenu;
+class PanelInspector;
 
 class MyGUI : public IEventProcessor
 {
@@ -34,9 +35,11 @@ public:
 private:
 	MyGUI() = default;
 	~MyGUI();
+
 	//List of panels
 	PanelConsole* _console = nullptr;
 	PanelMenu* _menu = nullptr;
+	PanelInspector* _inspector = nullptr;
 	
 	void addPanel(Panel* panel);
 };

@@ -206,11 +206,8 @@ bool PanelMenu::Draw()
         }
 
         // Exit menu
-        if (ImGui::BeginMenu("Help")) {
-            if (ImGui::MenuItem("About")) {
-                // Action for "About" item
-            }
-            ImGui::EndMenu();
+        if (ImGui::MenuItem("Exit")) {
+
         }
 
         ImGui::EndMainMenuBar();

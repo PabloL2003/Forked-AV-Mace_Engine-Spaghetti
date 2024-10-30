@@ -7,6 +7,7 @@
 
 #include "PanelConsole.h"
 #include "PanelMenu.h"
+#include "PanelInspector.h"
 
 
 MyGUI::~MyGUI() {
@@ -28,9 +29,11 @@ void MyGUI::Awake(SDL_Window* window, void* context)
 
 	_console = new PanelConsole(PanelType::CONSOLE, "Console");
 	_menu = new PanelMenu(PanelType::MENU, "Menu");
+	_inspector = new PanelInspector(PanelType::INSPECTOR, "Inspector");
 
 	addPanel(_console);
 	addPanel(_menu);
+	addPanel(_inspector);
 }
 
 void MyGUI::render() {
