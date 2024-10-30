@@ -230,6 +230,7 @@ int main(int argc, char* argv[]) {
 	// Init camera
 	camera.transform().pos() = vec3(0, 1, 4);
 	camera.transform().rotate(glm::radians(180.0), vec3(0, 1, 0));
+	float cameraSpeed = 10.0f;
 
 	// Load house
 	bakerHouse.m_Texture = std::make_unique<Texture>("../MyGameEngine/Baker_house.png");
@@ -241,7 +242,7 @@ int main(int argc, char* argv[]) {
 	const float frameDelay = 1000.0f / maxFPS;  // Duración mínima de cada frame en milisegundos (5 ms)
 
 	PerfTimer timer;
-	double deltaTime = 0.0f;
+	double dT = 0.0f;
 
 	while (engine.input->GetWindowEvent(WE_QUIT) != true) {
 
@@ -251,20 +252,26 @@ int main(int argc, char* argv[]) {
 		//logic
 		engine.input->PreUpdate();
 
-		float cameraSpeed = 10.0f * deltaTime;
+		//camera speed
+		if (engine.input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) {
+			cameraSpeed = 20.0f;
+		}
+		else {
+			cameraSpeed = 10.0f;
+		}
 
 		//camera movement
 		if (engine.input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-			camera.transform().translate(vec3(0, 0, cameraSpeed));
+			camera.transform().translate(vec3(0, 0, cameraSpeed * dT));
 		}
 		if (engine.input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-			camera.transform().translate(vec3(cameraSpeed, 0, 0));
+			camera.transform().translate(vec3(cameraSpeed * dT, 0, 0));
 		}
 		if (engine.input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-			camera.transform().translate(vec3(0, 0, -cameraSpeed));
+			camera.transform().translate(vec3(0, 0, -cameraSpeed * dT));
 		}
 		if (engine.input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-			camera.transform().translate(vec3(-cameraSpeed, 0, 0));
+			camera.transform().translate(vec3(-cameraSpeed * dT, 0, 0));
 		}
 
 		//camera rotation
@@ -312,6 +319,7 @@ int main(int argc, char* argv[]) {
 			engine.input->GetMousePosition(lastMouseX, lastMouseY);
 		}
 
+		//camera zoom
 		Engine::Instance().input->GetMouseWheelMotion(isZooming);
 		if (isZooming) {
 			Engine::Instance().input->GetMouseWheel((int&)zoomValue);
@@ -344,10 +352,9 @@ int main(int argc, char* argv[]) {
 			timer.Delay(ms);  // Esperar el tiempo restante
 		}
 
-		deltaTime = timer.ReadMs() / 1000.0;
+		dT = timer.ReadMs() / 1000.0;
 
 		float fps = 1000.0f / (frameTime + (frameTime < frameDelay ? (frameDelay - frameTime) : 0));
-		cout << deltaTime << endl;
 
 	}
 
