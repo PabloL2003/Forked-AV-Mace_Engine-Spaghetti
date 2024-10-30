@@ -19,8 +19,6 @@ class GameObject : public TreeExtension<GameObject>
 	GameObject* _parent;
 	std::list<GameObject*> _children;
 
-	//Transform* _transform;
-
 public:
 	GameObject(const std::string& name, const std::string& tag = "Untagged", bool active = true);
 	~GameObject() {}
@@ -34,6 +32,16 @@ public:
 	virtual bool SwitchState() { return _active = !_active; }
 
 	Component* CreateComponent(ComponentType type, GameObject* owner);
+
+	template <typename T>
+	T* GetComponent() const {
+		for (Component* component : _components) {
+			if (T* specificComponent = dynamic_cast<T*>(component)) {
+				return specificComponent; // Devuelve el componente del tipo específico
+			}
+		}
+		return nullptr; // Si no se encuentra el componente del tipo específico
+	}
 
 protected:
 	virtual void Start() {}

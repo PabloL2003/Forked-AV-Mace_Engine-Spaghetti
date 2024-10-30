@@ -2,11 +2,11 @@
 #include "Transform.h"
 #include "Mesh.h"
 #include "Camera.h"
-#include "Texture.h"
+#include "Material.h"
 
 GameObject::GameObject(const std::string& name, const std::string& tag, bool active) : _name(name), _tag(tag), _active(active), _parent(nullptr)
 {
-	_components.push_back(new Transform());
+	_components.push_back(new Transform(mat4(1.0f)));
 }
 
 Component* GameObject::CreateComponent(ComponentType type, GameObject* owner)
@@ -28,6 +28,8 @@ Component* GameObject::CreateComponent(ComponentType type, GameObject* owner)
 		break;
 
 	case ComponentType::Material:
+		component = new Material(true, owner);
+		_components.push_back(component);
 		break;
 
 	case ComponentType::Invalid:
@@ -43,3 +45,4 @@ Component* GameObject::CreateComponent(ComponentType type, GameObject* owner)
 	}
 	return component;
 }
+

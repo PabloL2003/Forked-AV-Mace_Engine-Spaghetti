@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameObject.h"
+#include <string>
 
 class GameObject;
 
@@ -26,10 +27,10 @@ class Component
 {
 	bool active;
 	GameObject* owner;
-
+	ComponentType type;
 public:
 	Component() : active(true), owner(nullptr) {}
 	Component(bool active, GameObject* owner) : active(active), owner(owner) {}
-	virtual ~Component() {}
-
+	virtual ~Component() = default;
+	GameObject* getOwner() const { return owner; }
 };

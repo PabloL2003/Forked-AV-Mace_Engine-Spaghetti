@@ -9,6 +9,7 @@
 class MyWindow;
 class Input;
 class Renderer;
+class Scene;
 
 class Engine
 {
@@ -24,6 +25,7 @@ public:
 	bool PreUpdate();
 	void Update(double& dt);
 	void PostUpdate();
+	void Draw();
 
 	void CleanUp();
 
@@ -48,6 +50,7 @@ public:
 	MyWindow* window = nullptr;
 	Input* input = nullptr;
 	Renderer* renderer = nullptr;
+	Scene* scene = nullptr;
 
 private:
 	// Constructor y destructor privados para el singleton

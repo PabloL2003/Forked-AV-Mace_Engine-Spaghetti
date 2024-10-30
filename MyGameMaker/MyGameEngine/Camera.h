@@ -17,6 +17,8 @@ public:
 	const auto& transform() const { return _transform; }
 	auto& transform() { return _transform; }
 
+	float speed = 10.0f;
+
 	mat4 projection() const;
 	mat4 view() const;
 };

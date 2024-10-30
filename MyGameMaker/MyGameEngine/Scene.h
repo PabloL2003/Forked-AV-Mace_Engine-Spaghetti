@@ -4,20 +4,23 @@
 
 #include "GameObject.h"
 
-class Camera;
+#include "Camera.h"
 
 class Scene : public GameObject
 {
-	Camera* _camera = nullptr;
-
 public:
-	Scene(const std::string& name, const std::string& tag, bool active = true) : GameObject(name, tag, active) {}
+	Scene(const std::string& name, const std::string& tag = "Untagged", bool active = true) : GameObject(name, tag, active) {}
 	~Scene() {}
 
+	Camera _camera;
+	GameObject bakerhouse = GameObject("Baker House");
+
 	void Start();
-	void Update();
+	void Update(double& dT);
+	void PostUpdate();
 	void CleanUp();
 	void OnSceneChange();
+	void Draw();
 };
 
 #endif // !__SCENE_H__
