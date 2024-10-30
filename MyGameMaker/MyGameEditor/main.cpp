@@ -5,7 +5,7 @@
 #include <assimp/scene.h>           
 #include <assimp/postprocess.h>
 
-//imgui
+//imgui and panels
 #include "MyGUI.h"
 
 //opengl
@@ -18,14 +18,13 @@
 #include "MyGameEngine/MyWindow.h"
 #include "MyGameEngine/Input.h"
 
-//utils
+//engine core
 #include "MyGameEngine/Camera.h"
 #include "MyGameEngine/Texture.h"
 #include "MyGameEngine/Shader.h"
 
-//panels
-#include "Panel.h"
-#include "PanelConsole.h"
+//utils
+#include "MyGameEngine/PerfTimer.h"
 
 using namespace std;
 
@@ -237,25 +236,32 @@ int main(int argc, char* argv[]) {
 	bakerHouse.LoadFBX("../MyGameEngine/BakerHouse.fbx");
 	bakerHouse.transform.pos() = vec3(0, 0, 0);
 
+	//time
+	PerfTimer timer(240);
+	float deltaTime = 0;
+
 	while (engine.input->GetWindowEvent(WE_QUIT) != true) {
 
-		display_func();
-		reshape_func(engine.window->width(), engine.window->height());
+		//time start
+		timer.StartFrame();
 
+		//logic
 		engine.input->PreUpdate();
+
+		float cameraSpeed = 10.0f * deltaTime;
 
 		//camera movement
 		if (engine.input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-			camera.transform().translate(vec3(0, 0, 0.05)); 
+			camera.transform().translate(vec3(0, 0, cameraSpeed));
 		}
 		if (engine.input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-			camera.transform().translate(vec3(0.05, 0, 0));
+			camera.transform().translate(vec3(cameraSpeed, 0, 0));
 		}
 		if (engine.input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-			camera.transform().translate(vec3(0, 0, -0.05));
+			camera.transform().translate(vec3(0, 0, -cameraSpeed));
 		}
 		if (engine.input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-			camera.transform().translate(vec3(-0.05, 0, 0));
+			camera.transform().translate(vec3(-cameraSpeed, 0, 0));
 		}
 
 		//camera rotation
@@ -319,9 +325,20 @@ int main(int argc, char* argv[]) {
 			camera.fov = glm::radians(60 + fovModifier);
 		}
 
+		//draw
+		display_func();
+		reshape_func(engine.window->width(), engine.window->height());
+
 		gui.render();
 
 		engine.window->swapBuffers();
+
+		//time control
+		timer.CapFPS();
+
+		float deltaTime = static_cast<float>(timer.GetDeltaTime());
+
+		std::cout << "FPS: " << timer.GetFPS() << " | Delta Time: " << deltaTime << std::endl;
 
 	}
 
