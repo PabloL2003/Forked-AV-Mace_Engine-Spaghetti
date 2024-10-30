@@ -4,7 +4,7 @@
 #include "readOnlyView.h"
 
 template <class T>
-class TreeExt
+class TreeExtension
 {
 private:
 	T* _parent = nullptr;

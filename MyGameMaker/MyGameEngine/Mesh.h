@@ -2,10 +2,12 @@
 
 #include <vector>
 #include <glm/glm.hpp>
+
+#include "Component.h"
 #include "BufferObject.h"
 #include "BoundingBox.h"
 
-class Mesh
+class Mesh : public Component
 {
 	std::vector<glm::vec3 > _vertices;
 	std::vector<unsigned int> _indices;

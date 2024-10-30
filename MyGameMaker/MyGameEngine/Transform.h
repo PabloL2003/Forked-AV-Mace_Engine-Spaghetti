@@ -1,9 +1,10 @@
 #pragma once
 
 #include "types.h"
+#include "Component.h"
 
-class Transform {
-
+class Transform : public Component 
+{
 	union {
 		mat4 _mat = mat4(1.0);
 		struct {

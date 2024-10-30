@@ -2,13 +2,33 @@
 
 #include "GameObject.h"
 
+class GameObject;
+
+enum class ComponentType
+{
+	Transform,
+	Mesh,
+	Camera,
+	Material,
+
+	Light,
+	Script,
+	Audio,
+	Physics,
+	Animator,
+	Particle,
+	Count,
+
+	Invalid = -1
+};
+
 class Component
 {
 	bool active;
-	GameObject* gameObject_owner;
+	GameObject* owner;
 
 public:
-	Component() : active(true), gameObject_owner(nullptr) {}
+	Component() : active(true), owner(nullptr) {}
 	virtual ~Component() {}
 
 };
