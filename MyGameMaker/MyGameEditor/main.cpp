@@ -237,13 +237,16 @@ int main(int argc, char* argv[]) {
 	bakerHouse.transform.pos() = vec3(0, 0, 0);
 
 	//time
-	PerfTimer timer(240);
-	float deltaTime = 0;
+	const int maxFPS = 240;
+	const float frameDelay = 1000.0f / maxFPS;  // Duración mínima de cada frame en milisegundos (5 ms)
+
+	PerfTimer timer;
+	double deltaTime = 0.0f;
 
 	while (engine.input->GetWindowEvent(WE_QUIT) != true) {
 
 		//time start
-		timer.StartFrame();
+		timer.Start();
 
 		//logic
 		engine.input->PreUpdate();
@@ -334,11 +337,17 @@ int main(int argc, char* argv[]) {
 		engine.window->swapBuffers();
 
 		//time control
-		timer.CapFPS();
+		double frameTime = timer.ReadMs();  // Tiempo que tardó el frame en ms
+		if (frameTime < frameDelay)
+		{
+			uint32 ms = frameDelay - frameTime;
+			timer.Delay(ms);  // Esperar el tiempo restante
+		}
 
-		float deltaTime = static_cast<float>(timer.GetDeltaTime());
+		deltaTime = timer.ReadMs() / 1000.0;
 
-		std::cout << "FPS: " << timer.GetFPS() << " | Delta Time: " << deltaTime << std::endl;
+		float fps = 1000.0f / (frameTime + (frameTime < frameDelay ? (frameDelay - frameTime) : 0));
+		cout << deltaTime << endl;
 
 	}
 
