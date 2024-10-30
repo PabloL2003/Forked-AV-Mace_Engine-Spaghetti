@@ -7,7 +7,6 @@
 
 #include <glm/glm.hpp>
 
-using uint = unsigned int;
 using mat4 = glm::dmat4;
 using vec4 = glm::dvec4;
 using vec3 = glm::dvec3;

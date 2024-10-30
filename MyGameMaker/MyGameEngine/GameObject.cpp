@@ -9,7 +9,7 @@ GameObject::GameObject(const std::string& name, const std::string& tag, bool act
 	_components.push_back(new Transform());
 }
 
-Component* GameObject::CreateComponent(ComponentType type)
+Component* GameObject::CreateComponent(ComponentType type, GameObject* owner)
 {
 	Component* component = nullptr;
 	switch (type)
@@ -20,7 +20,7 @@ Component* GameObject::CreateComponent(ComponentType type)
 		break;
 
 	case ComponentType::Mesh:
-		component = new Mesh();
+		component = new Mesh(true, owner);
 		_components.push_back(component);
 		break;
 

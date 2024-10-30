@@ -21,6 +21,10 @@ class Mesh : public Component
 	BoundingBox _boundingBox;
 
 public:
+	Mesh() {}
+	Mesh(bool active, GameObject* owner) : Component(active, owner) {}
+	~Mesh() {}
+
 	const auto& vertices() const { return _vertices; }
 	const auto& indices() const { return _indices; }
 	const auto& boundingBox() const { return _boundingBox; }

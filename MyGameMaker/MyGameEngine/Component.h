@@ -29,6 +29,7 @@ class Component
 
 public:
 	Component() : active(true), owner(nullptr) {}
+	Component(bool active, GameObject* owner) : active(active), owner(owner) {}
 	virtual ~Component() {}
 
 };

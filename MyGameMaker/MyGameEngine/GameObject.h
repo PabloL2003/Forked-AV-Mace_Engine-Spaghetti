@@ -22,7 +22,7 @@ class GameObject : public TreeExtension<GameObject>
 	//Transform* _transform;
 
 public:
-	GameObject(const std::string& name, const std::string& tag, bool active = true);
+	GameObject(const std::string& name, const std::string& tag = "Untagged", bool active = true);
 	~GameObject() {}
 
 	auto& name() { return _name; }
@@ -33,13 +33,13 @@ public:
 	virtual bool SetActive(bool active) { return this->_active = active; }
 	virtual bool SwitchState() { return _active = !_active; }
 
-	Component* CreateComponent(ComponentType type);
+	Component* CreateComponent(ComponentType type, GameObject* owner);
 
 protected:
-	void Start() {}
-	void Update() {}
-	void CleanUp() {}
-	void OnSceneChange() {}
+	virtual void Start() {}
+	virtual void Update() {}
+	virtual void CleanUp() {}
+	virtual void OnSceneChange() {}
 };
 
 #endif // __GAMEOBJECT_H__
