@@ -8,7 +8,7 @@
 #include "PanelConsole.h"
 #include "PanelMenu.h"
 #include "PanelInspector.h"
-
+#include "PanelHierarchy.h"
 
 MyGUI::~MyGUI() {
 	ImGui_ImplOpenGL3_Shutdown();
@@ -30,10 +30,12 @@ void MyGUI::Awake(SDL_Window* window, void* context)
 	_console = new PanelConsole(PanelType::CONSOLE, "Console");
 	_menu = new PanelMenu(PanelType::MENU, "Menu");
 	_inspector = new PanelInspector(PanelType::INSPECTOR, "Inspector");
+	_hierarchy = new PanelHierarchy(PanelType::HIERARCHY, "Hierarchy");
 
 	addPanel(_console);
 	addPanel(_menu);
 	addPanel(_inspector);
+	addPanel(_hierarchy);
 }
 
 void MyGUI::render() {

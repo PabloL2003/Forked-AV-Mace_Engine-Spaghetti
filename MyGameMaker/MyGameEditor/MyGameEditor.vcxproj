@@ -146,6 +146,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyGUI.cpp" />
     <ClCompile Include="PanelConsole.cpp" />
+    <ClCompile Include="PanelHierarchy.cpp" />
     <ClCompile Include="PanelInspector.cpp" />
     <ClCompile Include="PanelMenu.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="MyGUI.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="PanelConsole.h" />
+    <ClInclude Include="PanelHierarchy.h" />
     <ClInclude Include="PanelInspector.h" />
     <ClInclude Include="PanelMenu.h" />
     <ClInclude Include="Timer.h" />

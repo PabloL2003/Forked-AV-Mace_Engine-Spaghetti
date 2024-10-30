@@ -14,9 +14,13 @@ public:
 	bool Draw();
 
 private:
+	int drawMode = 0;
+
 	bool show_hierarchy = true;
 	bool show_console = true;
 	bool show_inspector = true;
+	bool show_vertexNormals = true;
+	bool show_faceNormals = true;
 };
 
 

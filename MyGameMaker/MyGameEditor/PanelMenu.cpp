@@ -4,6 +4,8 @@
 #include "MyGUI.h"
 
 #include "PanelConsole.h"
+#include "PanelInspector.h"
+#include "PanelHierarchy.h"
 
 PanelMenu::PanelMenu(PanelType type, std::string name) : Panel(type, name)
 {
@@ -88,7 +90,7 @@ bool PanelMenu::Draw()
             }
             ImGui::Separator();
             if (ImGui::MenuItem("Settings...")) {
-                // Action for "Undo" item
+
             }
             ImGui::EndMenu();
         }
@@ -107,6 +109,7 @@ bool PanelMenu::Draw()
                 }
                 if (ImGui::MenuItem("Hierarchy", nullptr, show_hierarchy)) {
 					show_hierarchy = !show_hierarchy;
+					MyGUI::Instance().hierarchy().SwitchState();
                 }
                 if (ImGui::MenuItem("Project", nullptr, nullptr, false)) {
                     // Action for "Undo" item
@@ -114,10 +117,10 @@ bool PanelMenu::Draw()
                 if (ImGui::MenuItem("Console", nullptr, show_console)) {
 					show_console = !show_console;
                     MyGUI::Instance().console().SwitchState();
-
                 }
 				if (ImGui::MenuItem("Inspector", nullptr, show_inspector)) {
 					show_inspector = !show_inspector;
+					MyGUI::Instance().inspector().SwitchState();
 				}
                 if (ImGui::MenuItem("Scene", nullptr, nullptr, false)) {
                     // Action for "Undo" item
@@ -175,23 +178,24 @@ bool PanelMenu::Draw()
                 }
                 ImGui::EndMenu();
             }
-
 			
             if (ImGui::BeginMenu("Draw Mode")) {
 
-                // Option 1
-                if (ImGui::MenuItem("Option 1", nullptr)) {
+                if (ImGui::Checkbox("Mesh", drawMode == 0)) {
                 }
 
-                // Option 2
-                if (ImGui::MenuItem("Option 2", nullptr)) {
+                if (ImGui::Checkbox("Wireframe", drawMode == 1)) {
                 }
 
-                // Option 3
-                if (ImGui::MenuItem("Option 3", nullptr)) {
+                if (ImGui::Checkbox("Vertexs", drawMode == 2)) {
                 }
                 ImGui::Separator();
+                if (ImGui::Checkbox("Vertex Normals", &show_vertexNormals)) {
 
+                }
+                if (ImGui::Checkbox("Face Normals", &show_faceNormals)) {
+
+                }
                 ImGui::EndMenu();
             }
             ImGui::EndMenu();
@@ -199,15 +203,27 @@ bool PanelMenu::Draw()
 
         // Help menu
         if (ImGui::BeginMenu("Help")) {
-            if (ImGui::MenuItem("About")) {
+            if (ImGui::Button("About AV-Mace...")) {
                 // Action for "About" item
             }
+			ImGui::Separator();
+			if (ImGui::MenuItem("Documentation")) {
+				// Action for "Documentation" item
+			}
+            if (ImGui::MenuItem("Download latest version")) {
+                // Action for "Documentation" item
+            }
+            ImGui::Separator();
+            if (ImGui::MenuItem("Report bug / Suggest Feature")) {
+                // Action for "Documentation" item
+            }
+            if (ImGui::MenuItem("Give us Feedback!")) {
+                // Action for "Documentation" item
+            }   
+            if (ImGui::MenuItem("Contact us!")) {
+                // Action for "Documentation" item
+            }
             ImGui::EndMenu();
-        }
-
-        // Exit menu
-        if (ImGui::MenuItem("Exit")) {
-
         }
 
         ImGui::EndMainMenuBar();

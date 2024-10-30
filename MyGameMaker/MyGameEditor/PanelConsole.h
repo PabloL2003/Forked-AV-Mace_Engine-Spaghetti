@@ -3,8 +3,6 @@
 #pragma once
 
 #include "Panel.h"
-#include <vector>
-#include <string.h>
 
 class PanelConsole : public Panel
 {

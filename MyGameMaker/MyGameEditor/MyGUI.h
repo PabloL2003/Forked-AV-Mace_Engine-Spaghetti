@@ -8,6 +8,7 @@
 class PanelConsole;
 class PanelMenu;
 class PanelInspector;
+class PanelHierarchy;
 
 class MyGUI : public IEventProcessor
 {
@@ -31,6 +32,8 @@ public:
 	void processEvent(const SDL_Event& event) override;
 
 	PanelConsole& console() const { return *_console; }
+	PanelInspector& inspector() const { return *_inspector; }
+	PanelHierarchy& hierarchy() const { return *_hierarchy; }
 
 private:
 	MyGUI() = default;
@@ -40,6 +43,7 @@ private:
 	PanelConsole* _console = nullptr;
 	PanelMenu* _menu = nullptr;
 	PanelInspector* _inspector = nullptr;
+	PanelHierarchy* _hierarchy = nullptr;
 	
 	void addPanel(Panel* panel);
 };
