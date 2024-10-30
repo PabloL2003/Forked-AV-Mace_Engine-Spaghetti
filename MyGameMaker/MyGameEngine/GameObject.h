@@ -33,6 +33,8 @@ public:
 
 	Component* CreateComponent(ComponentType type, GameObject* owner);
 
+	void setParent(GameObject* parent) { _parent = parent; }
+
 	template <typename T>
 	T* GetComponent() const {
 		for (Component* component : _components) {

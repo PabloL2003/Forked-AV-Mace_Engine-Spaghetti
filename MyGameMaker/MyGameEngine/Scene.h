@@ -4,6 +4,8 @@
 
 #include "GameObject.h"
 
+#include <string>
+
 #include "Camera.h"
 
 class Scene : public GameObject
@@ -21,6 +23,8 @@ public:
 	void CleanUp();
 	void OnSceneChange();
 	void Draw();
+
+	void loadGameObjectByPath(const std::string& path);
 };
 
 #endif // !__SCENE_H__

@@ -37,6 +37,8 @@ void Scene::Start()
 	bakerhouse.CreateComponent(ComponentType::Material, &bakerhouse);
 	bakerhouse.GetComponent<Material>()->m_Texture = std::make_unique<Texture>("../MyGameEngine/Baker_house.png");
 	bakerhouse.GetComponent<Material>()->m_Shader = std::make_unique<Shader>("../MyGameEngine/Basic.shader");
+	addChild(bakerhouse);
+	
 }
 
 void Scene::Update(double& dT)
@@ -142,5 +144,21 @@ void Scene::OnSceneChange()
 
 void Scene::Draw()
 {
-	bakerhouse.GetComponent<Mesh>()->drawModel();
+	for (auto& child : children())
+	{
+		child.GetComponent<Mesh>()->drawModel();
+	}
+}
+
+void Scene::loadGameObjectByPath(const std::string& path)
+{
+	GameObject go = GameObject("Unknown");
+	go.CreateComponent(ComponentType::Transform, &go);
+	go.CreateComponent(ComponentType::Mesh, &go);
+	go.GetComponent<Mesh>()->loadModel(path);
+	go.GetComponent<Mesh>()->loadToOpenGL();
+	go.CreateComponent(ComponentType::Material, &go);
+	go.GetComponent<Material>()->m_Texture = std::make_unique<Texture>("../MyGameEngine/Baker_house.png");
+	go.GetComponent<Material>()->m_Shader = std::make_unique<Shader>("../MyGameEngine/Basic.shader");
+	addChild(go);
 }

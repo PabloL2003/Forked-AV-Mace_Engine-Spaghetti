@@ -22,7 +22,7 @@ public:
 	auto& addChild(const T& child)
 	{
 		_children.push_back(child);
-		_children.back()._parent = static_cast<T*>(this);
+		_children.back().setParent(static_cast<T*>(this));
 		return _children.back();
 	}
 
