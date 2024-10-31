@@ -15,7 +15,6 @@ public:
 	PanelInspector(PanelType type, std::string name);
 	~PanelInspector();
 
-	std::string text() const { return _text; }
 	std::string currentTagg() const { return _currentTagg; }
 	void setTag(const std::string& tag) { _currentTagg = tag; }
 	std::string currentLayer() const { return _currentLayer; }
@@ -28,9 +27,6 @@ public:
 	void DrawMaterialControls();
 
 private:
-	std::string _text = "GameObject";
-	char buffer[128]; // Temporary buffer to hold the string
-
 	// Tag
 	std::string _currentTagg = "Untagged";
 	std::vector<std::string> options = { "Untagged", "Player", "Other" };

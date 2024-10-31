@@ -43,7 +43,7 @@ void PanelInspector::DrawGameObjectControls(GameObject* gameObject)
 
     // Name input
     ImGui::SetNextItemWidth(100.0f);
-    char buffer[256] = {};
+    char buffer[128] = {};
     strncpy_s(buffer, gameObject->name().c_str(), sizeof(buffer));
     if (ImGui::InputText("##gameobject_name", buffer, sizeof(buffer)))
     {
@@ -62,7 +62,8 @@ void PanelInspector::DrawGameObjectControls(GameObject* gameObject)
         {
             if (ImGui::Selectable(option.c_str(), currentTagg() == option))
             {
-                setTag(option);
+				setTag(option);
+                //gameObject->tag() = option;
             }
         }
         ImGui::EndCombo();
@@ -80,52 +81,46 @@ void PanelInspector::DrawGameObjectControls(GameObject* gameObject)
             if (ImGui::Selectable(layer.c_str(), currentLayer() == layer))
             {
                 setLayer(layer);
+				//gameObject->layer() = layer;
             }
         }
         ImGui::EndCombo();
     }
-    //MyGUI::Instance().hierarchy().selectedGameObject()->layer = this->currentLayer();
 }
+
 void PanelInspector::DrawTransformControls(GameObject* gameObject)
 {
     if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
     {
         auto* transform = gameObject->GetComponent<Transform>();
-        const char* axis[] = { "X", "Y", "Z" };
-        ImGui::Text("       X       Y       Z");
-        ImGui::Text("Position");
+        ImGui::Text("                X         Y        Z");
 
-        for (int i = 0; i < 3; ++i)
+        // Position
+        ImGui::Text("Position   ");
+		ImGui::SameLine();
+        ImGui::SetNextItemWidth(200.0f);
+        float pos[3] = { transform->pos().x, transform->pos().y, transform->pos().z };
+        if (ImGui::DragFloat3("##position", pos, 0.1f, -FLT_MAX, FLT_MAX, "%.2f"))
         {
-            ImGui::SetNextItemWidth(35.0f);
-
-            float pos[3] = { static_cast<float>(transform->pos().x), static_cast<float>(transform->pos().y), static_cast<float>(transform->pos().z) };
-            ImGui::SameLine();
-            if (ImGui::InputFloat(std::string("##pos_" + std::string(axis[i])).c_str(), &pos[i], 0.0f, 0.0f, "%.2f"))
-            {
-                transform->pos() = glm::vec3(pos[0], pos[1], pos[2]);
-            }
+            transform->pos() = glm::vec3(pos[0], pos[1], pos[2]);
         }
 
-        // Convert quaternion to Euler angles (in radians)
-        glm::vec3 eulerAngles = glm::eulerAngles(transform->rot());
-
-        ImGui::Text("Rotation");
-
-        for (int i = 0; i < 3; ++i)
+        // Rotation
+        ImGui::Text("Rotation   ");
+        ImGui::SameLine();
+        ImGui::SetNextItemWidth(200.0f);
+        glm::vec3 eulerAngles = glm::degrees(glm::eulerAngles(transform->rot()));
+        if (ImGui::DragFloat3("##rotation", &eulerAngles.x, 0.1f, -360.0f, 360.0f, "%.2f"))
         {
-            ImGui::SetNextItemWidth(35.0f);
-
-            ImGui::SameLine();
-            // Input field for each Euler angle
-            if (ImGui::InputFloat(std::string("##" + std::string("rotation") + "_").append(1, "XYZ"[i]).c_str(), &eulerAngles[i], 0.0f, 0.0f, "%.2f"))
-            {
-                // Update the quaternion with the new Euler angles
-                transform->rot() = glm::quat(glm::vec3(eulerAngles.x, eulerAngles.y, eulerAngles.z));
-            }
+            transform->rot() = glm::quat(glm::radians(eulerAngles));
         }
 
         //DrawVector3Input("Scale", scale);
+		ImGui::Text("Scale      ");
+        ImGui::SameLine();
+		ImGui::SetNextItemWidth(200.0f);
+		float scale[3] = { 1.0f, 1.0f, 1.0f };
+        if (ImGui::DragFloat3("##scale", scale, 0.1f, -FLT_MAX, FLT_MAX, "%.2f"));
     }
 }
 
