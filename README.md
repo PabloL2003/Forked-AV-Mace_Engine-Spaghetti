@@ -20,5 +20,14 @@ Game engine using SDL2, glew, assimp, imgui, glm and devil, made by the Group 4 
 - Right Click - Rotate Camera
 
 ## Additional functionalities
+- Drag and drop .fbx files
+- Drag and drop .png and .dds files
+- Menu that include links to our github and last release
 
 ## Additional comments
+- Droping a .fbx will create a gameobject.
+- Dropping a .png or .dds with a selectet gameobject will apply the texture or replace the old one.
+
+## Improvements
+- We are working on improving the loading of different fbx
+- Taxture manager
