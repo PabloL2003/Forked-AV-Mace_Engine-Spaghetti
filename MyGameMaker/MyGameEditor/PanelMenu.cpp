@@ -202,14 +202,16 @@ bool PanelMenu::Draw()
         // Help menu
         if (ImGui::BeginMenu("Help")) {
             if (ImGui::Button("About AV-Mace...")) {
-                // Action for "About" item
+                system("start chrome.exe https://github.com/CITM-UPC/AV-Mace_Engine");
             }
 			ImGui::Separator();
 			if (ImGui::MenuItem("Documentation")) {
 				// Action for "Documentation" item
+                system("start chrome.exe https://github.com/CITM-UPC/AV-Mace_Engine/blob/main/README.md");
 			}
             if (ImGui::MenuItem("Download latest version")) {
-                // Action for "Documentation" item
+                //link to release when uploaded
+                //system("start chrome.exe https://github.com/CITM-UPC/AV-Mace_Engine");
             }
             ImGui::Separator();
             if (ImGui::MenuItem("Report bug / Suggest Feature")) {
