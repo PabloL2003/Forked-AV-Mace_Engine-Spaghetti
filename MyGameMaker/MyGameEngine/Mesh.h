@@ -8,27 +8,7 @@
 #include "BufferObject.h"
 #include "BoundingBox.h"
 
-struct ModelData
-{
-	unsigned int vBPosID, vBTCoordsID, iBID, vA;
-	std::vector<vec3> vertexData;
-	std::vector<unsigned int> indexData;
-	std::vector<vec2> vertex_texCoords;
-};
-
-class Model
-{
-public:
-	Model() {}
-	~Model() {}
-
-	const std::string& GetMeshName() const { return meshName; }
-
-	const ModelData& GetModelData() const { return modelData; }
-
-	std::string meshName;
-	ModelData modelData;
-};
+#include "Model.h"
 
 class Mesh : public Component
 {
@@ -44,8 +24,7 @@ class Mesh : public Component
 	BoundingBox _boundingBox;
 
 	//la nostra manera de carregar un model
-	std::vector<Model> models;
-	int numMeshes;
+	std::shared_ptr<Model> model;
 
 public:
 	Mesh() {}
@@ -63,11 +42,8 @@ public:
 	void loadColors(const glm::u8vec3* colors);
 
 	//la nostra manera de carregar un model
-	void loadModel(const std::string& path);
 	void loadToOpenGL();
 	void drawModel() const;
-	int& getNumMeshes() { return numMeshes; }
-	void setMesh(const Model& model) { models.push_back(model); }
-	std::vector<Model>& getModels() { return models; }
+	void setModel(std::shared_ptr<Model> model) { this->model = model; }
 };
 

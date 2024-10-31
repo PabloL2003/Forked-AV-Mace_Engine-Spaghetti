@@ -7,6 +7,7 @@
 
 #include "Engine.h"
 #include "Input.h"
+#include "ModelLoader.h"
 #include "Mesh.h"
 #include "Material.h"
 
@@ -30,15 +31,16 @@ void Scene::Start()
 	_camera.transform().pos() = vec3(0, 1, 4);
 	_camera.transform().rotate(glm::radians(180.0), vec3(0, 1, 0));
 
-	Mesh mesh;
-	mesh.loadModel("../MyGameEngine/BakerHouse.fbx");
-	for (size_t i = 0; i < mesh.getNumMeshes(); i++)
+	ModelLoader modelLoader;
+	std::vector<std::shared_ptr<Model>> models;
+	modelLoader.load("../MyGameEngine/BakerHouse.fbx", models);
+	for (size_t i = 0; i < models.size(); i++)
 	{
-		std::shared_ptr<GameObject> go = std::make_shared<GameObject>("Baker House");
+		std::shared_ptr<GameObject> go = std::make_shared<GameObject>(models[i].get()->GetMeshName());
 		go->CreateComponent(ComponentType::Transform, go.get());
 		go->GetComponent<Transform>()->pos() = vec3(0, 0, 0);
 		go->CreateComponent(ComponentType::Mesh, go.get());
-		go->GetComponent<Mesh>()->setMesh(mesh.getModels()[i]);
+		go->GetComponent<Mesh>()->setModel(models[i]);
 		go->GetComponent<Mesh>()->loadToOpenGL();
 		go->CreateComponent(ComponentType::Material, go.get());
 		go->GetComponent<Material>()->m_Texture = std::make_unique<Texture>("../MyGameEngine/Baker_house.png");
@@ -159,15 +161,16 @@ void Scene::Draw()
 
 void Scene::loadGameObjectByPath(const std::string& path)
 {
-	Mesh mesh;
-	mesh.loadModel(path);
-	for (size_t i = 0; i < mesh.getNumMeshes(); i++)
+	ModelLoader modelLoader;
+	std::vector<std::shared_ptr<Model>> models;
+	modelLoader.load(path, models);
+	for (size_t i = 0; i < models.size(); i++)
 	{
-		std::shared_ptr<GameObject> go = std::make_shared<GameObject>("Baker House");
+		std::shared_ptr<GameObject> go = std::make_shared<GameObject>(models[i].get()->GetMeshName());
 		go->CreateComponent(ComponentType::Transform, go.get());
 		go->GetComponent<Transform>()->pos() = vec3(5, 0, 0);
 		go->CreateComponent(ComponentType::Mesh, go.get());
-		go->GetComponent<Mesh>()->setMesh(mesh.getModels()[i]);
+		go->GetComponent<Mesh>()->setModel(models[i]);
 		go->GetComponent<Mesh>()->loadToOpenGL();
 		go->CreateComponent(ComponentType::Material, go.get());
 		go->GetComponent<Material>()->m_Texture = std::make_unique<Texture>("../MyGameEngine/Baker_house.png");
