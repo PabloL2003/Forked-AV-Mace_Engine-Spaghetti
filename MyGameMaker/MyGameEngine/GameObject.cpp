@@ -46,3 +46,23 @@ Component* GameObject::CreateComponent(ComponentType type, GameObject* owner)
 	return component;
 }
 
+bool GameObject::operator==(const GameObject& other) const
+{
+	// Compare name, tag, and active state
+	if (_name != other._name || _tag != other._tag || _active != other._active) {
+		return false;
+	}
+
+	// Compare components by checking each component type
+	if (_components.size() != other._components.size()) {
+		return false;
+	}
+
+	for (size_t i = 0; i < _components.size(); ++i) {
+		if (*_components[i] != *other._components[i]) {
+			return false;
+		}
+	}
+
+	return true;
+}

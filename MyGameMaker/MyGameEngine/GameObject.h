@@ -45,6 +45,8 @@ public:
 		return nullptr; // Si no se encuentra el componente del tipo específico
 	}
 
+	bool operator==(const GameObject& other) const;
+
 protected:
 	virtual void Start() {}
 	virtual void Update() {}

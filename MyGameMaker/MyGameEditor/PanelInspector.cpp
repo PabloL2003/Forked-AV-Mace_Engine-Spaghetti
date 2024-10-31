@@ -1,7 +1,10 @@
 #include "PanelInspector.h"
+#include "PanelInspector.h"
 
 #include <imgui.h>
 
+#include "MyGUI.h"
+#include "PanelHierarchy.h"
 #include "MyGameEngine/Engine.h"
 #include "MyGameEngine/MyWindow.h"
 #include "MyGameEngine/types.h"
@@ -9,7 +12,7 @@
 PanelInspector::PanelInspector(PanelType type, std::string name) : Panel(type, name)
 {
 	SwitchState();
-	width = 250;
+	width = WINDOW_WIDTH * 0.25;
 	height = WINDOW_HEIGHT - 200;
 }
 
@@ -24,56 +27,61 @@ bool PanelInspector::Draw()
 	glm::vec3 rotation = { 0, 0, 0 };
 	glm::vec3 scale = { 1, 1, 1 };
 
-	ImGui::Begin("Inspector", &showWindow, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
-	ImGui::Checkbox("##active", &openHeader);
-	ImGui::SameLine();
+	ImGui::Begin("Inspector", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
 
-    // Copy the current value of `text` into the buffer initially
-    strncpy_s(buffer, text.c_str(), sizeof(buffer));
-    buffer[sizeof(buffer) - 1] = 0; // Ensure null-termination
-
-    ImGui::SetNextItemWidth(100.0f);
-    if (ImGui::InputText("##gameobject_name", buffer, sizeof(buffer)))
+    if (MyGUI::Instance().hierarchy().selectedGameObject())
     {
-        text = std::string(buffer); // Update `text` with the modified buffer
-    }
-	ImGui::SameLine();
-	ImGui::Checkbox("Static", &openHeader);
-    ImGui::Text("Current Text: %s", text.c_str()); // Display the current text value
-
-	ImGui::Text("Tag");
-    ImGui::SameLine();
-    ImGui::SetNextItemWidth(80.0f);
-    if (ImGui::BeginCombo("##tag", currentTagg.c_str())) // Start the dropdown menu
-    {
-        for (const auto& option : options) // Iterate over each option
+        ImGui::Checkbox("##active", &MyGUI::Instance().hierarchy().selectedGameObject()->isActive());
+        ImGui::SameLine();
+        
+        buffer[sizeof(buffer) - 1] = 0; // Ensure null-termination
+        ImGui::SetNextItemWidth(100.0f);
+        if (ImGui::InputText("##gameobject_name", buffer, sizeof(buffer)))
         {
-            bool isSelected = (currentTagg == option); // Check if this option is currently selected
-            if (ImGui::Selectable(option.c_str(), isSelected))
-                currentTagg = option; // Set this option as selected if clicked
-
-            // Set the initial focus when opening the combo (scrolling effect)
-            if (isSelected)
-                ImGui::SetItemDefaultFocus();
+            text() = std::string(buffer).c_str(); // Update name
         }
-        ImGui::EndCombo(); // End the dropdown menu
-    }
-	ImGui::SameLine();
-	ImGui::Text("Layer");
-	ImGui::SameLine();
-	ImGui::SetNextItemWidth(80.0f);
-    if (ImGui::BeginCombo("##layer", currentLayer.c_str())) // Start the dropdown menu
-    {
-        for (const auto& layer : layers)
+        MyGUI::Instance().hierarchy().selectedGameObject()->name() = this->text();
+        ImGui::SameLine();
+        ImGui::Checkbox("Static", &MyGUI::Instance().hierarchy().selectedGameObject()->isActive());
+
+		// Tag selection
+        ImGui::Text("Tag");
+        ImGui::SameLine();
+        ImGui::SetNextItemWidth(100.0f);
+        if (ImGui::BeginCombo("##tag", currentTagg().c_str()))
         {
-            bool isSelected = (currentLayer == layer);
-		    if (ImGui::Selectable(layer.c_str(), isSelected))
-				currentLayer = layer;
+            for (const auto& option : options)
+            {
+                bool isSelected = (currentTagg() == option);
+                if (ImGui::Selectable(option.c_str(), isSelected))
+                    currentTagg() = option.c_str();
 
-			if (isSelected)
-				ImGui::SetItemDefaultFocus();
+                if (isSelected)
+                    ImGui::SetItemDefaultFocus();
+            }
+            ImGui::EndCombo();
         }
-		ImGui::EndCombo();
+        MyGUI::Instance().hierarchy().selectedGameObject()->tag() = currentTagg();
+        ImGui::SameLine();
+
+		// Layer selection
+        ImGui::Text("   Layer");
+        ImGui::SameLine();
+        ImGui::SetNextItemWidth(100.0f);
+        if (ImGui::BeginCombo("##layer", currentLayer().c_str()))
+        {
+            for (const auto& layer : layers)
+            {
+                bool isSelected = (this->currentLayer() == layer);
+                if (ImGui::Selectable(layer.c_str(), isSelected))
+                    currentLayer() = layer.c_str();
+
+                if (isSelected)
+                    ImGui::SetItemDefaultFocus();
+            }
+            ImGui::EndCombo();
+        }
+		//MyGUI::Instance().hierarchy().selectedGameObject()->layer = this->currentLayer();
     }
 
     if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))

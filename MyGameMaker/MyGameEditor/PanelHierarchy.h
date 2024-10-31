@@ -3,6 +3,8 @@
 #pragma once
 
 #include "Panel.h"
+#include <memory>
+#include "MyGameEngine/GameObject.h"
 
 class PanelHierarchy : public Panel
 {
@@ -12,6 +14,11 @@ public:
 	~PanelHierarchy();
 
 	bool Draw();
+	GameObject* selectedGameObject() { return _selectedGameObject; }
+	void SetSelectedGameObject(GameObject* gameObject) { _selectedGameObject = gameObject; }
+
+private:
+	GameObject* _selectedGameObject;
 };
 
 #endif // !__PANEL_HIERARCHY_H__

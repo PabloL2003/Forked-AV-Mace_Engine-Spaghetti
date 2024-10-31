@@ -2,8 +2,10 @@
 #define __PANEL_INSPECTOR_H__
 #pragma once
 
-#include "Panel.h"
 #include <vector>
+#include <memory>  
+#include "Panel.h"
+#include "MyGameEngine/GameObject.h"
 
 class PanelInspector : public Panel
 {
@@ -12,19 +14,21 @@ public:
 	PanelInspector(PanelType type, std::string name);
 	~PanelInspector();
 
+	std::string text() const { return _text; }
+	std::string currentTagg() const { return _currentTagg; }
+	std::string currentLayer() const { return _currentLayer; }
 	bool Draw();
 
 private:
-	bool openHeader = true;	// Delete Me
-	std::string text = "GameObject";
+	std::string _text = "GameObject";
 	char buffer[128]; // Temporary buffer to hold the string
 
 	// Tag
-	std::string currentTagg = "Untagged";
+	std::string _currentTagg = "Untagged";
 	std::vector<std::string> options = { "Untagged", "Player", "Other" };
 
 	// Layer
-	std::string currentLayer = "Default";
+	std::string _currentLayer = "Default";
 	std::vector<std::string> layers = { "Default", "TransparentFX", "Ignore Raycast", "Water", "UI", "PostProcessing" };
 
 	bool showPerTriangleNormals = false;
@@ -33,4 +37,3 @@ private:
 };
 
 #endif // !__PANEL_INSPECTOR_H__
-
