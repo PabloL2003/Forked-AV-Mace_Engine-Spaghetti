@@ -145,7 +145,7 @@ bool Input::PreUpdate()
 
 			case SDL_DROPFILE:
 				std::string filename = event.drop.file;
-				if (filename.ends_with(".png")) {
+				if (filename.ends_with(".png") || filename.ends_with(".dds")) {
 					Engine::Instance().scene->loadTextureByPath(event.drop.file);
 				}
 				else if (filename.ends_with(".fbx")) {

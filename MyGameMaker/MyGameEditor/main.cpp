@@ -1,9 +1,8 @@
 #include <iostream>
 
-//assimp
-#include <assimp/Importer.hpp>      
-#include <assimp/scene.h>           
-#include <assimp/postprocess.h>
+//devil
+#include <IL/il.h>
+#include <IL/ilu.h>
 
 //imgui and panels
 #include "MyGUI.h"
@@ -30,6 +29,11 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
+
+	//init DevIL // we have to create a texture manager to initialize it and load textures
+	ilInit();
+	iluInit();
+
 	//start engine
 	Engine& engine = Engine::Instance();
 	engine.Awake();

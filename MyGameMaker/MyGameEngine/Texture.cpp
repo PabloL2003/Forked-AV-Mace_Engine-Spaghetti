@@ -1,32 +1,15 @@
 #include "Texture.h"
 
-#include <SDL2/SDL_image.h>
+#include <IL/il.h>
+#include <IL/ilu.h>
 
 #include "Renderer.h"
 
 Texture::Texture(const string& path, unsigned int* valor) : m_RendererID(0), m_FilePath(path), m_LocalBuffer(nullptr),
 m_Width(0), m_Height(0), m_BPP(0)
 {
-	// Carga la imagen usando SDL_image
-	SDL_Surface* imageSurface = IMG_Load(path.c_str());
-	if (!imageSurface) {
-		printf("Error al cargar imagen: %s\n", IMG_GetError());
-		return;
-	}
-
-	// Determina el formato de la imagen para OpenGL
-	GLenum format;
-	if (imageSurface->format->BytesPerPixel == 4) { // RGBA
-		format = (imageSurface->format->Rmask == 0x000000ff) ? GL_RGBA : GL_BGRA;
-	}
-	else if (imageSurface->format->BytesPerPixel == 3) { // RGB
-		format = (imageSurface->format->Rmask == 0x000000ff) ? GL_RGB : GL_BGR;
-	}
-	else {
-		printf("Formato de imagen no compatible\n");
-		SDL_FreeSurface(imageSurface);
-		return;
-	}
+	auto il_img_id = ilGenImage();
+	ilLoadImage((const wchar_t*)path.c_str());
 
 	GLCall(glGenTextures(1, &m_RendererID));
 	GLCall(glBindTexture(GL_TEXTURE_2D, m_RendererID));
@@ -40,11 +23,11 @@ m_Width(0), m_Height(0), m_BPP(0)
 	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
 	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
 
-	glTexImage2D(GL_TEXTURE_2D, 0, format, imageSurface->w, imageSurface->h, 0, format, GL_UNSIGNED_BYTE, imageSurface->pixels);
+	glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
 	GLCall(glBindTexture(GL_TEXTURE_2D, 0));
 
-	// Liberar la superficie de SDL
-	SDL_FreeSurface(imageSurface);
+	// Free image
+	ilDeleteImage(il_img_id);
 
 	if (valor != nullptr)
 	{

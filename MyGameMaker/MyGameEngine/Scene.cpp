@@ -44,7 +44,8 @@ void Scene::Start()
 		go->GetComponent<Mesh>()->setModel(models[i]);
 		go->GetComponent<Mesh>()->setFilePath("Assets/FBX/BakerHouse.fbx");
 		go->CreateComponent(ComponentType::Material, go.get());
-		go->GetComponent<Material>()->m_Texture = std::make_unique<Texture>("Assets/Textures/Baker_house.png");
+		std::string path = "Assets/Textures/Baker_house.png";
+		go->GetComponent<Material>()->m_Texture = std::make_unique<Texture>(path);
 		go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
 		go->GetComponent<Mesh>()->loadToOpenGL();
 		addChild(go);
