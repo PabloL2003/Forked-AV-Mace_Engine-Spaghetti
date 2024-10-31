@@ -23,8 +23,8 @@ public:
 	bool Draw();
 	void DrawGameObjectControls(GameObject* gameObject);
 	void DrawTransformControls(GameObject* gameObject);
-	void DrawMeshControls();
-	void DrawMaterialControls();
+	void DrawMeshControls(GameObject* gameObject);
+	void DrawMaterialControls(GameObject* gameObject);
 
 private:
 	// Tag

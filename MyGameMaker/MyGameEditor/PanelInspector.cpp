@@ -5,6 +5,8 @@
 #include "MyGameEngine/Engine.h"
 #include "MyGameEngine/MyWindow.h"
 #include "MyGameEngine/Transform.h"
+#include "MyGameEngine/Mesh.h"
+#include "MyGameEngine/Material.h"
 
 PanelInspector::PanelInspector(PanelType type, std::string name) : Panel(type, name, WINDOW_WIDTH * 0.25, WINDOW_HEIGHT - 200)
 {
@@ -24,8 +26,8 @@ bool PanelInspector::Draw()
 
         DrawGameObjectControls(selectedGameObject);
         DrawTransformControls(selectedGameObject);
-        DrawMeshControls();
-        DrawMaterialControls();
+        DrawMeshControls(selectedGameObject);
+        DrawMaterialControls(selectedGameObject);
 
         ImGui::End();
     }
@@ -38,7 +40,7 @@ bool PanelInspector::Draw()
 
 void PanelInspector::DrawGameObjectControls(GameObject* gameObject)
 {
-    ImGui::Checkbox("##active", &gameObject->isActive());
+    ImGui::Checkbox("Active", &gameObject->isActive());
     ImGui::SameLine();
 
     // Name input
@@ -93,7 +95,10 @@ void PanelInspector::DrawTransformControls(GameObject* gameObject)
     if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
     {
         auto* transform = gameObject->GetComponent<Transform>();
-        ImGui::Text("                X         Y        Z");
+
+		ImGui::Checkbox("Active", &gameObject->GetComponent<Transform>()->isActive());
+		ImGui::SameLine();
+        ImGui::Text("   X         Y        Z");
 
         // Position
         ImGui::Text("Position   ");
@@ -124,28 +129,32 @@ void PanelInspector::DrawTransformControls(GameObject* gameObject)
     }
 }
 
-void PanelInspector::DrawMeshControls()
+void PanelInspector::DrawMeshControls(GameObject* gameObject)
 {
     if (ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_DefaultOpen))
     {
-        ImGui::Text("Cube");
-        ImGui::Text("Vertices: 24");
-        ImGui::Text("Triangles: 12");
-        ImGui::Separator();
-
-        // Normals display options
-        ImGui::Text("Display Normals");
-        ImGui::Checkbox("Per-Triangle Normals", &showPerTriangleNormals);
-        ImGui::Checkbox("Per-Face Normals", &showPerFaceNormals);
+        ImGui::Checkbox("Active", &gameObject->GetComponent<Mesh>()->isActive());
+		ImGui::SameLine();
+		ImGui::Text("File:");
+		ImGui::SameLine();
+        ImGui::SetNextItemWidth(150.0f);
+        char buffer[128] = {};
+        strncpy_s(buffer, gameObject->GetComponent<Mesh>()->getFilePath().c_str(), sizeof(buffer));
+		ImGui::InputText("##mesh_path", buffer, sizeof(buffer));
+        ImGui::Text("Display Normals:");
+        ImGui::Checkbox("Vertex Normals", &showPerTriangleNormals);
+        ImGui::Checkbox("Face Normals", &showPerFaceNormals);
         ImGui::Separator();
     }
 }
 
-void PanelInspector::DrawMaterialControls()
+void PanelInspector::DrawMaterialControls(GameObject* gameObject)
 {
     if (ImGui::CollapsingHeader("Material", ImGuiTreeNodeFlags_DefaultOpen))
     {
-        ImGui::Text("Size: 1024x1024");
+        ImGui::Checkbox("Active", &gameObject->GetComponent<Material>()->isActive());
+        ImGui::Text(" ");
+        ImGui::Text("Main Maps");
         ImGui::Text("Texture Path: Assets/Textures/texture.png");
         ImGui::Checkbox("Show Checkers", &showCheckers);
         ImGui::Separator();
