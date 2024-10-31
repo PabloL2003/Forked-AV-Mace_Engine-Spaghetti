@@ -1,5 +1,5 @@
 # AV_Mace Engine
-Game engine using SDL2, glew, assimp, imgui, glm and sdl2-image, made by the Group 4 for the Motors subject for CITM
+Game engine using SDL2, glew, assimp, imgui, glm and devil, made by the Group 4 for the Motors subject for CITM
 
 ## Link to the repository
 
