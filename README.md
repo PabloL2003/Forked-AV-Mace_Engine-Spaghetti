@@ -25,7 +25,7 @@ Game engine using SDL2, glew, assimp, imgui, glm and devil, made by the Group 4 
 - Menu that include links to our github and last release
 
 ## Additional comments
-- Droping a .fbx will create a gameobject.
+- Dropping a .fbx will create a gameobject.
 - Dropping a .png or .dds with a selectet gameobject will apply the texture or replace the old one.
 
 ## Improvements
