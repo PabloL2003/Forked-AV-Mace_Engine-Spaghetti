@@ -76,7 +76,12 @@ void Engine::Draw()
 
 void Engine::CleanUp()
 {
-
+    scene->CleanUp();
+    window->close();
+    input->CleanUp();
+    delete scene;
+    delete window;
+    delete input;
 }
 
 
@@ -100,8 +105,5 @@ void Engine::CleanLogs()
 
 Engine::~Engine()
 {
-	window->close();
-    input->CleanUp();
-	delete window;
-	delete input;
+	
 }

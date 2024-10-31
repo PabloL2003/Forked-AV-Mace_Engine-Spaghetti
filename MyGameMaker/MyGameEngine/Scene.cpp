@@ -144,7 +144,10 @@ void Scene::PostUpdate()
 
 void Scene::CleanUp()
 {
-
+	/*for (auto& child : children())
+	{
+		child.get()->CleanUp()
+	}*/
 }
 
 void Scene::OnSceneChange()

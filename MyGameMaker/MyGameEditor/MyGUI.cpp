@@ -12,9 +12,7 @@
 #include "PanelConfiguration.h"
 
 MyGUI::~MyGUI() {
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplSDL2_Shutdown();
-	ImGui::DestroyContext();
+	
 }
 
 void MyGUI::Awake(SDL_Window* window, void* context)
@@ -67,11 +65,16 @@ void MyGUI::addPanel(Panel* panel)
 	_panels.push_back(panel);
 }
 
-void MyGUI::cleanUp()
+void MyGUI::CleanUp()
 {
 	for (auto panel : _panels)
 	{
 		delete panel;
 	}
 	_panels.clear();
+
+	// Cleanup
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
 }

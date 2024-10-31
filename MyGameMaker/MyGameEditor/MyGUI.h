@@ -37,7 +37,7 @@ public:
 	PanelHierarchy& hierarchy() const { return *_hierarchy; }
 	PanelConfiguration& configuration() const { return *_configuration; }
 
-	void cleanUp();
+	void CleanUp();
 
 private:
 	MyGUI() = default;

@@ -3,6 +3,8 @@
 
 #include "MyGUI.h"
 
+#include "MyGameEngine/Engine.h"
+
 #include "PanelConsole.h"
 #include "PanelInspector.h"
 #include "PanelHierarchy.h"
@@ -46,7 +48,7 @@ bool PanelMenu::Draw()
             }
             ImGui::Separator();
             if (ImGui::MenuItem("Exit", "Alt+F4")) {
-                // Action for "Exit" item
+				Engine::Instance().quit = true;
             }
             ImGui::EndMenu();
         }

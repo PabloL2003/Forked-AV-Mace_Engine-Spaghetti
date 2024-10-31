@@ -92,7 +92,7 @@ bool Input::PreUpdate()
 		switch(event.type)
 		{
 			case SDL_QUIT:
-				windowEvents[WE_QUIT] = true;
+				Engine::Instance().quit = true;
 			break;
 
 			case SDL_WINDOWEVENT:

@@ -52,6 +52,8 @@ public:
 	Renderer* renderer = nullptr;
 	Scene* scene = nullptr;
 
+	bool quit = false;
+
 private:
 	// Constructor y destructor privados para el singleton
 	Engine() = default;

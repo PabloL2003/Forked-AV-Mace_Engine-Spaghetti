@@ -52,7 +52,7 @@ int main(int argc, char* argv[]) {
 	engine.SetFps(&fps);
 
 	//game loop
-	while (engine.input->GetWindowEvent(WE_QUIT) != true) {
+	while (engine.quit != true) {
 
 		//time start
 		timer.Start();
@@ -82,6 +82,9 @@ int main(int argc, char* argv[]) {
 		fps = 1000.0f / (frameTime + (frameTime < frameDelay ? (frameDelay - frameTime) : 0));
 
 	}
+
+	gui.CleanUp();
+	engine.CleanUp();
 
 	return 0;
 }
