@@ -16,6 +16,7 @@ public:
 
 	std::string text() const { return _text; }
 	std::string currentTagg() const { return _currentTagg; }
+	void setTag(const std::string& tag) { _currentTagg = tag; }
 	std::string currentLayer() const { return _currentLayer; }
 	bool Draw();
 

@@ -2,7 +2,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
 
-void Transform::translate(const vec3& v) { 
+void Transform::translate(const vec3& v) {
 	_mat = glm::translate(_mat,v);
 }
 
