@@ -33,7 +33,7 @@ bool PanelHierarchy::Draw()
 
        if (isNodeOpen)
        {
-           for (const std::shared_ptr<GameObject>& childObjectPtr : Engine::Instance().scene->children())
+           for (const std::shared_ptr<GameObject>& childObjectPtr : gameObject->children())
            {
                GameObject* childObject = childObjectPtr.get();
                if (ImGui::TreeNode(childObject->name().c_str())) ImGui::TreePop();

@@ -156,6 +156,7 @@ void PanelInspector::DrawMaterialControls(GameObject* gameObject)
         ImGui::Text(" ");
         ImGui::Text("Main Maps");
         ImGui::Text("Texture Path: Assets/Textures/texture.png");
+        ImGui::Checkbox("Albedo", &showCheckers);
         ImGui::Checkbox("Show Checkers", &showCheckers);
         ImGui::Separator();
     }
