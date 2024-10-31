@@ -35,6 +35,9 @@ bool PanelConsole::Draw()
 		case LogType::LOG_CHANGEENV:
 			color = ImVec4(0.5, 1, 1, 1);
 			break;
+		case LogType::LOG_WARNING:
+			color = ImVec4(1, 1, 0.5, 1);
+			break;
 		};
 
 		ImGui::PushStyleColor(ImGuiCol_Text, color);

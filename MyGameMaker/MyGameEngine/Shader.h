@@ -31,6 +31,7 @@ public:
 	void SetUniform1i(const string& name, int value);
 	void SetUniformMat4f(const string& name, const glm::mat4& matrix);
 	void SetUniform1iv(const string& name, int size, int value[]);
+	void SetUniformBool(const string& name, bool value);
 
 private:
 	ShaderProgramSource ParseShader(const std::string& filepath);

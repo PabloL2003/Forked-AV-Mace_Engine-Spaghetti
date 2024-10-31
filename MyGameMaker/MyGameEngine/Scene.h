@@ -24,6 +24,9 @@ public:
 	void Draw();
 
 	void loadGameObjectByPath(const std::string& path);
+	void loadTextureByPath(const std::string& path);
+
+	GameObject* selectedGameObject = nullptr;
 };
 
 #endif // !__SCENE_H__

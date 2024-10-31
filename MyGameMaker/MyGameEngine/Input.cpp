@@ -144,7 +144,13 @@ bool Input::PreUpdate()
 				break;
 
 			case SDL_DROPFILE:
-				Engine::Instance().scene->loadGameObjectByPath(event.drop.file);
+				std::string filename = event.drop.file;
+				if (filename.ends_with(".png")) {
+					Engine::Instance().scene->loadTextureByPath(event.drop.file);
+				}
+				else if (filename.ends_with(".fbx")) {
+					Engine::Instance().scene->loadGameObjectByPath(event.drop.file);
+				}
 				SDL_free(event.drop.file);
 				break;
 		}

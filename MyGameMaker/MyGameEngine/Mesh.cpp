@@ -78,16 +78,25 @@ void Mesh::drawModel() const
 	GLCall(glBindVertexArray(model.get()->GetModelData().vA));
 	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model.get()->GetModelData().iBID));
 
-	getOwner()->GetComponent<Material>()->m_Texture->Bind();
+	if (getOwner()->GetComponent<Material>()->m_Texture) {
+		getOwner()->GetComponent<Material>()->m_Texture->Bind();
+	}
+
 	getOwner()->GetComponent<Material>()->m_Shader->Bind();
 
 	getOwner()->GetComponent<Material>()->m_Shader->SetUniformMat4f("u_MVP", (glm::mat4)Engine::Instance().scene->_camera.projection() * (glm::mat4)Engine::Instance().scene->_camera.view() * (glm::mat4)getOwner()->GetComponent<Transform>()->mat());
-	getOwner()->GetComponent<Material>()->m_Shader->SetUniform1i("u_Texture", 0);
+	
+	if (getOwner()->GetComponent<Material>()->m_Texture) {
+		getOwner()->GetComponent<Material>()->m_Shader->SetUniform1i("u_Texture", 0);
+	}
 
 	glDrawElements(GL_TRIANGLES, model.get()->GetModelData().indexData.size(), GL_UNSIGNED_INT, nullptr);
 
 	getOwner()->GetComponent<Material>()->m_Shader->UnBind();
-	getOwner()->GetComponent<Material>()->m_Texture->Unbind();
+
+	if (getOwner()->GetComponent<Material>()->m_Texture) {
+		getOwner()->GetComponent<Material>()->m_Texture->Unbind();
+	}
 
 	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
 	GLCall(glBindVertexArray(0));

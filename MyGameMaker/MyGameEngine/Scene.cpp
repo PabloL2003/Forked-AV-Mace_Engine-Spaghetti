@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "Engine.h"
+#include "Log.h"
 #include "Input.h"
 #include "ModelLoader.h"
 #include "Mesh.h"
@@ -177,8 +178,17 @@ void Scene::loadGameObjectByPath(const std::string& path)
 		go->GetComponent<Mesh>()->setFilePath(path);
 		go->GetComponent<Mesh>()->loadToOpenGL();
 		go->CreateComponent(ComponentType::Material, go.get());
-		go->GetComponent<Material>()->m_Texture = std::make_unique<Texture>("Assets/Textures/Baker_house.png");
 		go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
 		addChild(go);
+	}
+}
+
+void Scene::loadTextureByPath(const std::string& path)
+{
+	if (selectedGameObject != nullptr) {
+		selectedGameObject->GetComponent<Material>()->m_Texture = std::make_unique<Texture>(path);
+	}
+	else {
+		LOG(LogType::LOG_WARNING,"Select an Object!");
 	}
 }

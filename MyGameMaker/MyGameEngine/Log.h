@@ -9,7 +9,8 @@ enum class LogType
 {
 	LOG_INFO,
 	LOG_APPINFO,
-	LOG_CHANGEENV
+	LOG_CHANGEENV,
+	LOG_WARNING
 };
 
 struct LogInfo

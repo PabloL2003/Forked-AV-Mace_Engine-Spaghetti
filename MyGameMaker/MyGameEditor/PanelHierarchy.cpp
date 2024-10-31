@@ -47,5 +47,7 @@ bool PanelHierarchy::Draw()
        SwitchState();
    }
 
+   Engine::Instance().scene->selectedGameObject = selectedGameObject();
+
    return true;
 }

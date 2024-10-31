@@ -125,6 +125,11 @@ void Shader::SetUniform1i(const string& name, int value)
     glUniform1i(GetUniformLocation(name), value);
 }
 
+void Shader::SetUniformBool(const string& name, bool value)
+{
+    glUniform1i(GetUniformLocation(name), value);
+}
+
 void Shader::SetUniform1iv(const string& name, int size, int value[])
 {
     glUniform1iv(GetUniformLocation(name), size ,value);
