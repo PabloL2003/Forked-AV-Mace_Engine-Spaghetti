@@ -33,7 +33,7 @@ void Scene::Start()
 
 	ModelLoader modelLoader;
 	std::vector<std::shared_ptr<Model>> models;
-	modelLoader.load("../MyGameEngine/BakerHouse.fbx", models);
+	modelLoader.load("Assets/FBX/BakerHouse.fbx", models);
 	for (size_t i = 0; i < models.size(); i++)
 	{
 		std::shared_ptr<GameObject> go = std::make_shared<GameObject>(models[i].get()->GetMeshName());
@@ -41,10 +41,10 @@ void Scene::Start()
 		go->GetComponent<Transform>()->pos() = vec3(0, 0, 0);
 		go->CreateComponent(ComponentType::Mesh, go.get());
 		go->GetComponent<Mesh>()->setModel(models[i]);
-		go->GetComponent<Mesh>()->setFilePath("../MyGameEngine/BakerHouse.fbx");
+		go->GetComponent<Mesh>()->setFilePath("Assets/FBX/BakerHouse.fbx");
 		go->CreateComponent(ComponentType::Material, go.get());
-		go->GetComponent<Material>()->m_Texture = std::make_unique<Texture>("../MyGameEngine/Baker_house.png");
-		go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("../MyGameEngine/Basic.shader");
+		go->GetComponent<Material>()->m_Texture = std::make_unique<Texture>("Assets/Textures/Baker_house.png");
+		go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
 		go->GetComponent<Mesh>()->loadToOpenGL();
 		addChild(go);
 	}
@@ -177,8 +177,8 @@ void Scene::loadGameObjectByPath(const std::string& path)
 		go->GetComponent<Mesh>()->setFilePath(path);
 		go->GetComponent<Mesh>()->loadToOpenGL();
 		go->CreateComponent(ComponentType::Material, go.get());
-		go->GetComponent<Material>()->m_Texture = std::make_unique<Texture>("../MyGameEngine/Baker_house.png");
-		go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("../MyGameEngine/Basic.shader");
+		go->GetComponent<Material>()->m_Texture = std::make_unique<Texture>("Assets/Textures/Baker_house.png");
+		go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
 		addChild(go);
 	}
 }
