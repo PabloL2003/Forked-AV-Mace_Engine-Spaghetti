@@ -25,6 +25,7 @@ class Mesh : public Component
 
 	//la nostra manera de carregar un model
 	std::shared_ptr<Model> model;
+	std::string filePath;
 
 public:
 	Mesh() {}
@@ -45,5 +46,7 @@ public:
 	void loadToOpenGL();
 	void drawModel() const;
 	void setModel(std::shared_ptr<Model> model) { this->model = model; }
+	std::string& getFilePath() { return filePath; }
+	void setFilePath(const std::string& filePath) { this->filePath = filePath; }
 };
 

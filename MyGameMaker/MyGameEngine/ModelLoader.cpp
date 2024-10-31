@@ -26,16 +26,19 @@ void ModelLoader::load(const std::string& filename, std::vector<std::shared_ptr<
 	else {
 		models.resize(scene->mNumMeshes);
 
+		std::vector<std::shared_ptr<ModelData>> modelsData;
+		modelsData.resize(scene->mNumMeshes);
+
 		for (unsigned int i = 0; i < scene->mNumMeshes; i++) {
 			aiMesh* mesh = scene->mMeshes[i];
-
+			modelsData[i] = std::make_shared<ModelData>();
 			models[i] = std::make_shared<Model>();
-			models[i]->meshName = mesh->mName.C_Str();
+			models[i]->SetMeshName(mesh->mName.C_Str());
 
 			for (unsigned int j = 0; j < mesh->mNumVertices; j++) {
 				aiVector3D vertex = mesh->mVertices[j];
 				vec3 aux = vec3(vertex.x, vertex.y, vertex.z);
-				models[i]->modelData.vertexData.push_back(aux);
+				modelsData[i]->vertexData.push_back(aux);
 
 				// Coordenadas UV (si existen)
 				if (mesh->mTextureCoords[0]) {  // Comprueba si hay UVs
@@ -43,16 +46,80 @@ void ModelLoader::load(const std::string& filename, std::vector<std::shared_ptr<
 					aux.x = uv.x;  // Solo X y Y
 					aux.y = 1.0f - uv.y;
 				}
-				models[i]->modelData.vertex_texCoords.push_back(aux);
+				modelsData[i]->vertex_texCoords.push_back(aux);
 			}
 
 			for (unsigned int j = 0; j < mesh->mNumFaces; j++) {
 				aiFace face = mesh->mFaces[j];
 				for (unsigned int k = 0; k < face.mNumIndices; k++) {
-					models[i]->modelData.indexData.push_back(face.mIndices[k]);
+					modelsData[i]->indexData.push_back(face.mIndices[k]);
 				}
 			}
+
+			models[i]->SetModelData(*modelsData[i]);
+
 		}
+
+	}
+}
+
+void ModelLoader::load(Shapes shape, std::shared_ptr<Model>& model)
+{
+
+	std::shared_ptr<ModelData> modelData;
+
+	switch (shape)
+	{
+	case Shapes::CUBE:
+
+		model = std::make_shared<Model>();
+		model->SetMeshName("Cube");
+
+		
+		modelData = std::make_shared<ModelData>();
+
+		modelData.get()->vertexData = {
+			vec3(-1,-1,-1),
+			vec3(1,-1,-1), 
+			vec3(1,1,-1),  
+			vec3(-1,1,-1), 
+			vec3(-1,-1,1), 
+			vec3(1,-1,1),  
+			vec3(1,1,1),   
+			vec3(-1,1,1)  
+		};
+
+		modelData.get()->vertex_colors = {
+			vec3(0.8,0,0),
+			vec3(0.0,1,0),
+			vec3(0.0,0,1),
+			vec3(1,1,1),
+			vec3(1,0,1),
+			vec3(0.5,1,0),
+			vec3(0.8,1,0.5),
+			vec3(0.8,0.3,0.6)
+		};
+
+		modelData.get()->indexData = {
+			0, 1, 2, 0, 2, 3,
+			1, 5, 6, 1, 6, 2,
+			5, 4, 7, 5, 7, 6,
+			4, 0, 3, 4, 3, 7,
+			3, 2, 6, 3, 6, 7,
+			4, 5, 1, 4, 1, 0
+		};
+
+		model->SetModelData(*modelData);
+
+		break;
+	
+	case Shapes::PLANE:
+
+		break;
+	
+	default:
+
+		break;
 
 	}
 }

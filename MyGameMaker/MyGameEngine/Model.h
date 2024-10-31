@@ -5,12 +5,21 @@
 
 #include "types.h"
 
+enum class Shapes
+{
+	CUBE,
+	PLANE,
+	MESH
+};
+
 struct ModelData
 {
-	unsigned int vBPosID, vBTCoordsID, iBID, vA;
+	unsigned int vBPosID = -1, vBTCoordsID = -1, iBID = -1, vA = -1;
 	std::vector<vec3> vertexData;
 	std::vector<unsigned int> indexData;
 	std::vector<vec2> vertex_texCoords;
+	std::vector<vec3> vertex_normals;
+	std::vector<vec3> vertex_colors;
 };
 
 class Model
@@ -19,10 +28,14 @@ public:
 	Model() {}
 	~Model() {}
 
-	const std::string& GetMeshName() const { return meshName; }
+	std::string& GetMeshName() { return meshName; }
 
-	const ModelData& GetModelData() const { return modelData; }
+	ModelData& GetModelData() { return modelData; }
 
+	void SetMeshName(const std::string& meshName) { this->meshName = meshName; }
+
+	void SetModelData(const ModelData& modelData) { this->modelData = modelData; }
+private:
 	std::string meshName;
 	ModelData modelData;
 };

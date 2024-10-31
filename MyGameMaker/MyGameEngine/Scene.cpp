@@ -41,13 +41,13 @@ void Scene::Start()
 		go->GetComponent<Transform>()->pos() = vec3(0, 0, 0);
 		go->CreateComponent(ComponentType::Mesh, go.get());
 		go->GetComponent<Mesh>()->setModel(models[i]);
-		go->GetComponent<Mesh>()->loadToOpenGL();
+		go->GetComponent<Mesh>()->setFilePath("../MyGameEngine/BakerHouse.fbx");
 		go->CreateComponent(ComponentType::Material, go.get());
 		go->GetComponent<Material>()->m_Texture = std::make_unique<Texture>("../MyGameEngine/Baker_house.png");
 		go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("../MyGameEngine/Basic.shader");
+		go->GetComponent<Mesh>()->loadToOpenGL();
 		addChild(go);
 	}
-	
 }
 
 void Scene::Update(double& dT)
@@ -171,6 +171,7 @@ void Scene::loadGameObjectByPath(const std::string& path)
 		go->GetComponent<Transform>()->pos() = vec3(5, 0, 0);
 		go->CreateComponent(ComponentType::Mesh, go.get());
 		go->GetComponent<Mesh>()->setModel(models[i]);
+		go->GetComponent<Mesh>()->setFilePath(path);
 		go->GetComponent<Mesh>()->loadToOpenGL();
 		go->CreateComponent(ComponentType::Material, go.get());
 		go->GetComponent<Material>()->m_Texture = std::make_unique<Texture>("../MyGameEngine/Baker_house.png");

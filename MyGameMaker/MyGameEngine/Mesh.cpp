@@ -1,11 +1,7 @@
 #include "Mesh.h"
-#include <GL/glew.h>
-#include <assimp/Importer.hpp>      
-#include <assimp/scene.h>           
-#include <assimp/postprocess.h>
-#include <iostream>
 
 #include "Engine.h"
+#include "Renderer.h"
 
 #include "Scene.h"
 #include "Material.h"
@@ -44,42 +40,42 @@ void Mesh::loadColors(const glm::u8vec3* colors) {
 void Mesh::loadToOpenGL()
 {
 
-	glGenVertexArrays(1, &model.get()->modelData.vA);
-	glBindVertexArray(model.get()->modelData.vA);
+	GLCall(glGenVertexArrays(1, &model.get()->GetModelData().vA));
+	GLCall(glBindVertexArray(model.get()->GetModelData().vA));
 
 	//buffer de positions
-	glGenBuffers(1, &model.get()->modelData.vBPosID);
-	glBindBuffer(GL_ARRAY_BUFFER, model.get()->modelData.vBPosID);
-	glBufferData(GL_ARRAY_BUFFER, model.get()->modelData.vertexData.size() * sizeof(vec3), model.get()->modelData.vertexData.data(), GL_STATIC_DRAW);
+	GLCall(glGenBuffers(1, &model.get()->GetModelData().vBPosID));
+	GLCall(glBindBuffer(GL_ARRAY_BUFFER, model.get()->GetModelData().vBPosID));
+	GLCall(glBufferData(GL_ARRAY_BUFFER, model.get()->GetModelData().vertexData.size() * sizeof(vec3), model.get()->GetModelData().vertexData.data(), GL_STATIC_DRAW));
 
 	//position layout
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_DOUBLE, GL_FALSE, sizeof(vec3), (const void*)0);
+	GLCall(glEnableVertexAttribArray(0));
+	GLCall(glVertexAttribPointer(0, 3, GL_DOUBLE, GL_FALSE, sizeof(vec3), (const void*)0));
 
 	//buffer de coordenades de textura
-	glGenBuffers(1, &model.get()->modelData.vBTCoordsID);
-	glBindBuffer(GL_ARRAY_BUFFER, model.get()->modelData.vBTCoordsID);
-	glBufferData(GL_ARRAY_BUFFER, model.get()->modelData.vertex_texCoords.size() * sizeof(vec3), model.get()->modelData.vertex_texCoords.data(), GL_STATIC_DRAW);
+	GLCall(glGenBuffers(1, &model.get()->GetModelData().vBTCoordsID));
+	GLCall(glBindBuffer(GL_ARRAY_BUFFER, model.get()->GetModelData().vBTCoordsID));
+	GLCall(glBufferData(GL_ARRAY_BUFFER, model.get()->GetModelData().vertex_texCoords.size() * sizeof(vec3), model.get()->GetModelData().vertex_texCoords.data(), GL_STATIC_DRAW));
 
 	//tex coord layout
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_DOUBLE, GL_FALSE, sizeof(vec2), (const void*)0);
+	GLCall(glEnableVertexAttribArray(1));
+	GLCall(glVertexAttribPointer(1, 2, GL_DOUBLE, GL_FALSE, sizeof(vec2), (const void*)0));
 
-	glCreateBuffers(1, &model.get()->modelData.iBID);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model.get()->modelData.iBID);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, model.get()->modelData.indexData.size() * sizeof(unsigned int), model.get()->modelData.indexData.data(), GL_STATIC_DRAW);
+	GLCall(glCreateBuffers(1, &model.get()->GetModelData().iBID));
+	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model.get()->GetModelData().iBID));
+	GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, model.get()->GetModelData().indexData.size() * sizeof(unsigned int), model.get()->GetModelData().indexData.data(), GL_STATIC_DRAW));
 
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
+	GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
+	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+	GLCall(glBindVertexArray(0));
 	
 }
 
 void Mesh::drawModel() const
 {
 	
-	glBindVertexArray(model.get()->modelData.vA);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model.get()->modelData.iBID);
+	GLCall(glBindVertexArray(model.get()->GetModelData().vA));
+	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model.get()->GetModelData().iBID));
 
 	getOwner()->GetComponent<Material>()->m_Texture->Bind();
 	getOwner()->GetComponent<Material>()->m_Shader->Bind();
@@ -87,13 +83,13 @@ void Mesh::drawModel() const
 	getOwner()->GetComponent<Material>()->m_Shader->SetUniformMat4f("u_MVP", (glm::mat4)Engine::Instance().scene->_camera.projection() * (glm::mat4)Engine::Instance().scene->_camera.view() * (glm::mat4)getOwner()->GetComponent<Transform>()->mat());
 	getOwner()->GetComponent<Material>()->m_Shader->SetUniform1i("u_Texture", 0);
 
-	glDrawElements(GL_TRIANGLES, model.get()->modelData.indexData.size(), GL_UNSIGNED_INT, nullptr);
+	glDrawElements(GL_TRIANGLES, model.get()->GetModelData().indexData.size(), GL_UNSIGNED_INT, nullptr);
 
 	getOwner()->GetComponent<Material>()->m_Shader->UnBind();
 	getOwner()->GetComponent<Material>()->m_Texture->Unbind();
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
+	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+	GLCall(glBindVertexArray(0));
 	
 }
 
