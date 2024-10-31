@@ -95,12 +95,12 @@ bool PanelInspector::Draw()
             ImGui::Text("Y");
             ImGui::SameLine();
             ImGui::SetNextItemWidth(35.0f);
-            ImGui::InputDouble("##pos_x", &MyGUI::Instance().hierarchy().selectedGameObject()->GetComponent<Transform>()->pos().x, 0.0f, 0.0f, "%.2f");
+            ImGui::InputDouble("##pos_y", &MyGUI::Instance().hierarchy().selectedGameObject()->GetComponent<Transform>()->pos().y, 0.0f, 0.0f, "%.2f");
             ImGui::SameLine();
             ImGui::Text("Z");
             ImGui::SameLine();
             ImGui::SetNextItemWidth(35.0f);
-            ImGui::InputDouble("##pos_x", &MyGUI::Instance().hierarchy().selectedGameObject()->GetComponent<Transform>()->pos().x, 0.0f, 0.0f, "%.2f");
+            ImGui::InputDouble("##pos_z", &MyGUI::Instance().hierarchy().selectedGameObject()->GetComponent<Transform>()->pos().z, 0.0f, 0.0f, "%.2f");
 
             // Rotation Inputs
             ImGui::Text("Rotation");

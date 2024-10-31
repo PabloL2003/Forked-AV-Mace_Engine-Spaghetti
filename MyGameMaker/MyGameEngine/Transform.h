@@ -15,7 +15,7 @@ class Transform : public Component
 		};
 	};
 
-	glm::quat _rot;
+	//glm::quat _rot;
 
 public:
 	const mat4 mat() const { return _mat; }
@@ -26,11 +26,11 @@ public:
 
 	//Position
 	const vec3 pos() const { return _pos; }
-	vec3 pos() { return _pos; }
+	vec3& pos() { return _pos; }
 
 	//Rotation
-	glm::quat rot() const {	return glm::quat_cast(_mat); }
-	vec3 eulerAngles() const { return glm::eulerAngles(rot()); }
+	//glm::quat rot() const {	return glm::quat_cast(_mat); }
+	//vec3 eulerAngles() const { return glm::eulerAngles(rot()); }
 
 	void setFwd(const vec3& fwd) { _fwd = fwd; }
 	void setRigth(const vec3& left) { _left = left; }
