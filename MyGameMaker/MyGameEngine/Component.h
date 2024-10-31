@@ -35,8 +35,7 @@ public:
 	virtual ~Component() = default;
 
 	GameObject* getOwner() const { return _owner; }
-	auto& isActive() const { return _active; }
-	bool& isActive() { return _active; }
+	auto& isActive() { return _active; }
 	void setActive(bool active) { this->_active = active; }
 	ComponentType type() const { return _type; }
 

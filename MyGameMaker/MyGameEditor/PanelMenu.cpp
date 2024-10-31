@@ -181,13 +181,14 @@ bool PanelMenu::Draw()
 			
             if (ImGui::BeginMenu("Draw Mode")) {
 
-                if (ImGui::MenuItem("Mesh", nullptr)) {
+                if (ImGui::MenuItem("Mesh", nullptr, currentDrawMode == Mesh)) {
+                    currentDrawMode = Mesh;
                 }
-
-                if (ImGui::MenuItem("Wireframe", nullptr)) {
+                if (ImGui::MenuItem("Wireframe", nullptr, currentDrawMode == Wireframe)) {
+                    currentDrawMode = Wireframe;
                 }
-
-                if (ImGui::MenuItem("Vertexs", nullptr)) {
+                if (ImGui::MenuItem("Vertexs", nullptr, currentDrawMode == Vertexs)) {
+                    currentDrawMode = Vertexs;
                 }
                 ImGui::Separator();
                 if (ImGui::Checkbox("Vertex Normals", &show_vertexNormals)) {
