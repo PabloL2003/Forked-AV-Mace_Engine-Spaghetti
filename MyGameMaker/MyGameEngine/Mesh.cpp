@@ -55,12 +55,13 @@ void Mesh::loadToOpenGL()
 	//buffer de coordenades de textura
 	GLCall(glGenBuffers(1, &model.get()->GetModelData().vBTCoordsID));
 	GLCall(glBindBuffer(GL_ARRAY_BUFFER, model.get()->GetModelData().vBTCoordsID));
-	GLCall(glBufferData(GL_ARRAY_BUFFER, model.get()->GetModelData().vertex_texCoords.size() * sizeof(vec3), model.get()->GetModelData().vertex_texCoords.data(), GL_STATIC_DRAW));
+	GLCall(glBufferData(GL_ARRAY_BUFFER, model.get()->GetModelData().vertex_texCoords.size() * sizeof(vec2), model.get()->GetModelData().vertex_texCoords.data(), GL_STATIC_DRAW));
 
 	//tex coord layout
 	GLCall(glEnableVertexAttribArray(1));
 	GLCall(glVertexAttribPointer(1, 2, GL_DOUBLE, GL_FALSE, sizeof(vec2), (const void*)0));
 
+	//buffer de index
 	GLCall(glCreateBuffers(1, &model.get()->GetModelData().iBID));
 	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model.get()->GetModelData().iBID));
 	GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, model.get()->GetModelData().indexData.size() * sizeof(unsigned int), model.get()->GetModelData().indexData.data(), GL_STATIC_DRAW));
