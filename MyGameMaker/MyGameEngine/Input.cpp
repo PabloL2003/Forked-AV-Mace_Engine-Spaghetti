@@ -157,6 +157,7 @@ bool Input::PreUpdate()
 bool Input::CleanUp()
 {
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
+	SDL_Quit();
 	return true;
 }
 
