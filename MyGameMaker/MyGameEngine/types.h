@@ -6,11 +6,15 @@
 #define BUFFER_SIZE 4096
 
 #include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 using mat4 = glm::dmat4;
 using vec4 = glm::dvec4;
 using vec3 = glm::dvec3;
 using vec2 = glm::dvec2;
+using quat = glm::quat;
 
 namespace Colors {
 	const glm::u8vec3 Red( 255, 0, 0);

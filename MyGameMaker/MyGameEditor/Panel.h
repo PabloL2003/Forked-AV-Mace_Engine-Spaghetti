@@ -19,7 +19,7 @@ class Panel
 {
 public:
 
-	Panel(PanelType type, std::string name) : type(type), name(name) {}
+	Panel(PanelType type, std::string name, int width, int height) : type(type), name(name), width(width), height(height) {}
 	virtual ~Panel() {}
 
 	virtual void Start() {}

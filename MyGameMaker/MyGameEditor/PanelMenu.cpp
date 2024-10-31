@@ -8,7 +8,7 @@
 #include "PanelHierarchy.h"
 #include "PanelConfiguration.h"
 
-PanelMenu::PanelMenu(PanelType type, std::string name) : Panel(type, name)
+PanelMenu::PanelMenu(PanelType type, std::string name) : Panel(type, name, 0, 0)
 {
 	SwitchState();
 }

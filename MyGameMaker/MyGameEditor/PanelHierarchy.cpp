@@ -9,11 +9,9 @@
 #include "MyGameEngine/types.h"
 #include "PanelInspector.h"
 
-PanelHierarchy::PanelHierarchy(PanelType type, std::string name) : Panel(type, name)
+PanelHierarchy::PanelHierarchy(PanelType type, std::string name) : Panel(type, name, WINDOW_WIDTH * 0.1, WINDOW_HEIGHT - 219)
 {
 	SwitchState();
-	width = WINDOW_WIDTH * 0.1;
-	height = WINDOW_HEIGHT - 219;
 }
 
 PanelHierarchy::~PanelHierarchy() {}

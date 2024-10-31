@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>  
 #include "Panel.h"
+#include "MyGameEngine/types.h"
 #include "MyGameEngine/GameObject.h"
 
 class PanelInspector : public Panel
@@ -18,7 +19,13 @@ public:
 	std::string currentTagg() const { return _currentTagg; }
 	void setTag(const std::string& tag) { _currentTagg = tag; }
 	std::string currentLayer() const { return _currentLayer; }
+	void setLayer(const std::string& layer) { _currentLayer = layer; }
+
 	bool Draw();
+	void DrawGameObjectControls(GameObject* gameObject);
+	void DrawTransformControls(GameObject* gameObject);
+	void DrawMeshControls();
+	void DrawMaterialControls();
 
 private:
 	std::string _text = "GameObject";
