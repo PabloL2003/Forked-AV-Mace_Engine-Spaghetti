@@ -21,6 +21,11 @@ int mouseY = 0;
 float yaw = 0.0f;
 float pitch = 0.0f;
 
+//camera orbit variables
+bool leftMouse = false;
+float horizontalAngle = 0.0f;
+float verticalAngle = 0.0f;
+
 //camera zoom variables
 float fovModifier = 0;
 float zoomValue = 0;
@@ -146,6 +151,62 @@ void Scene::Update(double& dT)
 			_camera.transform().setFwd(glm::normalize(selectedGameObject->GetComponent<Transform>()->pos() - _camera.transform().pos()));
 			_camera.transform().setRigth(glm::normalize(glm::cross(vec3(0, 1, 0), _camera.transform().fwd())));
 			_camera.transform().setUp(glm::normalize(glm::cross(_camera.transform().fwd(), _camera.transform().right())));
+		}
+		else {
+			LOG(LogType::LOG_WARNING, "Select an Object!");
+		}
+	}
+
+	//camera orbit
+	if (Engine::Instance().input->GetMouseButtonDown(1) == KEY_DOWN) {
+		leftMouse = true;
+		Engine::Instance().input->GetMousePosition(lastMouseX, lastMouseY);
+	}
+	else if (Engine::Instance().input->GetMouseButtonDown(1) == KEY_UP) {
+		leftMouse = false;
+	}
+
+	if (Engine::Instance().input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && leftMouse) {
+		if (selectedGameObject != nullptr) {
+
+			Engine::Instance().input->GetMousePosition(mouseX, mouseY);
+
+			vec3 targetPos = selectedGameObject->GetComponent<Transform>()->pos();
+
+			// Calcular la distancia y offset inicial entre la cámara y el objeto
+			vec3 offset = _camera.transform().pos() - targetPos;
+			float orbitDistance = glm::length(offset);
+
+			// Calcular ángulos iniciales de la cámara
+			horizontalAngle = atan2(offset.x, offset.z);
+			verticalAngle = asin(offset.y / orbitDistance);
+
+			// Sensibilidad del movimiento del ratón
+			float sensitivity = 0.005f;
+
+			float dx = (float)(mouseX - lastMouseX);
+			float dy = (float)(mouseY - lastMouseY);
+
+			// Actualizar los ángulos en base al movimiento del ratón
+			horizontalAngle -= dx * sensitivity;
+			verticalAngle += dy * sensitivity;
+
+			// Limitar el ángulo vertical para no pasar por encima o debajo del objeto
+			verticalAngle = glm::clamp(verticalAngle, -glm::half_pi<float>() + 0.1f, glm::half_pi<float>() - 0.1f);
+
+			// Calcular la nueva posición de la cámara en coordenadas esféricas
+			offset.x = orbitDistance * cos(verticalAngle) * sin(horizontalAngle);
+			offset.y = orbitDistance * sin(verticalAngle);
+			offset.z = orbitDistance * cos(verticalAngle) * cos(horizontalAngle);
+
+			_camera.transform().pos() = targetPos + offset;
+
+			// Actualizar la dirección de la cámara para que mire al objeto
+			_camera.transform().setFwd(glm::normalize(targetPos - _camera.transform().pos()));
+			_camera.transform().setRigth(glm::normalize(glm::cross(vec3(0, 1, 0), _camera.transform().fwd())));
+			_camera.transform().setUp(glm::normalize(glm::cross(_camera.transform().fwd(), _camera.transform().right())));
+
+			Engine::Instance().input->GetMousePosition(lastMouseX, lastMouseY);
 		}
 		else {
 			LOG(LogType::LOG_WARNING, "Select an Object!");
