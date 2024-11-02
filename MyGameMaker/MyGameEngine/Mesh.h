@@ -8,6 +8,8 @@
 #include "BufferObject.h"
 #include "BoundingBox.h"
 
+#include "Shader.h"
+
 #include "Model.h"
 
 class Mesh : public Component
@@ -26,6 +28,11 @@ class Mesh : public Component
 	//la nostra manera de carregar un model
 	std::shared_ptr<Model> model;
 	std::string filePath;
+	//for debbuging
+	std::vector<glm::vec3> normalLines;
+	unsigned int vBNormalsLinesID = -1;
+	bool debugNormals = false;
+	std::unique_ptr<Shader> m_NormalLinesShader;
 
 public:
 	Mesh() {}
@@ -48,5 +55,10 @@ public:
 	void setModel(std::shared_ptr<Model> model) { this->model = model; }
 	std::string& getFilePath() { return filePath; }
 	void setFilePath(const std::string& filePath) { this->filePath = filePath; }
+
+	//for debbuging
+	void loadNormalsToOpenGL();
+	void drawNormals() const;
+	void setDebugNormals(bool& debugNormals) { this->debugNormals = debugNormals; }
 };
 

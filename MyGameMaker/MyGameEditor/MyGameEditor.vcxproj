@@ -169,6 +169,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\Basic.shader" />
+    <None Include="Assets\Shaders\NormalLines.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

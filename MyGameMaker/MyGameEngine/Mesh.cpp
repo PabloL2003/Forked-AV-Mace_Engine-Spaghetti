@@ -74,6 +74,9 @@ void Mesh::loadToOpenGL()
 		//normal layout
 		GLCall(glEnableVertexAttribArray(2));
 		GLCall(glVertexAttribPointer(2, 3, GL_DOUBLE, GL_FALSE, sizeof(vec3), (const void*)0));
+
+		//load normals lines for debugging
+		loadNormalsToOpenGL();
 	}
 
 	//buffer de index
@@ -93,17 +96,18 @@ void Mesh::drawModel() const
 	GLCall(glBindVertexArray(model.get()->GetModelData().vA));
 	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model.get()->GetModelData().iBID));
 
-	if (getOwner()->GetComponent<Material>()->m_Texture) {
-		getOwner()->GetComponent<Material>()->m_Texture->Bind();
-	}
-
 	getOwner()->GetComponent<Material>()->m_Shader->Bind();
 
-	getOwner()->GetComponent<Material>()->m_Shader->SetUniformMat4f("u_MVP", (glm::mat4)Engine::Instance().scene->_camera.projection() * (glm::mat4)Engine::Instance().scene->_camera.view() * (glm::mat4)getOwner()->GetComponent<Transform>()->mat());
-	
 	if (getOwner()->GetComponent<Material>()->m_Texture) {
+		getOwner()->GetComponent<Material>()->m_Texture->Bind();
+		getOwner()->GetComponent<Material>()->m_Shader->SetUniformBool("u_HasTexture", true);
 		getOwner()->GetComponent<Material>()->m_Shader->SetUniform1i("u_Texture", 0);
 	}
+	else {
+		getOwner()->GetComponent<Material>()->m_Shader->SetUniformBool("u_HasTexture", false);
+	}
+
+	getOwner()->GetComponent<Material>()->m_Shader->SetUniformMat4f("u_MVP", (glm::mat4)Engine::Instance().scene->_camera.projection() * (glm::mat4)Engine::Instance().scene->_camera.view() * (glm::mat4)getOwner()->GetComponent<Transform>()->mat());
 
 	glDrawElements(GL_TRIANGLES, model.get()->GetModelData().indexData.size(), GL_UNSIGNED_INT, nullptr);
 
@@ -115,7 +119,39 @@ void Mesh::drawModel() const
 
 	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
 	GLCall(glBindVertexArray(0));
+
+	//drawing normal lines----------------------------------
+	if (debugNormals)
+	{
+		if (model.get()->GetModelData().vertex_normals.size() > 0)
+		{
+			drawNormals();
+		}
+	}
+	//------------------------------------------------------
 	
+}
+
+void Mesh::loadNormalsToOpenGL()
+{
+	float normal_length = 0.1f;  // Ajusta la longitud según sea necesario
+
+	for (unsigned int i = 0; i < model.get()->GetModelData().vertexData.size(); i++) {
+		glm::vec3 vertex = model.get()->GetModelData().vertexData[i];
+		glm::vec3 normal = model.get()->GetModelData().vertex_normals[i];
+
+		// Agregar el punto inicial (vértice) y el punto final (normal)
+		normalLines.push_back(vertex);
+		normalLines.push_back(vertex + normal * normal_length);
+	}
+
+	// Crear el VBO para las normales
+	glGenBuffers(1, &vBNormalsLinesID);
+	glBindBuffer(GL_ARRAY_BUFFER, vBNormalsLinesID);
+	glBufferData(GL_ARRAY_BUFFER, normalLines.size() * sizeof(glm::vec3), normalLines.data(), GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);  // Desvincular el buffer después de cargar los datos
+
+	m_NormalLinesShader = std::make_unique<Shader>("Assets/Shaders/NormalLines.shader");
 }
 
 void Mesh::draw() const {
@@ -149,4 +185,23 @@ void Mesh::draw() const {
 	if (_colors_buffer.id()) glDisableClientState(GL_COLOR_ARRAY);
 	if (_normals_buffer.id()) glDisableClientState(GL_NORMAL_ARRAY);
 	if (_texCoords_buffer.id()) glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+}
+
+void Mesh::drawNormals() const
+{
+	m_NormalLinesShader->Bind();
+	m_NormalLinesShader->SetUniformMat4f("u_MVP", (glm::mat4)Engine::Instance().scene->_camera.projection() * (glm::mat4)Engine::Instance().scene->_camera.view() * (glm::mat4)getOwner()->GetComponent<Transform>()->mat());
+
+	// Enlaza el VBO de las líneas de normales
+	glBindBuffer(GL_ARRAY_BUFFER, vBNormalsLinesID);
+	glEnableVertexAttribArray(0); // Usa la ubicación 0 para las posiciones
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (const void*)0);
+
+	// Dibuja las líneas de normales
+	glDrawArrays(GL_LINES, 0, normalLines.size());
+
+	// Limpieza después de dibujar las líneas
+	glDisableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	m_NormalLinesShader->UnBind();
 }

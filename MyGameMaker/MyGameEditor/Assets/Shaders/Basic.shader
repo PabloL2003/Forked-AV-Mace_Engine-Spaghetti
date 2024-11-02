@@ -26,10 +26,15 @@ in vec2 v_TexCoord;
 in vec3 v_Normals;
 
 uniform sampler2D u_Texture;
+uniform bool u_HasTexture;
 
 void main()
 {
-	vec4 texColor = texture(u_Texture, v_TexCoord);
-	color = texColor;
-	//color = vec4(v_Normals, 1.0); //debug normals
+	if(u_HasTexture){
+		vec4 texColor = texture(u_Texture, v_TexCoord);
+		color = texColor;
+		//color = vec4(v_Normals, 1.0); //debug normals
+	}else{
+		color = vec4(0.8, 0.8, 0.8, 1.0);
+	}
 };
