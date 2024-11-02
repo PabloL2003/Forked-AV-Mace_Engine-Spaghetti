@@ -1,4 +1,6 @@
 #pragma once
+#ifndef __MESH_H__
+#define __MESH_H__
 
 #include <vector>
 #include <glm/glm.hpp>
@@ -28,11 +30,17 @@ class Mesh : public Component
 	//la nostra manera de carregar un model
 	std::shared_ptr<Model> model;
 	std::string filePath;
+
 	//for debbuging
 	std::vector<glm::vec3> normalLines;
 	unsigned int vBNormalsLinesID = -1;
 	bool debugNormals = false;
 	std::unique_ptr<Shader> m_NormalLinesShader;
+
+	std::vector<glm::vec3> faceNormalLines;
+	unsigned int vBfaceNormalLinesID = -1;
+	bool debugFaceNormals = false;
+
 
 public:
 	Mesh() {}
@@ -61,5 +69,11 @@ public:
 	void drawNormals() const;
 	void setDebugNormals(bool& debugNormals) { this->debugNormals = debugNormals; }
 	bool getDebugNormals() { return debugNormals; }
+
+	void loadFaceNormalsToOpenGL();
+	void drawFaceNormals() const;
+	void setDebugFaceNormals(bool& debugFaceNormals) { this->debugFaceNormals = debugFaceNormals; }
+	bool getDebugFaceNormals() { return debugFaceNormals; }
 };
 
+#endif // !__MESH_H__
