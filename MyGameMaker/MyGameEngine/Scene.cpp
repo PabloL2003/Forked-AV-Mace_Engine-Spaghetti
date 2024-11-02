@@ -50,6 +50,7 @@ void Scene::Start()
 		go->GetComponent<Mesh>()->loadToOpenGL();
 		addChild(go);
 	}
+
 }
 
 void Scene::Update(double& dT)
@@ -192,4 +193,20 @@ void Scene::loadTextureByPath(const std::string& path)
 	else {
 		LOG(LogType::LOG_WARNING,"Select an Object!");
 	}
+}
+
+void Scene::CreateCube()
+{
+	ModelLoader modelLoader;
+	std::shared_ptr<Model> model;
+	modelLoader.load(Shapes::CUBE, model);
+	std::shared_ptr<GameObject> go = std::make_shared<GameObject>(model.get()->GetMeshName());
+	go->CreateComponent(ComponentType::Transform, go.get());
+	go->GetComponent<Transform>()->pos() = vec3(10, 0, 0);
+	go->CreateComponent(ComponentType::Mesh, go.get());
+	go->GetComponent<Mesh>()->setModel(model);
+	go->GetComponent<Mesh>()->loadToOpenGL();
+	go->CreateComponent(ComponentType::Material, go.get());
+	go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
+	addChild(go);
 }

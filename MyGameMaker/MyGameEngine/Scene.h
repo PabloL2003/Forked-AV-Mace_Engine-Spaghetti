@@ -27,6 +27,8 @@ public:
 	void loadTextureByPath(const std::string& path);
 
 	GameObject* selectedGameObject = nullptr;
+
+	void CreateCube();
 };
 
 #endif // !__SCENE_H__

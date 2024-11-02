@@ -4,6 +4,7 @@
 #include "MyGUI.h"
 
 #include "MyGameEngine/Engine.h"
+#include "MyGameEngine/Scene.h"
 
 #include "PanelConsole.h"
 #include "PanelInspector.h"
@@ -158,8 +159,8 @@ bool PanelMenu::Draw()
                 if (ImGui::MenuItem("Plane", nullptr, nullptr, false)) {
                     // Action for "Undo" item
                 }
-                if (ImGui::MenuItem("Cube", nullptr, nullptr, false)) {
-                    // Action for "Undo" item
+                if (ImGui::MenuItem("Cube", nullptr, nullptr, true)) {
+					Engine::Instance().scene->CreateCube();
                 }
 				if (ImGui::MenuItem("Sphere", nullptr, nullptr, false)) {
 					// Action for "Undo" item

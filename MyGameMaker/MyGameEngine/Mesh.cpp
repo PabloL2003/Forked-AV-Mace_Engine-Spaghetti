@@ -122,16 +122,16 @@ void Mesh::drawModel() const
 	GLCall(glBindVertexArray(0));
 
 	//drawing normal lines----------------------------------
-	if (debugNormals)
+	if (model.get()->GetModelData().vertex_normals.size() > 0)
 	{
-		if (model.get()->GetModelData().vertex_normals.size() > 0)
+		if (debugNormals)
 		{
 			drawNormals();
 		}
-	}
 
-	if (debugFaceNormals) {
-		drawFaceNormals();
+		if (debugFaceNormals) {
+			drawFaceNormals();
+		}
 	}
 	//------------------------------------------------------
 	
