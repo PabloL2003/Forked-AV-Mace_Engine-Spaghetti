@@ -148,7 +148,7 @@ bool Input::PreUpdate()
 				if (filename.ends_with(".png") || filename.ends_with(".dds")) {
 					Engine::Instance().scene->loadTextureByPath(event.drop.file);
 				}
-				else if (filename.ends_with(".fbx")) {
+				else if (filename.ends_with(".fbx") || filename.ends_with(".FBX")) {
 					Engine::Instance().scene->loadGameObjectByPath(event.drop.file);
 				}
 				SDL_free(event.drop.file);

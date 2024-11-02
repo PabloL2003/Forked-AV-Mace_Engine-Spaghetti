@@ -214,7 +214,7 @@ bool PanelMenu::Draw()
 			}
             if (ImGui::MenuItem("Download latest version")) {
                 //link to release when uploaded
-                //system("start chrome.exe https://github.com/CITM-UPC/AV-Mace_Engine");
+                system("start chrome.exe https://github.com/CITM-UPC/AV-Mace_Engine/releases");
             }
             ImGui::Separator();
             if (ImGui::MenuItem("Report bug / Suggest Feature")) {

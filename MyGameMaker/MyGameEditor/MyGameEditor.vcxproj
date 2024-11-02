@@ -167,6 +167,9 @@
     <ClInclude Include="PanelInspector.h" />
     <ClInclude Include="PanelMenu.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Shaders\Basic.shader" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

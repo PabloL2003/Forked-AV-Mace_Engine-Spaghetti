@@ -14,7 +14,7 @@ enum class Shapes
 
 struct ModelData
 {
-	unsigned int vBPosID = -1, vBTCoordsID = -1, iBID = -1, vA = -1;
+	unsigned int vBPosID = -1, vBNormalsID = -1, vBColorsID = -1, vBTCoordsID = -1, iBID = -1, vA = -1;
 	std::vector<vec3> vertexData;
 	std::vector<unsigned int> indexData;
 	std::vector<vec2> vertex_texCoords;

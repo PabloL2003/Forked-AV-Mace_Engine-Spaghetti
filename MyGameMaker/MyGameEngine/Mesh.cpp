@@ -53,13 +53,28 @@ void Mesh::loadToOpenGL()
 	GLCall(glVertexAttribPointer(0, 3, GL_DOUBLE, GL_FALSE, sizeof(vec3), (const void*)0));
 
 	//buffer de coordenades de textura
-	GLCall(glGenBuffers(1, &model.get()->GetModelData().vBTCoordsID));
-	GLCall(glBindBuffer(GL_ARRAY_BUFFER, model.get()->GetModelData().vBTCoordsID));
-	GLCall(glBufferData(GL_ARRAY_BUFFER, model.get()->GetModelData().vertex_texCoords.size() * sizeof(vec2), model.get()->GetModelData().vertex_texCoords.data(), GL_STATIC_DRAW));
+	if (model.get()->GetModelData().vertex_texCoords.size() > 0)
+	{
+		GLCall(glGenBuffers(1, &model.get()->GetModelData().vBTCoordsID));
+		GLCall(glBindBuffer(GL_ARRAY_BUFFER, model.get()->GetModelData().vBTCoordsID));
+		GLCall(glBufferData(GL_ARRAY_BUFFER, model.get()->GetModelData().vertex_texCoords.size() * sizeof(vec2), model.get()->GetModelData().vertex_texCoords.data(), GL_STATIC_DRAW));
 
-	//tex coord layout
-	GLCall(glEnableVertexAttribArray(1));
-	GLCall(glVertexAttribPointer(1, 2, GL_DOUBLE, GL_FALSE, sizeof(vec2), (const void*)0));
+		//tex coord layout
+		GLCall(glEnableVertexAttribArray(1));
+		GLCall(glVertexAttribPointer(1, 2, GL_DOUBLE, GL_FALSE, sizeof(vec2), (const void*)0));
+	}
+
+	//buffer de normals
+	if (model.get()->GetModelData().vertex_normals.size() > 0)
+	{
+		GLCall(glGenBuffers(1, &model.get()->GetModelData().vBNormalsID));
+		GLCall(glBindBuffer(GL_ARRAY_BUFFER, model.get()->GetModelData().vBNormalsID));
+		GLCall(glBufferData(GL_ARRAY_BUFFER, model.get()->GetModelData().vertex_normals.size() * sizeof(vec3), model.get()->GetModelData().vertex_normals.data(), GL_STATIC_DRAW));
+
+		//normal layout
+		GLCall(glEnableVertexAttribArray(2));
+		GLCall(glVertexAttribPointer(2, 3, GL_DOUBLE, GL_FALSE, sizeof(vec3), (const void*)0));
+	}
 
 	//buffer de index
 	GLCall(glCreateBuffers(1, &model.get()->GetModelData().iBID));

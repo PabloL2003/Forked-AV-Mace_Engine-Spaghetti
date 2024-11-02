@@ -36,6 +36,8 @@ void ModelLoader::load(const std::string& filename, std::vector<std::shared_ptr<
 			models[i]->SetMeshName(mesh->mName.C_Str());
 
 			for (unsigned int j = 0; j < mesh->mNumVertices; j++) {
+
+				// Coordenadas de los vértices
 				aiVector3D vertex = mesh->mVertices[j];
 				vec3 aux = vec3(vertex.x, vertex.y, vertex.z);
 				modelsData[i]->vertexData.push_back(aux);
@@ -47,6 +49,19 @@ void ModelLoader::load(const std::string& filename, std::vector<std::shared_ptr<
 					aux.y = 1.0f - uv.y;
 				}
 				modelsData[i]->vertex_texCoords.push_back(aux);
+
+				if (mesh->HasNormals()) {  // Verifica si hay normales
+					aiVector3D normal = mesh->mNormals[j];
+					vec3 auxNormal(normal.x, normal.y, normal.z);
+					modelsData[i]->vertex_normals.push_back(auxNormal);
+				}
+
+				if (mesh->HasVertexColors(0)) {  // Verifica si hay colores
+					aiColor4D color = mesh->mColors[0][j];
+					vec3 auxColor(color.r, color.g, color.b);
+					modelsData[i]->vertex_colors.push_back(auxColor);
+				}
+
 			}
 
 			for (unsigned int j = 0; j < mesh->mNumFaces; j++) {
