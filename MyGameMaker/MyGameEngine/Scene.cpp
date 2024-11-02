@@ -138,6 +138,20 @@ void Scene::Update(double& dT)
 		}
 		_camera.fov = glm::radians(60 + fovModifier);
 	}
+
+	//camera focus
+	if (Engine::Instance().input->GetKey(SDL_SCANCODE_F) == KEY_DOWN) {
+		if (selectedGameObject != nullptr) {
+			_camera.transform().pos() = selectedGameObject->GetComponent<Transform>()->pos() + vec3(0, 3, 7);
+			_camera.transform().setFwd(glm::normalize(selectedGameObject->GetComponent<Transform>()->pos() - _camera.transform().pos()));
+			_camera.transform().setRigth(glm::normalize(glm::cross(vec3(0, 1, 0), _camera.transform().fwd())));
+			_camera.transform().setUp(glm::normalize(glm::cross(_camera.transform().fwd(), _camera.transform().right())));
+		}
+		else {
+			LOG(LogType::LOG_WARNING, "Select an Object!");
+		}
+	}
+
 }
 
 void Scene::PostUpdate()
