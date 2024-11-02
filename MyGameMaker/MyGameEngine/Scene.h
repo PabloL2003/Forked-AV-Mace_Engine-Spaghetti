@@ -29,6 +29,7 @@ public:
 	GameObject* selectedGameObject = nullptr;
 
 	void CreateCube();
+	void CreatePlane();
 };
 
 #endif // !__SCENE_H__

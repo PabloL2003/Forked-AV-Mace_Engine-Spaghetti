@@ -156,8 +156,8 @@ bool PanelMenu::Draw()
                 if (ImGui::MenuItem("Create Empty x10", nullptr, nullptr, false)) {
                     // Action for "Undo" item
                 }
-                if (ImGui::MenuItem("Plane", nullptr, nullptr, false)) {
-                    // Action for "Undo" item
+                if (ImGui::MenuItem("Plane", nullptr, nullptr, true)) {
+					Engine::Instance().scene->CreatePlane();
                 }
                 if (ImGui::MenuItem("Cube", nullptr, nullptr, true)) {
 					Engine::Instance().scene->CreateCube();

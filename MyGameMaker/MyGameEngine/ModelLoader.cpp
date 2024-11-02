@@ -130,6 +130,31 @@ void ModelLoader::load(Shapes shape, std::shared_ptr<Model>& model)
 	
 	case Shapes::PLANE:
 
+		model = std::make_shared<Model>();
+		model->SetMeshName("Pane");
+
+		modelData = std::make_shared<ModelData>();
+
+		modelData.get()->vertexData = {
+			vec3(-1,0,-1),
+			vec3(1,0,-1),
+			vec3(1,0,1),
+			vec3(-1,0,1)
+		};
+
+		modelData.get()->vertex_colors = {
+			vec3(0.8,0,0),
+			vec3(0.0,1,0),
+			vec3(0.0,0,1),
+			vec3(1,1,1)
+		};
+
+		modelData.get()->indexData = {
+			0, 1, 2, 0, 2, 3
+		};
+
+		model->SetModelData(*modelData);
+
 		break;
 	
 	default:
