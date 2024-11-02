@@ -142,6 +142,7 @@ void PanelInspector::DrawMeshControls(GameObject* gameObject)
         strncpy_s(buffer, gameObject->GetComponent<Mesh>()->getFilePath().c_str(), sizeof(buffer));
 		ImGui::InputText("##mesh_path", buffer, sizeof(buffer));
         ImGui::Text("Display Normals:");
+		showPerTriangleNormals = gameObject->GetComponent<Mesh>()->getDebugNormals();
         ImGui::Checkbox("Vertex Normals", &showPerTriangleNormals);
 		gameObject->GetComponent<Mesh>()->setDebugNormals(showPerTriangleNormals);
         ImGui::Checkbox("Face Normals", &showPerFaceNormals);

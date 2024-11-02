@@ -60,5 +60,6 @@ public:
 	void loadNormalsToOpenGL();
 	void drawNormals() const;
 	void setDebugNormals(bool& debugNormals) { this->debugNormals = debugNormals; }
+	bool getDebugNormals() { return debugNormals; }
 };
 
