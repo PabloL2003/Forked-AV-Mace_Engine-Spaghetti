@@ -37,9 +37,8 @@ public:
 	Engine(const Engine&) = delete;
 	Engine& operator=(const Engine&) = delete;
 
-	void SetFps(float* fps) { this->fps = fps; }
-
-	float* GetFps() { return fps; }
+	void SetFPS(float* fps) { this->fps = fps; }
+	float* GetFPS() { return fps; }
 
 public:
 

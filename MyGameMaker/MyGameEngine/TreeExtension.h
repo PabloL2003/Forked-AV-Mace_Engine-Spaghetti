@@ -22,7 +22,7 @@ public:
     auto children() const { return readOnlyListView<std::shared_ptr<T>>(_children); }  // Devuelve vista solo lectura de punteros compartidos
 
     auto& addChild(const std::shared_ptr<T>& child) {
-        child->setParent(static_cast<T*>(this));  // Asignar al padre
+        child->SetParent(static_cast<T*>(this));  // Asignar al padre
         _children.push_back(child);  // Agregar hijo como shared_ptr
         return child;
     }
@@ -30,7 +30,7 @@ public:
     template <typename ...Args>
     auto& emplaceChild(Args&&... args) {
         auto child = std::make_shared<T>(std::forward<Args>(args)...);  // Crear nuevo shared_ptr con argumentos
-        child->setParent(static_cast<T*>(this));  // Asignar al padre
+        child->SetParent(static_cast<T*>(this));  // Asignar al padre
         _children.push_back(child);  // Agregar a la lista
         return *child;
     }

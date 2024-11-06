@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
 	float fps = 0;
 	double dT = 0.0f;
 	PerfTimer timer;
-	engine.SetFps(&fps);
+	engine.SetFPS(&fps);
 
 	//game loop
 	while (engine.quit != true) {

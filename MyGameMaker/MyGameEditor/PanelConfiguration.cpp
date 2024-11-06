@@ -23,12 +23,12 @@ bool PanelConfiguration::Draw()
 
     if (ImGui::CollapsingHeader("FPS")){
         // 1. Gráfico de FPS
-        fpsHistory[historyIndex] = *Engine::Instance().GetFps();
+        fpsHistory[historyIndex] = *Engine::Instance().GetFPS();
         historyIndex = (historyIndex + 1) % fpsHistory.size();  // Mantener el índice circular
 
-        ImGui::Text("FPS Graph", *Engine::Instance().GetFps());
+        ImGui::Text("FPS Graph", *Engine::Instance().GetFPS());
         ImGui::PlotLines("", fpsHistory.data(), fpsHistory.size(), historyIndex, nullptr, 0.0f, 240, ImVec2(0, 40));
-        ImGui::Text("FPS: %.1f", *Engine::Instance().GetFps());
+        ImGui::Text("FPS: %.1f", *Engine::Instance().GetFPS());
     }
 
     if (ImGui::CollapsingHeader("Modules Configuration"))
