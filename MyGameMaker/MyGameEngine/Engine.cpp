@@ -13,7 +13,7 @@ void Engine::Awake()
 	renderer = new Renderer();
 	scene = new Scene("Scene");
 
-    LOG(LogType::LOG_CHANGEENV, "------------- Application Init -------------");
+    LOG(LogType::LOG_CHANGE_ENV, "------------- Application Init -------------");
     window->Awake();
     input->Awake();
 }

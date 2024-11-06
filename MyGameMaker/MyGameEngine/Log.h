@@ -9,7 +9,7 @@ enum class LogType
 {
 	LOG_INFO,
 	LOG_APPINFO,
-	LOG_CHANGEENV,
+	LOG_CHANGE_ENV,
 	LOG_WARNING
 };
 

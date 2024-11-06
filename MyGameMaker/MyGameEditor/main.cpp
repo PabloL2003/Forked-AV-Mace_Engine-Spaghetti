@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
 	engine.input->SetEventProcessor(&gui);
 
 	//Start Editor Application
-	LOG(LogType::LOG_CHANGEENV, "-------------- Application Start --------------");
+	LOG(LogType::LOG_CHANGE_ENV, "-------------- Application Start --------------");
 
 	//time
 	const int maxFPS = 240;

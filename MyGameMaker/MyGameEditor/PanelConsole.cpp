@@ -32,7 +32,7 @@ bool PanelConsole::Draw()
 		case LogType::LOG_APPINFO:
 			color = ImVec4(1, 0.5, 1, 1);
 			break;
-		case LogType::LOG_CHANGEENV:
+		case LogType::LOG_CHANGE_ENV:
 			color = ImVec4(0.5, 1, 1, 1);
 			break;
 		case LogType::LOG_WARNING:
