@@ -105,9 +105,16 @@ void PanelInspector::DrawTransformControls(GameObject* gameObject)
 		ImGui::SameLine();
         ImGui::SetNextItemWidth(210.0f);
         float pos[3] = { transform->pos().x, transform->pos().y, transform->pos().z };
-        if (ImGui::DragFloat3("##position", pos, 0.1f, -FLT_MAX, FLT_MAX, "%.2f"))
+        if (ImGui::DragFloat3("##position", pos, 0.1f, -FLT_MAX, FLT_MAX, "%.2f") | ImGuiInputTextFlags_CharsDecimal)
         {
-            transform->pos() = glm::vec3(pos[0], pos[1], pos[2]);
+            if (ImGui::IsItemActive()) {
+                Engine::Instance().input->ActivateTextInput();
+                transform->pos() = glm::vec3(pos[0], pos[1], pos[2]);
+            }
+            else if (ImGui::IsItemDeactivatedAfterEdit()) {
+                Engine::Instance().input->ActivateTextInput(false);
+                transform->pos() = glm::vec3(pos[0], pos[1], pos[2]);
+            }
         }
 
         // Rotation
