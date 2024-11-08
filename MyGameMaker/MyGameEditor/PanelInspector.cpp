@@ -58,14 +58,13 @@ void PanelInspector::DrawGameObjectControls(GameObject* gameObject)
     ImGui::Text("Tag");
     ImGui::SameLine();
     ImGui::SetNextItemWidth(100.0f);
-    if (ImGui::BeginCombo("##tag", currentTagg().c_str()))
+    if (ImGui::BeginCombo("##tag", gameObject->tag().c_str()))
     {
         for (const auto& option : options)
         {
-            if (ImGui::Selectable(option.c_str(), currentTagg() == option))
+            if (ImGui::Selectable(option.c_str(), gameObject->tag() == option))
             {
-				setTag(option);
-                //gameObject->tag() = option;
+                gameObject->tag() = option;
             }
         }
         ImGui::EndCombo();
@@ -88,6 +87,7 @@ void PanelInspector::DrawGameObjectControls(GameObject* gameObject)
         }
         ImGui::EndCombo();
     }
+	ImGui::Separator();
 }
 
 void PanelInspector::DrawTransformControls(GameObject* gameObject)
@@ -96,14 +96,14 @@ void PanelInspector::DrawTransformControls(GameObject* gameObject)
     {
         auto* transform = gameObject->GetComponent<Transform>();
 
-		ImGui::Checkbox("Active", &gameObject->GetComponent<Transform>()->isActive());
+		ImGui::Checkbox("Active", &transform->isActive());
 		ImGui::SameLine();
-        ImGui::Text("   X         Y        Z");
+        ImGui::Text("      X         Y         Z");
 
         // Position
         ImGui::Text("Position   ");
 		ImGui::SameLine();
-        ImGui::SetNextItemWidth(200.0f);
+        ImGui::SetNextItemWidth(210.0f);
         float pos[3] = { transform->pos().x, transform->pos().y, transform->pos().z };
         if (ImGui::DragFloat3("##position", pos, 0.1f, -FLT_MAX, FLT_MAX, "%.2f"))
         {
@@ -113,22 +113,22 @@ void PanelInspector::DrawTransformControls(GameObject* gameObject)
         // Rotation
         ImGui::Text("Rotation   ");
         ImGui::SameLine();
-        ImGui::SetNextItemWidth(200.0f);
+        ImGui::SetNextItemWidth(210.0f);
         glm::vec3 eulerAngles = glm::degrees(glm::eulerAngles(transform->rot()));
         if (ImGui::DragFloat3("##rotation", &eulerAngles.x, 0.1f, -360.0f, 360.0f, "%.2f"))
         {
             transform->rotate(glm::radians(eulerAngles));
         }
         
-        //DrawVector3Input("Scale", scale);
 		ImGui::Text("Scale      ");
         ImGui::SameLine();
-		ImGui::SetNextItemWidth(200.0f);
-		float scale[3] = { 1.0f, 1.0f, 1.0f };
+		ImGui::SetNextItemWidth(210.0f);
+		float scale[3] = { transform->scale().x, transform->scale().y, transform->scale().z };
         if (ImGui::DragFloat3("##scale", scale, 0.1f, -FLT_MAX, FLT_MAX, "%.2f"))
         {
             transform->scale() = glm::vec3(scale[0], scale[1], scale[2]);
         }
+		ImGui::Separator();
     }
 }
 
@@ -136,23 +136,25 @@ void PanelInspector::DrawMeshControls(GameObject* gameObject)
 {
     if (ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_DefaultOpen))
     {
-        ImGui::Checkbox("Active", &gameObject->GetComponent<Mesh>()->isActive());
+		auto* mesh = gameObject->GetComponent<Mesh>();
+
+        ImGui::Checkbox("Active", &mesh->isActive());
 		ImGui::SameLine();
 		ImGui::Text("File:");
 		ImGui::SameLine();
         ImGui::SetNextItemWidth(150.0f);
         char buffer[128] = {};
-        strncpy_s(buffer, gameObject->GetComponent<Mesh>()->getFilePath().c_str(), sizeof(buffer));
-		ImGui::InputText("##mesh_path", buffer, sizeof(buffer));
+        strncpy_s(buffer, mesh->getFilePath().c_str(), sizeof(buffer));
+        ImGui::InputText("##mesh_path", buffer, sizeof(buffer));
 
         ImGui::Text("Display Normals:");
-		showPerTriangleNormals = gameObject->GetComponent<Mesh>()->getDebugNormals();
+        showPerTriangleNormals = mesh->getDebugNormals();
         ImGui::Checkbox("Vertex Normals", &showPerTriangleNormals);
-		gameObject->GetComponent<Mesh>()->setDebugNormals(showPerTriangleNormals);
+        mesh->setDebugNormals(showPerTriangleNormals);
 
-		showPerFaceNormals = gameObject->GetComponent<Mesh>()->getDebugFaceNormals();
+        showPerFaceNormals = gameObject->GetComponent<Mesh>()->getDebugFaceNormals();
         ImGui::Checkbox("Face Normals", &showPerFaceNormals);
-		gameObject->GetComponent<Mesh>()->setDebugFaceNormals(showPerFaceNormals);
+        mesh->setDebugFaceNormals(showPerFaceNormals);
         ImGui::Separator();
     }
 }

@@ -229,15 +229,16 @@ void Scene::CleanUp()
 	}*/
 }
 
-void Scene::OnSceneChange()
-{
-}
+void Scene::OnSceneChange() {}
 
 void Scene::Draw()
 {
 	for (auto& child : children())
 	{
-		child->GetComponent<Mesh>()->drawModel();
+		if (child.get()->isActive())
+		{
+			if (child->GetComponent<Mesh>()->isActive()) child->GetComponent<Mesh>()->drawModel();
+		}
 	}
 }
 

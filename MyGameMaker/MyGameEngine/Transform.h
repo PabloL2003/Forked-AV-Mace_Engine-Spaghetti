@@ -15,8 +15,8 @@ class Transform : public Component
 		};
 	};
 
-	glm::quat _rot;
-	glm::vec3 _scale;
+	glm::quat _rot = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
+	glm::vec3 _scale = glm::vec3(1.0f, 1.0f, 1.0f);    
 
 public:
 	const mat4 mat() const { return _mat; }
@@ -49,6 +49,7 @@ public:
 
 	Transform() = default;
 	Transform(const mat4& mat);
+	Transform(bool active, GameObject* owner, const mat4& mat) : _mat(mat), Component(active, owner) {}
 	Transform operator*(const mat4& other) { return Transform(_mat * other); }
 	Transform operator*(const Transform& other) { return Transform(_mat * other._mat); }
 };

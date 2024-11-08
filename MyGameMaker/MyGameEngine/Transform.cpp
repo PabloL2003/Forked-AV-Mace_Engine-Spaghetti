@@ -3,8 +3,10 @@
 #include <glm/gtc/quaternion.hpp>
 
 
-Transform::Transform(const mat4& mat) {
-	_mat = glm::mat4_cast(_rot);
+Transform::Transform(const mat4& mat) : _mat(mat)
+{
+	_rot = glm::quat_cast(_mat);
+	_scale = glm::vec3(glm::length(_mat[0]), glm::length(_mat[1]), glm::length(_mat[2]));
 }
 
 void Transform::translate(const vec3& v) {

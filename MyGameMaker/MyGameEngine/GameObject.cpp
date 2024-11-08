@@ -15,7 +15,7 @@ Component* GameObject::CreateComponent(ComponentType type, GameObject* owner)
 	switch (type)
 	{
 	case ComponentType::Transform:
-		component = new Transform(mat4(1.0f));
+		component = new Transform(true, owner, mat4(1.0f));
 		_components.push_back(component);
 		break;
 

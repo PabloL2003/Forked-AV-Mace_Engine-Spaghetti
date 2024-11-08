@@ -15,8 +15,6 @@ public:
 	PanelInspector(PanelType type, std::string name);
 	~PanelInspector();
 
-	std::string currentTagg() const { return _currentTagg; }
-	void setTag(const std::string& tag) { _currentTagg = tag; }
 	std::string currentLayer() const { return _currentLayer; }
 	void setLayer(const std::string& layer) { _currentLayer = layer; }
 
@@ -27,11 +25,10 @@ public:
 	void DrawMaterialControls(GameObject* gameObject);
 
 private:
-	// Tag
-	std::string _currentTagg = "Untagged";
+	// Tag Options
 	std::vector<std::string> options = { "Untagged", "Player", "Other" };
 
-	// Layer
+	// Layer Options
 	std::string _currentLayer = "Default";
 	std::vector<std::string> layers = { "Default", "TransparentFX", "Ignore Raycast", "Water", "UI", "PostProcessing" };
 
