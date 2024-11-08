@@ -86,8 +86,10 @@ bool Input::PreUpdate()
 
 	while(SDL_PollEvent(&event) != 0)
 	{
-
-		if (event_processor) event_processor->processEvent(event);
+		SDL_KeyboardEvent& key_event = event.key;
+		if (event_processor) {
+			event_processor->processEvent(event);
+		}
 
 		switch(event.type)
 		{
@@ -154,6 +156,7 @@ bool Input::PreUpdate()
 				SDL_free(event.drop.file);
 				break;
 		}
+
 	}
 
 	return true;

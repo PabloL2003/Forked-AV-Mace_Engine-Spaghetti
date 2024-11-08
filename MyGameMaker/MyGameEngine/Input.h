@@ -84,6 +84,13 @@ public:
 		scrolling = mouseWheelScrolling;
 	}
 
+	void ActivateTextInput(bool activate = true) {
+		if (activate)
+			SDL_StartTextInput();
+		else
+			SDL_StopTextInput();
+	}
+
 private:
 	bool windowEvents[WE_COUNT];
 	KeyState*	keyboard;
