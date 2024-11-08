@@ -45,9 +45,10 @@ public:
 
 	void translate(const vec3& v);
 	void rotate(const vec3& eulerAngles);
+	void rotate(double rads, const vec3& v);
 
 	Transform() = default;
-	Transform(const mat4& mat) : _mat(mat) {}
+	Transform(const mat4& mat);
 	Transform operator*(const mat4& other) { return Transform(_mat * other); }
 	Transform operator*(const Transform& other) { return Transform(_mat * other._mat); }
 };

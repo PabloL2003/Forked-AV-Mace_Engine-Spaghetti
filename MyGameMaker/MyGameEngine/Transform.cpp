@@ -16,3 +16,8 @@ void Transform::rotate(const vec3& eulerAngles)
 	_rot = glm::quat(eulerAngles);
 	_mat = glm::mat4_cast(_rot);
 }
+
+void Transform::rotate(double rads, const vec3& v) 
+{
+	_mat = glm::rotate(_mat, rads, v);
+}

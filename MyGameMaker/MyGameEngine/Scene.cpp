@@ -34,8 +34,9 @@ bool isZooming = false;
 void Scene::Start()
 {
 	// Init camera
-	_camera.transform().pos() = vec3(0, 1, 4);
-	_camera.transform().rotate(glm::vec3(180.0f, 0.0f, 0.0f));
+	_camera.transform().pos() = vec3(0, 3, 8);
+	_camera.transform().rotate(glm::radians(180.0), vec3(0, 1, 0));
+	_camera.transform().rotate(glm::radians(20.0), vec3(1, 0, 0));
 
 	ModelLoader modelLoader;
 	std::vector<std::shared_ptr<Model>> models;
@@ -147,7 +148,7 @@ void Scene::Update(double& dT)
 	//camera focus
 	if (Engine::Instance().input->GetKey(SDL_SCANCODE_F) == KEY_DOWN) {
 		if (selectedGameObject != nullptr) {
-			_camera.transform().pos() = selectedGameObject->GetComponent<Transform>()->pos() + vec3(0, 3, 7);
+			_camera.transform().pos() = selectedGameObject->GetComponent<Transform>()->pos() + vec3(0, 3, 8);
 			_camera.transform().setFwd(glm::normalize(selectedGameObject->GetComponent<Transform>()->pos() - _camera.transform().pos()));
 			_camera.transform().setRigth(glm::normalize(glm::cross(vec3(0, 1, 0), _camera.transform().fwd())));
 			_camera.transform().setUp(glm::normalize(glm::cross(_camera.transform().fwd(), _camera.transform().right())));
