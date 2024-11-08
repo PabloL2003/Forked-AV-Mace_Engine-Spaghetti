@@ -43,9 +43,10 @@ public:
 
 	const auto* data() const { return &_mat[0][0]; }
 
-	void translate(const vec3& v);
+	void translate(const vec3& v) { _mat = glm::translate(_mat, v); }
 	void rotate(const vec3& eulerAngles);
-	void rotate(double rads, const vec3& v);
+	void rotate(double rads, const vec3& v) { _mat = glm::rotate(_mat, rads, v); }
+	void scale(const vec3& s) { _mat = glm::scale(_mat, s); }
 
 	Transform() = default;
 	Transform(const mat4& mat);

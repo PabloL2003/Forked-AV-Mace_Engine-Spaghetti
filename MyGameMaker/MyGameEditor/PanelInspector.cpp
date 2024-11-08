@@ -113,7 +113,6 @@ void PanelInspector::DrawTransformControls(GameObject* gameObject)
             }
             else if (ImGui::IsItemDeactivatedAfterEdit()) {
                 Engine::Instance().input->ActivateTextInput(false);
-                transform->pos() = glm::vec3(pos[0], pos[1], pos[2]);
             }
         }
 
@@ -124,7 +123,13 @@ void PanelInspector::DrawTransformControls(GameObject* gameObject)
         glm::vec3 eulerAngles = glm::degrees(glm::eulerAngles(transform->rot()));
         if (ImGui::DragFloat3("##rotation", &eulerAngles.x, 0.1f, -360.0f, 360.0f, "%.2f"))
         {
-            transform->rotate(glm::radians(eulerAngles));
+            if (ImGui::IsItemActive()) {
+                Engine::Instance().input->ActivateTextInput();
+                transform->rotate(glm::radians(eulerAngles));
+            }
+            else if (ImGui::IsItemDeactivatedAfterEdit()) {
+                Engine::Instance().input->ActivateTextInput(false);
+            }
         }
         
 		ImGui::Text("Scale      ");
@@ -145,9 +150,9 @@ void PanelInspector::DrawMeshControls(GameObject* gameObject)
     {
 		auto* mesh = gameObject->GetComponent<Mesh>();
 
-        ImGui::Checkbox("Active", &mesh->isActive());
+        ImGui::Checkbox("Active", &gameObject->GetComponent<Mesh>()->isActive());
 		ImGui::SameLine();
-		ImGui::Text("File:");
+		ImGui::Text("   File:");
 		ImGui::SameLine();
         ImGui::SetNextItemWidth(150.0f);
         char buffer[128] = {};
