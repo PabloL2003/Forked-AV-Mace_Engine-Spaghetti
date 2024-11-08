@@ -15,7 +15,7 @@ class Transform : public Component
 		};
 	};
 
-	//glm::quat _rot;
+	glm::quat _rot;
 	glm::vec3 _scale;
 
 public:
@@ -30,11 +30,10 @@ public:
 	const vec3& pos() const { return _pos; }
 
 	//Rotation
-	glm::quat rot() const {	return glm::quat_cast(_mat); }
-	vec3 eulerAngles() const { return glm::eulerAngles(rot()); }
+	glm::quat rot() const { return _rot; }
+	vec3 eulerAngles() const { return glm::eulerAngles(_rot); }
 
 	//Scale
-	//vec3 scale() const { return vec3(glm::length(_left), glm::length(_up), glm::length(_fwd)); }
 	const glm::vec3& scale() const { return _scale; }
 	glm::vec3& scale() { return _scale; }
 
@@ -45,7 +44,6 @@ public:
 	const auto* data() const { return &_mat[0][0]; }
 
 	void translate(const vec3& v);
-	void rotate(double rads, const vec3& v);
 	void rotate(const vec3& eulerAngles);
 
 	Transform() = default;

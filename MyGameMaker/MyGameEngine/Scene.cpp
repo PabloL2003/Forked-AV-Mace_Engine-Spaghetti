@@ -35,7 +35,7 @@ void Scene::Start()
 {
 	// Init camera
 	_camera.transform().pos() = vec3(0, 1, 4);
-	_camera.transform().rotate(glm::radians(180.0), vec3(0, 1, 0));
+	_camera.transform().rotate(glm::vec3(180.0f, 0.0f, 0.0f));
 
 	ModelLoader modelLoader;
 	std::vector<std::shared_ptr<Model>> models;

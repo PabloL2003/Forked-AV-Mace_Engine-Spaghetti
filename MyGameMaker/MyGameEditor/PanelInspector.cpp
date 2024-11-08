@@ -117,15 +117,18 @@ void PanelInspector::DrawTransformControls(GameObject* gameObject)
         glm::vec3 eulerAngles = glm::degrees(glm::eulerAngles(transform->rot()));
         if (ImGui::DragFloat3("##rotation", &eulerAngles.x, 0.1f, -360.0f, 360.0f, "%.2f"))
         {
-            transform->rot() = glm::quat(glm::radians(eulerAngles));
+            transform->rotate(glm::radians(eulerAngles));
         }
-
+        
         //DrawVector3Input("Scale", scale);
 		ImGui::Text("Scale      ");
         ImGui::SameLine();
 		ImGui::SetNextItemWidth(200.0f);
 		float scale[3] = { 1.0f, 1.0f, 1.0f };
-        if (ImGui::DragFloat3("##scale", scale, 0.1f, -FLT_MAX, FLT_MAX, "%.2f"));
+        if (ImGui::DragFloat3("##scale", scale, 0.1f, -FLT_MAX, FLT_MAX, "%.2f"))
+        {
+            transform->scale() = glm::vec3(scale[0], scale[1], scale[2]);
+        }
     }
 }
 
