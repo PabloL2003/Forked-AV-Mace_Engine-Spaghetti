@@ -9,43 +9,6 @@ GameObject::GameObject(const std::string& name, const std::string& tag, bool act
 	_components.push_back(new Transform(mat4(1.0f)));
 }
 
-Component* GameObject::CreateComponent(ComponentType type, GameObject* owner)
-{
-	Component* component = nullptr;
-	switch (type)
-	{
-	case ComponentType::Transform:
-		component = new Transform(true, owner, mat4(1.0f));
-		_components.push_back(component);
-		break;
-
-	case ComponentType::Mesh:
-		component = new Mesh(true, owner);
-		_components.push_back(component);
-		break;
-
-	case ComponentType::Camera:
-		break;
-
-	case ComponentType::Material:
-		component = new Material(true, owner);
-		_components.push_back(component);
-		break;
-
-	case ComponentType::Invalid:
-		break;
-
-	default:
-		break;
-	}
-
-	if (component)
-	{
-		_components.push_back(component);
-	}
-	return component;
-}
-
 bool GameObject::operator==(const GameObject& other) const
 {
 	// Compare name, tag, and active state

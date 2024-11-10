@@ -8,7 +8,6 @@
 #include "Component.h"
 
 class Component;
-enum class ComponentType;
 
 class GameObject : public TreeExtension<GameObject>
 {
@@ -26,23 +25,28 @@ public:
 	auto& name() { return _name; }
 	auto& tag() { return _tag; }
 	auto& parent() { return _parent; }
+	void SetParent(GameObject* parent) { _parent = parent; }
 	
 	auto& isActive() { return _active; }
 	virtual bool SetActive(bool active) { return this->_active = active; }
 	virtual bool SwitchState() { return _active = !_active; }
 
-	Component* CreateComponent(ComponentType type, GameObject* owner);
-
-	void SetParent(GameObject* parent) { _parent = parent; }
+	template <typename T>
+	T* CreateComponent() {
+		static_assert(std::is_base_of<Component, T>::value, "ERROR: T must inherit from Component");
+		T* newComponent = new T(true, this);
+		if (newComponent) _components.push_back(dynamic_cast<Component*>(newComponent));
+		return newComponent;
+	}
 
 	template <typename T>
 	T* GetComponent() const {
 		for (Component* component : _components) {
 			if (T* specificComponent = dynamic_cast<T*>(component)) {
-				return specificComponent; // Devuelve el componente del tipo específico
+				return specificComponent;
 			}
 		}
-		return nullptr; // Si no se encuentra el componente del tipo específico
+		return nullptr;
 	}
 
 	bool operator==(const GameObject& other) const;

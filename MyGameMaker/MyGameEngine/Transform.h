@@ -50,7 +50,7 @@ public:
 
 	Transform() = default;
 	Transform(const mat4& mat);
-	Transform(bool active, GameObject* owner, const mat4& mat) : _mat(mat), Component(active, owner) {}
+	Transform(bool active, GameObject* owner) : _mat(1.0f), Component(active, owner) {}
 	Transform operator*(const mat4& other) { return Transform(_mat * other); }
 	Transform operator*(const Transform& other) { return Transform(_mat * other._mat); }
 };

@@ -44,12 +44,12 @@ void Scene::Start()
 	for (size_t i = 0; i < models.size(); i++)
 	{
 		std::shared_ptr<GameObject> go = std::make_shared<GameObject>(models[i].get()->GetMeshName());
-		go->CreateComponent(ComponentType::Transform, go.get());
+		go->CreateComponent<Transform>();
 		go->GetComponent<Transform>()->pos() = vec3(0, 0, 0);
-		go->CreateComponent(ComponentType::Mesh, go.get());
+		go->CreateComponent<Mesh>();
 		go->GetComponent<Mesh>()->setModel(models[i]);
 		go->GetComponent<Mesh>()->setFilePath("Assets/FBX/BakerHouse.fbx");
-		go->CreateComponent(ComponentType::Material, go.get());
+		go->CreateComponent<Material>();
 		std::string path = "Assets/Textures/Baker_house.png";
 		go->GetComponent<Material>()->m_Texture = std::make_unique<Texture>(path);
 		go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
@@ -250,13 +250,13 @@ void Scene::loadGameObjectByPath(const std::string& path)
 	for (size_t i = 0; i < models.size(); i++)
 	{
 		std::shared_ptr<GameObject> go = std::make_shared<GameObject>(models[i].get()->GetMeshName());
-		go->CreateComponent(ComponentType::Transform, go.get());
+		go->CreateComponent<Transform>();
 		go->GetComponent<Transform>()->pos() = vec3(5, 0, 0);
-		go->CreateComponent(ComponentType::Mesh, go.get());
+		go->CreateComponent<Mesh>();
 		go->GetComponent<Mesh>()->setModel(models[i]);
 		go->GetComponent<Mesh>()->setFilePath(path);
 		go->GetComponent<Mesh>()->loadToOpenGL();
-		go->CreateComponent(ComponentType::Material, go.get());
+		go->CreateComponent<Material>();
 		go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
 		addChild(go);
 	}
@@ -278,12 +278,12 @@ void Scene::CreateCube()
 	std::shared_ptr<Model> model;
 	modelLoader.load(Shapes::CUBE, model);
 	std::shared_ptr<GameObject> go = std::make_shared<GameObject>(model.get()->GetMeshName());
-	go->CreateComponent(ComponentType::Transform, go.get());
+	go->CreateComponent<Transform>();
 	go->GetComponent<Transform>()->pos() = vec3(10, 0, 0);
-	go->CreateComponent(ComponentType::Mesh, go.get());
+	go->CreateComponent<Mesh>();
 	go->GetComponent<Mesh>()->setModel(model);
 	go->GetComponent<Mesh>()->loadToOpenGL();
-	go->CreateComponent(ComponentType::Material, go.get());
+	go->CreateComponent<Material>();
 	go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
 	addChild(go);
 }
@@ -293,12 +293,12 @@ void Scene::CreatePlane() {
 	std::shared_ptr<Model> model;
 	modelLoader.load(Shapes::PLANE, model);
 	std::shared_ptr<GameObject> go = std::make_shared<GameObject>(model.get()->GetMeshName());
-	go->CreateComponent(ComponentType::Transform, go.get());
+	go->CreateComponent<Transform>();
 	go->GetComponent<Transform>()->pos() = vec3(-5, 0, 0);
-	go->CreateComponent(ComponentType::Mesh, go.get());
+	go->CreateComponent<Mesh>();
 	go->GetComponent<Mesh>()->setModel(model);
 	go->GetComponent<Mesh>()->loadToOpenGL();
-	go->CreateComponent(ComponentType::Material, go.get());
+	go->CreateComponent<Material>();
 	go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
 	addChild(go);
 }
