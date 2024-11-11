@@ -35,6 +35,8 @@ private:
 	bool showPerTriangleNormals = false;
 	bool showPerFaceNormals = false;
 	bool showCheckers = false;
+	bool showWireframe = false;
+	bool uniformScale = false;
 };
 
 #endif // !__PANEL_INSPECTOR_H__

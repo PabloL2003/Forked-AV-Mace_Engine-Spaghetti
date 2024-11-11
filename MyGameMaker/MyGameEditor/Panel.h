@@ -45,6 +45,22 @@ protected:
 	bool enabled = false;
 	int width, height;
 	bool showWindow = true;
+
+	//ImVec4 red(1.0f, 0.0f, 0.0f, 1.0f); 
+	//ImVec4 green(0.0f, 1.0f, 0.0f, 1.0f);
+	//ImVec4 blue(0.0f, 0.0f, 1.0f, 1.0f); 
+	//ImVec4 white(1.0f, 1.0f, 1.0f, 1.0f);
+	//ImVec4 black(0.0f, 0.0f, 0.0f, 1.0f);
+	//ImVec4 yellow(1.0f, 1.0f, 0.0f, 1.0f);
+	//ImVec4 cyan(0.0f, 1.0f, 1.0f, 1.0f); 
+	//ImVec4 magenta(1.0f, 0.0f, 1.0f, 1.0f);
+	//ImVec4 gray(0.5f, 0.5f, 0.5f, 1.0f);
+	//ImVec4 darkGray(0.2f, 0.2f, 0.2f, 1.0f); 
+	//ImVec4 lightGray(0.8f, 0.8f, 0.8f, 1.0f);
+	//ImVec4 orange(1.0f, 0.5f, 0.0f, 1.0f);
+	//ImVec4 purple(0.5f, 0.0f, 0.5f, 1.0f);
+	//ImVec4 brown(0.5f, 0.25f, 0.0f, 1.0f);
+	//ImVec4 clear(0.0f, 0.0f, 0.0f, 0.0f); 
 };
 
 #endif // !__PANEL_H__

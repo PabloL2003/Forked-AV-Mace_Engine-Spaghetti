@@ -27,9 +27,9 @@ bool PanelInspector::Draw()
         ImGui::Begin("Inspector", &showWindow, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
 
         DrawGameObjectControls(selectedGameObject);
-        DrawTransformControls(selectedGameObject);
-        DrawMeshControls(selectedGameObject);
-        DrawMaterialControls(selectedGameObject);
+        if (selectedGameObject->GetComponent<Transform>()) DrawTransformControls(selectedGameObject);
+        if (selectedGameObject->GetComponent<Mesh>()) DrawMeshControls(selectedGameObject);
+        if (selectedGameObject->GetComponent<Material>()) DrawMaterialControls(selectedGameObject);
 
         ImGui::End();
     }
@@ -143,13 +143,22 @@ void PanelInspector::DrawTransformControls(GameObject* gameObject)
             }
         }
         
-		ImGui::Text("Scale      ");
+		ImGui::Text("Scale  ");
+        ImGui::SameLine();
+		ImGui::Checkbox("##uniform_scale", &uniformScale);
         ImGui::SameLine();
 		ImGui::SetNextItemWidth(210.0f);
 		float scale[3] = { transform->scale().x, transform->scale().y, transform->scale().z };
-        if (ImGui::DragFloat3("##scale", scale, 0.1f, -FLT_MAX, FLT_MAX, "%.2f"))
+        if (ImGui::DragFloat3("##scale", scale, 0.1f, -FLT_MAX, FLT_MAX, "%.2f") | ImGuiInputTextFlags_CharsDecimal)
         {
-            transform->scale() = glm::vec3(scale[0], scale[1], scale[2]);
+            if (ImGui::IsItemActive()) {
+                Engine::Instance().input->ActivateTextInput();
+                if (uniformScale) transform->scale(vec3(scale[0]));
+                else transform->scale(glm::vec3(scale[0], scale[1], scale[2]));
+            }
+            else if (ImGui::IsItemDeactivatedAfterEdit()) {
+                Engine::Instance().input->ActivateTextInput(false);
+            }
         }
 		ImGui::Separator();
     }
@@ -161,9 +170,7 @@ void PanelInspector::DrawMeshControls(GameObject* gameObject)
     {
 		auto* mesh = gameObject->GetComponent<Mesh>();
 
-        if (ImGui::Checkbox("Active", &mesh->isActive())) {
-            mesh->SwitchState();
-        }
+        ImGui::Checkbox("Active", &mesh->isActive());
 		ImGui::SameLine();
 		ImGui::Text("   File:");
 		ImGui::SameLine();
@@ -188,13 +195,27 @@ void PanelInspector::DrawMaterialControls(GameObject* gameObject)
 {
     if (ImGui::CollapsingHeader("Material", ImGuiTreeNodeFlags_DefaultOpen))
     {
-        if (ImGui::Checkbox("Active", &gameObject->GetComponent<Material>()->isActive()))
-        {
-			gameObject->GetComponent<Material>()->SwitchState();
-		}
+		auto* material = gameObject->GetComponent<Material>();
+
+        ImGui::Checkbox("Active", &material->isActive());
         ImGui::Text(" ");
         ImGui::Text("Main Maps");
-        ImGui::Text("Texture Path: Assets/Textures/texture.png");
+        ImVec4 magenta(1.0f, 0.0f, 1.0f, 1.0f); // Magenta
+
+        if (material->m_Texture) {
+            ImGui::Text("Texture:");
+            ImGui::SameLine();
+            ImGui::SetNextItemWidth(200.0f);
+            ImGui::TextColored(magenta, material->m_Texture->GetFilePath().c_str());
+        }
+		
+        if (material->m_Shader) {
+            ImGui::Text("Shader:");
+            ImGui::SameLine();
+            ImGui::SetNextItemWidth(200.0f);
+            ImGui::TextColored(magenta, material->m_Shader->GetFilePath().c_str());
+        }
+       
         ImGui::Checkbox("Albedo", &showCheckers);
         ImGui::Checkbox("Show Checkers", &showCheckers);
         ImGui::Separator();
