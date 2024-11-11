@@ -8,6 +8,8 @@
 #include "MyGameEngine/Mesh.h"
 #include "MyGameEngine/Material.h"
 
+#include "MyGameEngine/Log.h"
+
 PanelInspector::PanelInspector(PanelType type, std::string name) : Panel(type, name, WINDOW_WIDTH * 0.25, WINDOW_HEIGHT - 200)
 {
 	SwitchState();
@@ -44,12 +46,18 @@ void PanelInspector::DrawGameObjectControls(GameObject* gameObject)
     ImGui::SameLine();
 
     // Name input
-    ImGui::SetNextItemWidth(100.0f);
+    ImGui::SetNextItemWidth(160.0f);
     char buffer[128] = {};
     strncpy_s(buffer, gameObject->name().c_str(), sizeof(buffer));
-    if (ImGui::InputText("##gameobject_name", buffer, sizeof(buffer)))
+	if (ImGui::InputText("##gameobject_name", buffer, sizeof(buffer), ImGuiInputTextFlags_None))
     {
-        gameObject->name() = buffer;
+        if (ImGui::IsItemActive()) {
+            Engine::Instance().input->ActivateTextInput();
+            gameObject->name() = buffer;
+        }
+		else if (ImGui::IsItemDeactivatedAfterEdit()) {
+			Engine::Instance().input->ActivateTextInput(false);
+		}
     }
     ImGui::SameLine();
     ImGui::Checkbox("Static", &gameObject->isActive());
@@ -96,7 +104,10 @@ void PanelInspector::DrawTransformControls(GameObject* gameObject)
     {
         auto* transform = gameObject->GetComponent<Transform>();
 
-		ImGui::Checkbox("Active", &transform->isActive());
+        if (ImGui::Checkbox("Active", &transform->isActive())) {
+            LOG(LogType::LOG_WARNING, "Transform Active checkbox was clicked!");
+            transform->SwitchState();
+        }
 		ImGui::SameLine();
         ImGui::Text("      X         Y         Z");
 
@@ -121,7 +132,7 @@ void PanelInspector::DrawTransformControls(GameObject* gameObject)
         ImGui::SameLine();
         ImGui::SetNextItemWidth(210.0f);
         glm::vec3 eulerAngles = glm::degrees(glm::eulerAngles(transform->rot()));
-        if (ImGui::DragFloat3("##rotation", &eulerAngles.x, 0.1f, -360.0f, 360.0f, "%.2f"))
+        if (ImGui::DragFloat3("##rotation", &eulerAngles.x, 0.1f, -360.0f, 360.0f, "%.2f") | ImGuiInputTextFlags_CharsDecimal)
         {
             if (ImGui::IsItemActive()) {
                 Engine::Instance().input->ActivateTextInput();
@@ -150,7 +161,9 @@ void PanelInspector::DrawMeshControls(GameObject* gameObject)
     {
 		auto* mesh = gameObject->GetComponent<Mesh>();
 
-        ImGui::Checkbox("Active", &gameObject->GetComponent<Mesh>()->isActive());
+        if (ImGui::Checkbox("Active", &mesh->isActive())) {
+            mesh->SwitchState();
+        }
 		ImGui::SameLine();
 		ImGui::Text("   File:");
 		ImGui::SameLine();
@@ -175,7 +188,10 @@ void PanelInspector::DrawMaterialControls(GameObject* gameObject)
 {
     if (ImGui::CollapsingHeader("Material", ImGuiTreeNodeFlags_DefaultOpen))
     {
-        ImGui::Checkbox("Active", &gameObject->GetComponent<Material>()->isActive());
+        if (ImGui::Checkbox("Active", &gameObject->GetComponent<Material>()->isActive()))
+        {
+			gameObject->GetComponent<Material>()->SwitchState();
+		}
         ImGui::Text(" ");
         ImGui::Text("Main Maps");
         ImGui::Text("Texture Path: Assets/Textures/texture.png");

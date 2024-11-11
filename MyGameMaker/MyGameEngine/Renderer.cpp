@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include "Engine.h"
+#include <imgui.h>
 
 using namespace std;
 
@@ -42,6 +43,7 @@ void Renderer::Start() const
     LOG(LogType::LOG_APPINFO, "Renderer: %s", (char*)glGetString(GL_RENDERER));
     LOG(LogType::LOG_APPINFO, "OpenGL version supported: %s", (char*)glGetString(GL_VERSION));
     LOG(LogType::LOG_APPINFO, "GLSL version: %s", (char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
+	LOG(LogType::LOG_APPINFO, "ImGui version: %s", ImGui::GetVersion());
 }
 
 //void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const {

@@ -28,7 +28,6 @@ bool PanelConsole::Draw()
 		case LogType::LOG_INFO:
 			color = ImVec4(1, 1, 1, 1);
 			break;
-
 		case LogType::LOG_APPINFO:
 			color = ImVec4(1, 0.5, 1, 1);
 			break;

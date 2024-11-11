@@ -48,6 +48,9 @@ public:
 	void rotate(double rads, const vec3& v) { _mat = glm::rotate(_mat, rads, v); }
 	void scale(const vec3& s) { _mat = glm::scale(_mat, s); }
 
+    void SwitchState() override { SetActive(!isActive()); }
+	bool SetActive(bool active) override { return Component::SetActive(active); }
+
 	Transform() = default;
 	Transform(const mat4& mat);
 	Transform(bool active, GameObject* owner) : _mat(1.0f), Component(active, owner) {}

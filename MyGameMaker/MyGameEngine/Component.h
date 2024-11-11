@@ -36,7 +36,8 @@ public:
 
 	GameObject* getOwner() const { return _owner; }
 	auto& isActive() { return _active; }
-	void setActive(bool active) { this->_active = active; }
+	virtual bool SetActive(bool active) { return this->_active = active; }
+	virtual void SwitchState() { _active = !_active; }
 	ComponentType type() const { return _type; }
 
 	virtual bool operator==(const Component& other) const {	return _active == other._active && _owner == other._owner && _type == other._type; }
