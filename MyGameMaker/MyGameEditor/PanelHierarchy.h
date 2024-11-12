@@ -10,7 +10,7 @@ class PanelHierarchy : public Panel
 {
 
 public:
-	PanelHierarchy(PanelType type, std::string name);
+	PanelHierarchy(std::string name);
 	~PanelHierarchy();
 
 	bool Draw();

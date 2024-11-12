@@ -8,7 +8,7 @@ class PanelConsole : public Panel
 {
 
 public:
-	PanelConsole(PanelType type, std::string name);
+	PanelConsole(std::string name);
 	~PanelConsole();
 
 	bool Draw();

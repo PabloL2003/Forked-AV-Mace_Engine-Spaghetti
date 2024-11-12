@@ -6,7 +6,7 @@
 class PanelConfiguration :  public Panel
 {
 public:
-	PanelConfiguration(PanelType type, std::string name);
+	PanelConfiguration(std::string name);
 	~PanelConfiguration();
 
 	bool Draw();

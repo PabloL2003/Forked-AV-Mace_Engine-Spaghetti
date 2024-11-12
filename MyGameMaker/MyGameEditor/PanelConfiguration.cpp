@@ -13,7 +13,7 @@ std::vector<float> fpsHistory(100, 0.0f);
 int historyIndex = 0;
 MEMORYSTATUSEX memInfo;
 
-PanelConfiguration::PanelConfiguration(PanelType type, std::string name) : Panel(type, name, WINDOW_WIDTH, 200) {}
+PanelConfiguration::PanelConfiguration(std::string name) : Panel(name, WINDOW_WIDTH, 200) {}
 
 PanelConfiguration::~PanelConfiguration() {}
 

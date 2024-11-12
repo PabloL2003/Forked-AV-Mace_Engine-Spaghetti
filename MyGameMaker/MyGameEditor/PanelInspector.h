@@ -12,7 +12,7 @@ class PanelInspector : public Panel
 {
 
 public:
-	PanelInspector(PanelType type, std::string name);
+	PanelInspector(std::string name);
 	~PanelInspector();
 
 	std::string currentLayer() const { return _currentLayer; }

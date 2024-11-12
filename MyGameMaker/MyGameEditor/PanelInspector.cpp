@@ -10,7 +10,7 @@
 
 #include "MyGameEngine/Log.h"
 
-PanelInspector::PanelInspector(PanelType type, std::string name) : Panel(type, name, WINDOW_WIDTH * 0.25, WINDOW_HEIGHT - 200)
+PanelInspector::PanelInspector(std::string name) : Panel(name, WINDOW_WIDTH * 0.25, WINDOW_HEIGHT - 200)
 {
 	SwitchState();
 }
