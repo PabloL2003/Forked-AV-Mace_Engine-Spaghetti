@@ -93,7 +93,6 @@ void Mesh::loadToOpenGL()
 
 void Mesh::drawModel() const
 {
-
 	GLCall(glBindVertexArray(model.get()->GetModelData().vA));
 	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model.get()->GetModelData().iBID));
 

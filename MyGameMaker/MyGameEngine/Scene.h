@@ -10,6 +10,8 @@
 
 class Scene : public GameObject
 {
+	GameObject* _root = nullptr;
+
 public:
 	Scene(const std::string& name, const std::string& tag = "Untagged", bool active = true) : GameObject(name, tag, active) {}
 	~Scene() {}
@@ -21,14 +23,14 @@ public:
 	void PostUpdate();
 	void CleanUp();
 	void OnSceneChange();
-	void Draw();
+	void Draw(GameObject* root);
 
 	void loadGameObjectByPath(const std::string& path);
 	void loadTextureByPath(const std::string& path);
 
 	GameObject* selectedGameObject = nullptr;
 
-	void CreateEmpty();
+	void CreateGameObject();
 	void CreateCube();
 	void CreatePlane();
 	void CreateSphere();

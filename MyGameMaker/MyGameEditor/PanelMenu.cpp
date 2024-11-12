@@ -151,11 +151,11 @@ bool PanelMenu::Draw()
             if (ImGui::BeginMenu("Create..."))
             {
                 if (ImGui::MenuItem("Create Empty", nullptr, nullptr)) {
-					Engine::Instance().scene->CreateEmpty();
+					Engine::Instance().scene->CreateGameObject();
                 }
                 if (ImGui::MenuItem("Create Empty x10", nullptr, nullptr)) {
                     for (size_t i = 0; i < 10; i++) {
-                        Engine::Instance().scene->CreateEmpty();
+                        Engine::Instance().scene->CreateGameObject();
                     }
                 }
                 if (ImGui::MenuItem("Plane", nullptr, nullptr)) {

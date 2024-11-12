@@ -38,6 +38,8 @@ void Scene::Start()
 	_camera.transform().rotate(glm::radians(180.0), vec3(0, 1, 0));
 	_camera.transform().rotate(glm::radians(20.0), vec3(1, 0, 0));
 
+	CreateGameObject();
+
 	ModelLoader modelLoader;
 	std::vector<std::shared_ptr<Model>> models;
 	modelLoader.load("Assets/FBX/BakerHouse.fbx", models);
@@ -54,7 +56,7 @@ void Scene::Start()
 		go->GetComponent<Material>()->m_Texture = std::make_unique<Texture>(path);
 		go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
 		go->GetComponent<Mesh>()->loadToOpenGL();
-		addChild(go);
+		children().back().get()->addChild(go);
 	}
 
 }
@@ -231,14 +233,15 @@ void Scene::CleanUp()
 
 void Scene::OnSceneChange() {}
 
-void Scene::Draw()
+void Scene::Draw(GameObject* root)
 {
-	for (auto& child : children())
+	for (auto& child : root->children())
 	{
-		if (child.get()->isActive() && child->GetComponent<Mesh>() != nullptr && child->GetComponent<Mesh>()->isActive())
-		{
+		if (child.get()->isActive() && child->GetComponent<Mesh>() != nullptr && child->GetComponent<Mesh>()->isActive()) {
 			child->GetComponent<Mesh>()->drawModel();
 		}
+
+		if (!child->children().empty()) Draw(child.get());
 	}
 }
 
@@ -272,12 +275,12 @@ void Scene::loadTextureByPath(const std::string& path)
 	}
 }
 
-void Scene::CreateEmpty()
+void Scene::CreateGameObject()
 {
 	ModelLoader modelLoader;
 	std::shared_ptr<Model> model;
 	modelLoader.load(Shapes::EMPTY, model);
-	std::shared_ptr<GameObject> go = std::make_shared<GameObject>("Empty");
+	std::shared_ptr<GameObject> go = std::make_shared<GameObject>("GameObject");
 	go->AddComponent<Transform>();
 	go->GetComponent<Transform>()->pos() = vec3(0, 0, 0);
 	addChild(go);
