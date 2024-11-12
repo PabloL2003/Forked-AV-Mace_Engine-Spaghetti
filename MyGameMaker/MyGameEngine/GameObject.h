@@ -32,7 +32,7 @@ public:
 	virtual bool SwitchState() { return _active = !_active; }
 
 	template <typename T>
-	T* CreateComponent() {
+	T* AddComponent() {
 		static_assert(std::is_base_of<Component, T>::value, "ERROR: T must inherit from Component");
 		T* newComponent = new T(true, this);
 		if (newComponent) _components.push_back(dynamic_cast<Component*>(newComponent));
