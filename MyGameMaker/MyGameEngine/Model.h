@@ -7,8 +7,13 @@
 
 enum class Shapes
 {
+	EMPTY,
 	CUBE,
 	PLANE,
+	SPHERE,
+	CYLINDER,
+	CONE,
+	TORUS,
 	MESH
 };
 

@@ -172,9 +172,9 @@ void PanelInspector::DrawMeshControls(GameObject* gameObject)
 
         ImGui::Checkbox("Active", &mesh->isActive());
 		ImGui::SameLine();
-		ImGui::Text("   File:");
+		ImGui::Text("  File:");
 		ImGui::SameLine();
-        ImGui::SetNextItemWidth(150.0f);
+        ImGui::SetNextItemWidth(170.0f);
         char buffer[128] = {};
         strncpy_s(buffer, mesh->getFilePath().c_str(), sizeof(buffer));
         ImGui::InputText("##mesh_path", buffer, sizeof(buffer));

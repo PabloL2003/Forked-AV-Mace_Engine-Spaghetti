@@ -81,19 +81,21 @@ void ModelLoader::load(const std::string& filename, std::vector<std::shared_ptr<
 void ModelLoader::load(Shapes shape, std::shared_ptr<Model>& model)
 {
 
-	std::shared_ptr<ModelData> modelData;
+	std::shared_ptr<ModelData> modelData = std::make_shared<ModelData>();
+	model = std::make_shared<Model>();
+
+	const float PI = 3.14159265358979323846f;
+	const int slices = 36; // number of radial slices
+	const int stacks = 18; // number of stacks (height divisions)
+	const float radius = 1.0f; // radius of the sphere
+	const float height = 2.0f; // height of the cylinder
 
 	switch (shape)
 	{
 	case Shapes::CUBE:
-
-		model = std::make_shared<Model>();
 		model->SetMeshName("Cube");
 
-		
-		modelData = std::make_shared<ModelData>();
-
-		modelData.get()->vertexData = {
+		modelData->vertexData = {
 			vec3(-1,-1,-1),
 			vec3(1,-1,-1), 
 			vec3(1,1,-1),  
@@ -104,7 +106,7 @@ void ModelLoader::load(Shapes shape, std::shared_ptr<Model>& model)
 			vec3(-1,1,1)  
 		};
 
-		modelData.get()->vertex_colors = {
+		modelData->vertex_colors = {
 			vec3(0.8,0,0),
 			vec3(0.0,1,0),
 			vec3(0.0,0,1),
@@ -115,7 +117,7 @@ void ModelLoader::load(Shapes shape, std::shared_ptr<Model>& model)
 			vec3(0.8,0.3,0.6)
 		};
 
-		modelData.get()->indexData = {
+		modelData->indexData = {
 			0, 1, 2, 0, 2, 3,
 			1, 5, 6, 1, 6, 2,
 			5, 4, 7, 5, 7, 6,
@@ -123,43 +125,220 @@ void ModelLoader::load(Shapes shape, std::shared_ptr<Model>& model)
 			3, 2, 6, 3, 6, 7,
 			4, 5, 1, 4, 1, 0
 		};
-
-		model->SetModelData(*modelData);
-
 		break;
 	
 	case Shapes::PLANE:
+		model->SetMeshName("Plane");
 
-		model = std::make_shared<Model>();
-		model->SetMeshName("Pane");
-
-		modelData = std::make_shared<ModelData>();
-
-		modelData.get()->vertexData = {
+		modelData->vertexData = {
 			vec3(-1,0,-1),
 			vec3(1,0,-1),
 			vec3(1,0,1),
 			vec3(-1,0,1)
 		};
 
-		modelData.get()->vertex_colors = {
+		modelData->vertex_colors = {
 			vec3(0.8,0,0),
 			vec3(0.0,1,0),
 			vec3(0.0,0,1),
 			vec3(1,1,1)
 		};
 
-		modelData.get()->indexData = {
+		modelData->indexData = {
 			0, 1, 2, 0, 2, 3
 		};
-
-		model->SetModelData(*modelData);
-
 		break;
 	
-	default:
+	case Shapes::SPHERE:
+		model->SetMeshName("Sphere");
 
+		for (int i = 0; i <= stacks; ++i)
+		{
+			float theta = i * PI / stacks; // latitude angle
+			for (int j = 0; j <= slices; ++j)
+			{
+				float phi = j * 2.0f * PI / slices; // longitude angle
+				float x = radius * sin(theta) * cos(phi);
+				float y = radius * cos(theta);
+				float z = radius * sin(theta) * sin(phi);
+
+				modelData->vertexData.push_back(vec3(x, y, z));
+				modelData->vertex_colors.push_back(vec3(1.0f, 0.0f, 0.0f)); // red color
+			}
+		}
+
+		// Generate indices for the sphere
+		for (int i = 0; i < stacks; ++i)
+		{
+			for (int j = 0; j < slices; ++j)
+			{
+				int first = i * (slices + 1) + j;
+				int second = first + slices + 1;
+				if (i != 0)
+				{
+					modelData->indexData.push_back(first);
+					modelData->indexData.push_back(second);
+					modelData->indexData.push_back(first + 1);
+				}
+				if (i != (stacks - 1))
+				{
+					modelData->indexData.push_back(second);
+					modelData->indexData.push_back(second + 1);
+					modelData->indexData.push_back(first + 1);
+				}
+			}
+		}
 		break;
 
+	case Shapes::CYLINDER:
+		model->SetMeshName("Cylinder");
+
+		for (int i = 0; i <= stacks; ++i)
+		{
+			float y = (i / (float)stacks) * height - height / 2.0f;
+			for (int j = 0; j < slices; ++j)
+			{
+				float theta = j * 2.0f * PI / slices;
+				float x = radius * cos(theta);
+				float z = radius * sin(theta);
+				modelData->vertexData.push_back(vec3(x, y, z));
+				modelData->vertex_colors.push_back(vec3(0.0f, 1.0f, 0.0f)); // green color
+			}
+		}
+
+		// Create top and bottom caps of the cylinder
+		for (int j = 0; j < slices; ++j)
+		{
+			float theta = j * 2.0f * PI / slices;
+			float x = radius * cos(theta);
+			float z = radius * sin(theta);
+			modelData->vertexData.push_back(vec3(x, height / 2.0f, z)); // top cap
+			modelData->vertexData.push_back(vec3(x, -height / 2.0f, z)); // bottom cap
+			modelData->vertex_colors.push_back(vec3(0.0f, 1.0f, 0.0f)); // green color
+		}
+
+		// Create the cylinder body indices
+		for (int i = 0; i < stacks; ++i)
+		{
+			for (int j = 0; j < slices; ++j)
+			{
+				int first = i * slices + j;
+				int second = (i + 1) * slices + j;
+				int next = (j + 1) % slices;
+				int third = (i + 1) * slices + next;
+				modelData->indexData.push_back(first);
+				modelData->indexData.push_back(second);
+				modelData->indexData.push_back(third);
+				modelData->indexData.push_back(first);
+				modelData->indexData.push_back(third);
+				modelData->indexData.push_back(next);
+			}
+		}
+
+		// Add top and bottom cap indices
+		for (int j = 0; j < slices; ++j)
+		{
+			int top_center = modelData->vertexData.size() - 2 * slices;
+			int bottom_center = modelData->vertexData.size() - slices;
+			int first = j;
+			int second = (j + 1) % slices;
+			modelData->indexData.push_back(top_center);
+			modelData->indexData.push_back(first);
+			modelData->indexData.push_back(second);
+			modelData->indexData.push_back(bottom_center);
+			modelData->indexData.push_back(second + slices);
+			modelData->indexData.push_back(first + slices);
+		}
+		break;
+
+	case Shapes::CONE:
+		model->SetMeshName("Cone");
+
+		// Vertices for cone
+		modelData->vertexData.push_back(vec3(0.0f, height / 2.0f, 0.0f)); // top (apex)
+		modelData->vertex_colors.push_back(vec3(1.0f, 0.0f, 0.0f)); // red color
+
+		for (int i = 0; i < slices; ++i)
+		{
+			float theta = i * 2.0f * PI / slices;
+			float x = radius * cos(theta);
+			float z = radius * sin(theta);
+			modelData->vertexData.push_back(vec3(x, -height / 2.0f, z)); // base vertices
+			modelData->vertex_colors.push_back(vec3(0.0f, 1.0f, 0.0f)); // green color
+		}
+
+		// Cone body indices
+		for (int i = 0; i < slices; ++i)
+		{
+			int first = i + 1;
+			int second = (i + 1) % slices + 1;
+			modelData->indexData.push_back(0); // apex
+			modelData->indexData.push_back(first);
+			modelData->indexData.push_back(second);
+		}
+
+		// Base indices (not required but could be included for completeness)
+		for (int i = 0; i < slices; ++i)
+		{
+			int first = i + 1;
+			int second = (i + 1) % slices + 1;
+			modelData->indexData.push_back(first);
+			modelData->indexData.push_back(second);
+			modelData->indexData.push_back(slices + 1);
+		}
+		break;
+
+	case Shapes::TORUS:
+		model->SetMeshName("Torus");
+
+		// Torus parameters
+		float R = 1.0f;  // major radius (distance from the center of the torus to the center of the tube)
+		float r = 0.4f;  // minor radius (radius of the tube itself)
+		int numTorusSlices = 36; // Number of slices around the tube
+		int numTorusStacks = 18; // Number of stacks (divisions around the major radius)
+
+		// Generate the vertices for the torus
+		for (int i = 0; i < numTorusStacks; ++i)
+		{
+			float theta = i * 2.0f * PI / numTorusStacks; // Angle around the major radius
+			for (int j = 0; j < numTorusSlices; ++j)
+			{
+				float phi = j * 2.0f * PI / numTorusSlices; // Angle around the minor radius
+
+				// Parametric equations for a torus:
+				float x = (R + r * cos(phi)) * cos(theta);  // x = (major radius + minor radius * cos(phi)) * cos(theta)
+				float y = (R + r * cos(phi)) * sin(theta);  // y = (major radius + minor radius * cos(phi)) * sin(theta)
+				float z = r * sin(phi);                     // z = minor radius * sin(phi)
+
+				modelData->vertexData.push_back(vec3(x, y, z)); // Store the vertex
+				modelData->vertex_colors.push_back(vec3(1.0f, 0.5f, 0.0f)); // Color the vertices (orange for example)
+			}
+		}
+
+		// Generate the indices for the torus
+		for (int i = 0; i < numTorusStacks; ++i)
+		{
+			for (int j = 0; j < numTorusSlices; ++j)
+			{
+				// Vertices around the current stack
+				int first = i * numTorusSlices + j;
+				int second = ((i + 1) % numTorusStacks) * numTorusSlices + j;
+				int next = (j + 1) % numTorusSlices;
+				int third = ((i + 1) % numTorusStacks) * numTorusSlices + next;
+
+				// First triangle
+				modelData->indexData.push_back(first);
+				modelData->indexData.push_back(second);
+				modelData->indexData.push_back(third);
+
+				// Second triangle
+				modelData->indexData.push_back(first);
+				modelData->indexData.push_back(third);
+				modelData->indexData.push_back(first + 1);
+			}
+		}
+		break;
 	}
+
+	model->SetModelData(*modelData);
 }

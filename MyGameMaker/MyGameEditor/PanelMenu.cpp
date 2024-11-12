@@ -150,32 +150,34 @@ bool PanelMenu::Draw()
         {
             if (ImGui::BeginMenu("Create..."))
             {
-                if (ImGui::MenuItem("Create Empty", nullptr, nullptr, false)) {
-                    // Action for "Undo" item
+                if (ImGui::MenuItem("Create Empty", nullptr, nullptr)) {
+					Engine::Instance().scene->CreateEmpty();
                 }
-                if (ImGui::MenuItem("Create Empty x10", nullptr, nullptr, false)) {
-                    // Action for "Undo" item
+                if (ImGui::MenuItem("Create Empty x10", nullptr, nullptr)) {
+                    for (size_t i = 0; i < 10; i++) {
+                        Engine::Instance().scene->CreateEmpty();
+                    }
                 }
-                if (ImGui::MenuItem("Plane", nullptr, nullptr, true)) {
+                if (ImGui::MenuItem("Plane", nullptr, nullptr)) {
 					Engine::Instance().scene->CreatePlane();
                 }
-                if (ImGui::MenuItem("Cube", nullptr, nullptr, true)) {
+                if (ImGui::MenuItem("Cube", nullptr, nullptr)) {
 					Engine::Instance().scene->CreateCube();
                 }
-				if (ImGui::MenuItem("Sphere", nullptr, nullptr, false)) {
-					// Action for "Undo" item
+				if (ImGui::MenuItem("Sphere", nullptr, nullptr)) {
+					Engine::Instance().scene->CreateSphere();
 				}
                 if (ImGui::MenuItem("Hemisphere", nullptr, nullptr, false)) {
                     // Action for "Undo" item
                 }
-				if (ImGui::MenuItem("Cylinder", nullptr, nullptr, false)) {
-					// Action for "Undo" item
+				if (ImGui::MenuItem("Cylinder", nullptr, nullptr)) {
+					Engine::Instance().scene->CreateCylinder();
 				}
-                if (ImGui::MenuItem("Cone", nullptr, nullptr, false)) {
-
+                if (ImGui::MenuItem("Cone", nullptr, nullptr)) {
+					Engine::Instance().scene->CreateCone();
                 }
-                if (ImGui::MenuItem("Torus", nullptr, nullptr, false)) {
-                    // Action for "Undo" item
+                if (ImGui::MenuItem("Torus", nullptr, nullptr)) {
+					Engine::Instance().scene->CreateTorus();
                 }
                 ImGui::EndMenu();
             }

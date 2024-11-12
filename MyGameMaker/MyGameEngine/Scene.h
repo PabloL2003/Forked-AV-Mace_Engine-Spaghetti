@@ -28,8 +28,14 @@ public:
 
 	GameObject* selectedGameObject = nullptr;
 
+	void CreateEmpty();
 	void CreateCube();
 	void CreatePlane();
+	void CreateSphere();
+	void CreateCylinder();
+	void CreateCone();
+	void CreateTorus();
+
 };
 
 #endif // !__SCENE_H__
