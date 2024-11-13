@@ -22,7 +22,7 @@ bool PanelHierarchy::Draw()
    ImGui::SetNextWindowPos(ImVec2(0, 19));
 
    ImGui::Begin("Hierarchy", &showWindow, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
-   for (const std::shared_ptr<GameObject>& gameObjectPtr : Engine::Instance().scene->children())
+   for (const std::shared_ptr<GameObject>& gameObjectPtr : Engine::Instance().scene->root()->children())
    {
 	   DrawGameObjectTree(gameObjectPtr.get());
    }

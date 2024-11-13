@@ -38,7 +38,7 @@ void Scene::Start()
 	_camera.transform().rotate(glm::radians(180.0), vec3(0, 1, 0));
 	_camera.transform().rotate(glm::radians(20.0), vec3(1, 0, 0));
 
-	CreateGameObject();
+    CreateGameObject();
 
 	ModelLoader modelLoader;
 	std::vector<std::shared_ptr<Model>> models;
@@ -56,7 +56,7 @@ void Scene::Start()
 		go->GetComponent<Material>()->m_Texture = std::make_unique<Texture>(path);
 		go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
 		go->GetComponent<Mesh>()->loadToOpenGL();
-		children().back().get()->addChild(go);
+		root()->children().back().get()->addChild(go);
 	}
 
 }
@@ -261,7 +261,7 @@ void Scene::loadGameObjectByPath(const std::string& path)
 		go->GetComponent<Mesh>()->loadToOpenGL();
 		go->AddComponent<Material>();
 		go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
-		addChild(go);
+		root()->addChild(go);
 	}
 }
 
@@ -283,7 +283,7 @@ void Scene::CreateGameObject()
 	std::shared_ptr<GameObject> go = std::make_shared<GameObject>("GameObject");
 	go->AddComponent<Transform>();
 	go->GetComponent<Transform>()->pos() = vec3(0, 0, 0);
-	addChild(go);
+	root()->addChild(go);
 }
 
 void Scene::CreateCube()
@@ -299,7 +299,7 @@ void Scene::CreateCube()
 	go->GetComponent<Mesh>()->loadToOpenGL();
 	go->AddComponent<Material>();
 	go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
-	addChild(go);
+	root()->addChild(go);
 }
 
 void Scene::CreatePlane() 
@@ -315,7 +315,7 @@ void Scene::CreatePlane()
 	go->GetComponent<Mesh>()->loadToOpenGL();
 	go->AddComponent<Material>();
 	go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
-	addChild(go);
+	root()->addChild(go);
 }
 
 void Scene::CreateSphere()
@@ -331,7 +331,7 @@ void Scene::CreateSphere()
 	go->GetComponent<Mesh>()->loadToOpenGL();
 	go->AddComponent<Material>();
 	go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
-	addChild(go);
+	root()->addChild(go);
 }
 
 void Scene::CreateCylinder()
@@ -347,7 +347,7 @@ void Scene::CreateCylinder()
 	go->GetComponent<Mesh>()->loadToOpenGL();
 	go->AddComponent<Material>();
 	go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
-	addChild(go);
+	root()->addChild(go);
 }
 
 void Scene::CreateCone()
@@ -363,7 +363,7 @@ void Scene::CreateCone()
 	go->GetComponent<Mesh>()->loadToOpenGL();
 	go->AddComponent<Material>();
 	go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
-	addChild(go);
+	root()->addChild(go);
 }
 
 void Scene::CreateTorus()
@@ -379,5 +379,5 @@ void Scene::CreateTorus()
 	go->GetComponent<Mesh>()->loadToOpenGL();
 	go->AddComponent<Material>();
 	go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
-	addChild(go);
+	root()->addChild(go);
 }
