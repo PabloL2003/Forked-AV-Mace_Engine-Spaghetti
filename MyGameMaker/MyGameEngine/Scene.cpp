@@ -12,6 +12,7 @@
 #include "ModelLoader.h"
 #include "Mesh.h"
 #include "Material.h"
+#include "debugDraws.h"
 
 //camera movement variables
 bool rightMouse = false;
@@ -242,6 +243,8 @@ void Scene::Draw(GameObject* root)
 
 		if (!child->children().empty()) Draw(child.get());
 	}
+
+	drawDebugInfoForGraphicObject(*root);
 }
 
 void Scene::loadGameObjectByPath(const std::string& path)

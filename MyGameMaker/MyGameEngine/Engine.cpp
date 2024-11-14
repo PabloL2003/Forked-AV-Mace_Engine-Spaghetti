@@ -4,6 +4,7 @@
 #include "Input.h"
 #include "Renderer.h"
 #include "Scene.h"
+#include "debugDraws.h"
 
 //devil
 #include <IL/il.h>
@@ -50,18 +51,6 @@ void Engine::Update(double& dt)
 {
     this->dt = dt;
 	scene->Update(dt);
-}
-
-void drawFloorGrid(int size, double step) {
-    glColor3ub(0, 0, 0);
-    glBegin(GL_LINES);
-    for (double i = -size; i <= size; i += step) {
-        glVertex3d(i, 0, -size);
-        glVertex3d(i, 0, size);
-        glVertex3d(-size, 0, i);
-        glVertex3d(size, 0, i);
-    }
-    glEnd();
 }
 
 void Engine::PostUpdate()
