@@ -152,7 +152,7 @@ void PanelInspector::DrawTransformControls(GameObject* gameObject)
         {
             if (ImGui::IsItemActive()) {
                 Engine::Instance().input->ActivateTextInput();
-                transform->pos() = glm::vec3(pos[0], pos[1], pos[2]);
+                transform->translate(pos);
             }
             else if (ImGui::IsItemDeactivatedAfterEdit()) {
                 Engine::Instance().input->ActivateTextInput(false);

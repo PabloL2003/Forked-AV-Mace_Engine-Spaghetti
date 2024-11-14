@@ -1,26 +1,56 @@
 #include "Transform.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
+#include <queue>
 
+Transform::Transform(const mat4& mat) : local_mat(mat), global_mat(mat), _rot(glm::quat_cast(local_mat)), _scale(glm::vec3(glm::length(local_mat[0]), glm::length(local_mat[1]), glm::length(local_mat[2]))), isDirty(true) {}
 
-Transform::Transform(const mat4& mat) : _mat(mat)
+void Transform::translate(float v[])
 {
-	_rot = glm::quat_cast(_mat);
-	_scale = glm::vec3(glm::length(_mat[0]), glm::length(_mat[1]), glm::length(_mat[2]));
+    pos() = glm::vec3(v[0], v[1], v[2]);
+    //updateGlobalMatrix();
 }
 
-void Transform::rotate(const vec3& eulerAngles) 
+void Transform::rotate(const vec3& eulerAngles)
 {
-	vec3 currentTransform = _mat[3]; // Translation is stored in the last column
-	vec3 currentScale = glm::vec3(glm::length(_mat[0]), glm::length(_mat[1]), glm::length(_mat[2])); // Scale is the length of the columns;
+	vec3 currentTransform = local_mat[3]; // Translation is stored in the last column
+	vec3 currentScale = glm::vec3(glm::length(local_mat[0]), glm::length(local_mat[1]), glm::length(local_mat[2])); // Scale is the length of the columns;
 
 	_rot = glm::quat(eulerAngles);
-	_mat = glm::mat4(1.0f);
+    
+	local_mat = glm::mat4(1.0f);
+	local_mat[0] = glm::vec4(currentScale.x, 0.0f, 0.0f, 0.0f);
+	local_mat[1] = glm::vec4(0.0f, currentScale.y, 0.0f, 0.0f);
+	local_mat[2] = glm::vec4(0.0f, 0.0f, currentScale.z, 0.0f);
 
-	_mat[0] = glm::vec4(currentScale.x, 0.0f, 0.0f, 0.0f);
-	_mat[1] = glm::vec4(0.0f, currentScale.y, 0.0f, 0.0f);
-	_mat[2] = glm::vec4(0.0f, 0.0f, currentScale.z, 0.0f);
+	local_mat = mat4(glm::mat4_cast(_rot)) * local_mat;
+	local_mat[3] = glm::vec4(currentTransform, 1.0f);
+}
 
-	_mat = mat4(glm::mat4_cast(_rot)) * _mat;
-	_mat[3] = glm::vec4(currentTransform, 1.0f);
+void Transform::updateGlobalMatrix()
+{
+    std::queue<Transform*> toUpdate;
+    toUpdate.push(this);
+
+    while (!toUpdate.empty()) {
+        Transform* current = toUpdate.front();
+        toUpdate.pop();
+
+        if (current->isDirty) 
+        {
+            if (current->getOwner()->parent() != nullptr) {
+                current->global_mat = current->getOwner()->parent()->GetComponent<Transform>()->glob_mat() * current->local_mat;
+            }
+            else {
+                current->global_mat = current->local_mat;
+            }
+            current->isDirty = false; 
+
+            for (auto& child : current->getOwner()->children()) 
+            {
+                child->GetComponent<Transform>()->isDirty = true;
+                toUpdate.push(child->GetComponent<Transform>());
+            }
+        }
+    }
 }
