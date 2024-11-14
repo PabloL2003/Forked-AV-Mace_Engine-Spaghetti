@@ -101,12 +101,9 @@ void PanelInspector::DrawGameObjectControls(GameObject* gameObject)
     ImGui::Text("Tag");
     ImGui::SameLine();
     ImGui::SetNextItemWidth(100.0f);
-    if (ImGui::BeginCombo("##tag", gameObject->tag().c_str()))
-    {
-        for (const auto& option : tagOptions)
-        {
-            if (ImGui::Selectable(option.c_str(), gameObject->tag() == option))
-            {
+    if (ImGui::BeginCombo("##tag", gameObject->tag().c_str())) {
+        for (const auto& option : tagOptions) {
+            if (ImGui::Selectable(option.c_str(), gameObject->tag() == option)) {
                 gameObject->tag() = option;
             }
         }
