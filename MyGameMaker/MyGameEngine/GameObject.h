@@ -15,8 +15,6 @@ class GameObject : public TreeExtension<GameObject>
 	std::string _tag;
 	bool _active;
 	std::vector<Component*> _components;
-	GameObject* _parent;
-	std::list<GameObject*> _children;
 
 public:
 	GameObject(const std::string& name, const std::string& tag = "Untagged", bool active = true);
@@ -24,8 +22,6 @@ public:
 
 	auto& name() { return _name; }
 	auto& tag() { return _tag; }
-	auto& parent() { return _parent; }
-	void SetParent(GameObject* parent) { _parent = parent; }
 	
 	auto& isActive() { return _active; }
 	virtual bool SetActive(bool active) { return this->_active = active; }

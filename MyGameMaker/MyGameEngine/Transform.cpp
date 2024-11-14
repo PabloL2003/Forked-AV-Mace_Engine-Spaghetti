@@ -3,12 +3,19 @@
 #include <glm/gtc/quaternion.hpp>
 #include <queue>
 
-Transform::Transform(const mat4& mat) : local_mat(mat), global_mat(mat), _rot(glm::quat_cast(local_mat)), _scale(glm::vec3(glm::length(local_mat[0]), glm::length(local_mat[1]), glm::length(local_mat[2]))), isDirty(true) {}
+Transform::Transform(const mat4& mat) : local_mat(mat), global_mat(mat), _rot(glm::quat_cast(local_mat)), _scale(glm::vec3(glm::length(local_mat[0]), glm::length(local_mat[1]), glm::length(local_mat[2]))), isDirty(true) 
+{
+	updateGlobalMatrix();
+}
+
+Transform::Transform(bool active, GameObject* owner) : local_mat(1.0f), global_mat(1.0f), _rot(glm::quat_cast(local_mat)), _scale(glm::vec3(glm::length(local_mat[0]), glm::length(local_mat[1]), glm::length(local_mat[2]))), isDirty(true), Component(active, owner)
+{
+}
 
 void Transform::translate(float v[])
 {
     pos() = glm::vec3(v[0], v[1], v[2]);
-    //updateGlobalMatrix();
+    updateGlobalMatrix();
 }
 
 void Transform::rotate(const vec3& eulerAngles)
@@ -25,11 +32,20 @@ void Transform::rotate(const vec3& eulerAngles)
 
 	local_mat = mat4(glm::mat4_cast(_rot)) * local_mat;
 	local_mat[3] = glm::vec4(currentTransform, 1.0f);
+
+	updateGlobalMatrix();
+}
+
+void Transform::scale(const vec3& s)
+{
+    local_mat = glm::scale(local_mat, s);
+    updateGlobalMatrix();
 }
 
 void Transform::updateGlobalMatrix()
 {
     std::queue<Transform*> toUpdate;
+	isDirty = true;
     toUpdate.push(this);
 
     while (!toUpdate.empty()) {
@@ -38,8 +54,8 @@ void Transform::updateGlobalMatrix()
 
         if (current->isDirty) 
         {
-            if (current->getOwner()->parent() != nullptr) {
-                current->global_mat = current->getOwner()->parent()->GetComponent<Transform>()->glob_mat() * current->local_mat;
+            if (current->getOwner()->parent().hasParent()) {
+                current->global_mat = current->getOwner()->parent().GetComponent<Transform>()->glob_mat() * current->local_mat;
             }
             else {
                 current->global_mat = current->local_mat;

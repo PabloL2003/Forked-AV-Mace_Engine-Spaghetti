@@ -5,6 +5,7 @@
 #include "GameObject.h"
 
 #include <string>
+#include <memory>
 
 #include "Camera.h"
 
@@ -33,7 +34,7 @@ public:
 
 	GameObject* selectedGameObject = nullptr;
 
-	void CreateGameObject();
+	std::shared_ptr<GameObject> CreateGameObject();
 	void CreateCube();
 	void CreatePlane();
 	void CreateSphere();

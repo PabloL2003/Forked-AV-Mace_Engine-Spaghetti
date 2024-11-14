@@ -4,9 +4,9 @@
 #include "Camera.h"
 #include "Material.h"
 
-GameObject::GameObject(const std::string& name, const std::string& tag, bool active) : _name(name), _tag(tag), _active(active), _parent(nullptr)
+GameObject::GameObject(const std::string& name, const std::string& tag, bool active) : _name(name), _tag(tag), _active(active)
 {
-	_components.push_back(new Transform(mat4(1.0f)));
+	this->AddComponent<Transform>();
 }
 
 bool GameObject::operator==(const GameObject& other) const

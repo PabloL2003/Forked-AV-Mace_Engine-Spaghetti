@@ -18,10 +18,10 @@ class Transform : public Component
 	union {
 		mat4 global_mat = mat4(1.0f);
 		struct {
-			vec3 glob_left; mat4::value_type glob_left_w;
-			vec3 glob_up; mat4::value_type glob_up_w;
-			vec3 glob_fwd; mat4::value_type glob_fwd_w;
-			vec3 glob_pos; mat4::value_type glob_pos_w;
+			vec3 global_left; mat4::value_type glob_left_w;
+			vec3 global_up; mat4::value_type glob_up_w;
+			vec3 global_fwd; mat4::value_type glob_fwd_w;
+			vec3 global_pos; mat4::value_type glob_pos_w;
 		};
 	};
 
@@ -31,17 +31,25 @@ class Transform : public Component
 	bool isDirty = true;
 
 public:
+	// Local Transform
 	const mat4 mat() const { return local_mat; }
-	const mat4 glob_mat() const { return global_mat; }
 	const vec3 left() const { return _left; }
 	const vec3 right() const { return _left; }
 	const vec3 up() const { return _up; }
 	const vec3 fwd() const { return _fwd; }
 	const auto* data() const { return &local_mat[0][0]; }
+	
+	// Global Transfrom
+	const mat4 glob_mat() const { return global_mat; }
+	const vec3 glob_left() const { return global_left; }
+	const vec3 glob_right() const { return global_left; }
+	const vec3 glob_up() const { return global_up; }
+	const vec3 glob_fwd() const { return global_fwd; }
 
 	//Position
 	vec3& pos() { return _pos; }
 	const vec3& pos() const { return _pos; }
+	vec3& glob_pos() { return global_pos; }
 
 	//Rotation
 	glm::quat rot() const { return _rot; }
@@ -55,7 +63,7 @@ public:
 	void translate(float v[]);
 	void rotate(const vec3& eulerAngles);
 	void rotate(double rads, const vec3& v) { local_mat = glm::rotate(local_mat, rads, v); }
-	void scale(const vec3& s) { local_mat = glm::scale(local_mat, s); }
+	void scale(const vec3& s);
 	void updateGlobalMatrix();
 
 	void setFwd(const vec3& fwd) { _fwd = fwd; }
@@ -67,7 +75,7 @@ public:
 
 	Transform() = default;
 	Transform(const mat4& mat);
-	Transform(bool active, GameObject* owner) :local_mat(1.0f), Component(active, owner) {}
+	Transform(bool active, GameObject* owner);
 	Transform operator*(const mat4& other) { return Transform(local_mat * other); }
 	Transform operator*(const Transform& other) { return Transform(local_mat * other.local_mat); }
 };
