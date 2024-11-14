@@ -8,34 +8,38 @@
 
 #include "Camera.h"
 
-class Scene : public GameObject
+class Scene
 {
+	std::string _name;
+	bool _active;
+	GameObject* _root = new GameObject("SceneRoot");
+
 public:
-	Scene(const std::string& name, const std::string& tag = "Untagged", bool active = true) : GameObject(name, tag, active) {}
+	Scene(const std::string& name, const std::string& tag = "Untagged", bool active = true) : _name(name), _active(active) {}
 	~Scene() {}
 
 	Camera _camera;
+    GameObject* root() { return _root; }
 
 	void Start();
 	void Update(double& dT);
 	void PostUpdate();
 	void CleanUp();
 	void OnSceneChange();
-	void Draw();
+	void Draw(GameObject* root);
 
 	void loadGameObjectByPath(const std::string& path);
 	void loadTextureByPath(const std::string& path);
 
 	GameObject* selectedGameObject = nullptr;
 
-	void CreateEmpty();
+	void CreateGameObject();
 	void CreateCube();
 	void CreatePlane();
 	void CreateSphere();
 	void CreateCylinder();
 	void CreateCone();
 	void CreateTorus();
-
 };
 
 #endif // !__SCENE_H__

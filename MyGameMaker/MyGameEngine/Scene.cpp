@@ -38,23 +38,25 @@ void Scene::Start()
 	_camera.transform().rotate(glm::radians(180.0), vec3(0, 1, 0));
 	_camera.transform().rotate(glm::radians(20.0), vec3(1, 0, 0));
 
+    CreateGameObject();
+
 	ModelLoader modelLoader;
 	std::vector<std::shared_ptr<Model>> models;
 	modelLoader.load("Assets/FBX/BakerHouse.fbx", models);
 	for (size_t i = 0; i < models.size(); i++)
 	{
 		std::shared_ptr<GameObject> go = std::make_shared<GameObject>(models[i].get()->GetMeshName());
-		go->CreateComponent<Transform>();
+		go->AddComponent<Transform>();
 		go->GetComponent<Transform>()->pos() = vec3(0, 0, 0);
-		go->CreateComponent<Mesh>();
+		go->AddComponent<Mesh>();
 		go->GetComponent<Mesh>()->setModel(models[i]);
 		go->GetComponent<Mesh>()->setFilePath("Assets/FBX/BakerHouse.fbx");
-		go->CreateComponent<Material>();
+		go->AddComponent<Material>();
 		std::string path = "Assets/Textures/Baker_house.png";
 		go->GetComponent<Material>()->m_Texture = std::make_unique<Texture>(path);
 		go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
 		go->GetComponent<Mesh>()->loadToOpenGL();
-		addChild(go);
+		root()->children().back().get()->addChild(go);
 	}
 
 }
@@ -232,14 +234,15 @@ void Scene::CleanUp()
 
 void Scene::OnSceneChange() {}
 
-void Scene::Draw()
+void Scene::Draw(GameObject* root)
 {
-	for (auto& child : children())
+	for (auto& child : root->children())
 	{
-		if (child.get()->isActive() && child->GetComponent<Mesh>() != nullptr && child->GetComponent<Mesh>()->isActive())
-		{
+		if (child.get()->isActive() && child->GetComponent<Mesh>() != nullptr && child->GetComponent<Mesh>()->isActive()) {
 			child->GetComponent<Mesh>()->drawModel();
 		}
+
+		if (!child->children().empty()) Draw(child.get());
 	}
 }
 
@@ -251,15 +254,15 @@ void Scene::loadGameObjectByPath(const std::string& path)
 	for (size_t i = 0; i < models.size(); i++)
 	{
 		std::shared_ptr<GameObject> go = std::make_shared<GameObject>(models[i].get()->GetMeshName());
-		go->CreateComponent<Transform>();
+		go->AddComponent<Transform>();
 		go->GetComponent<Transform>()->pos() = vec3(5, 0, 0);
-		go->CreateComponent<Mesh>();
+		go->AddComponent<Mesh>();
 		go->GetComponent<Mesh>()->setModel(models[i]);
 		go->GetComponent<Mesh>()->setFilePath(path);
 		go->GetComponent<Mesh>()->loadToOpenGL();
-		go->CreateComponent<Material>();
+		go->AddComponent<Material>();
 		go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
-		addChild(go);
+		root()->addChild(go);
 	}
 }
 
@@ -273,15 +276,15 @@ void Scene::loadTextureByPath(const std::string& path)
 	}
 }
 
-void Scene::CreateEmpty()
+void Scene::CreateGameObject()
 {
 	ModelLoader modelLoader;
 	std::shared_ptr<Model> model;
 	modelLoader.load(Shapes::EMPTY, model);
-	std::shared_ptr<GameObject> go = std::make_shared<GameObject>("Empty");
-	go->CreateComponent<Transform>();
+	std::shared_ptr<GameObject> go = std::make_shared<GameObject>("GameObject");
+	go->AddComponent<Transform>();
 	go->GetComponent<Transform>()->pos() = vec3(0, 0, 0);
-	addChild(go);
+	root()->addChild(go);
 }
 
 void Scene::CreateCube()
@@ -290,14 +293,14 @@ void Scene::CreateCube()
 	std::shared_ptr<Model> model;
 	modelLoader.load(Shapes::CUBE, model);
 	std::shared_ptr<GameObject> go = std::make_shared<GameObject>(model.get()->GetMeshName());
-	go->CreateComponent<Transform>();
+	go->AddComponent<Transform>();
 	go->GetComponent<Transform>()->pos() = vec3(10, 0, 0);
-	go->CreateComponent<Mesh>();
+	go->AddComponent<Mesh>();
 	go->GetComponent<Mesh>()->setModel(model);
 	go->GetComponent<Mesh>()->loadToOpenGL();
-	go->CreateComponent<Material>();
+	go->AddComponent<Material>();
 	go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
-	addChild(go);
+	root()->addChild(go);
 }
 
 void Scene::CreatePlane() 
@@ -306,14 +309,14 @@ void Scene::CreatePlane()
 	std::shared_ptr<Model> model;
 	modelLoader.load(Shapes::PLANE, model);
 	std::shared_ptr<GameObject> go = std::make_shared<GameObject>(model.get()->GetMeshName());
-	go->CreateComponent<Transform>();
+	go->AddComponent<Transform>();
 	go->GetComponent<Transform>()->pos() = vec3(-5, 0, 0);
-	go->CreateComponent<Mesh>();
+	go->AddComponent<Mesh>();
 	go->GetComponent<Mesh>()->setModel(model);
 	go->GetComponent<Mesh>()->loadToOpenGL();
-	go->CreateComponent<Material>();
+	go->AddComponent<Material>();
 	go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
-	addChild(go);
+	root()->addChild(go);
 }
 
 void Scene::CreateSphere()
@@ -322,14 +325,14 @@ void Scene::CreateSphere()
 	std::shared_ptr<Model> model;
 	modelLoader.load(Shapes::SPHERE, model);
 	std::shared_ptr<GameObject> go = std::make_shared<GameObject>(model.get()->GetMeshName());
-	go->CreateComponent<Transform>();
+	go->AddComponent<Transform>();
 	go->GetComponent<Transform>()->pos() = vec3(10, 0, -5);
-	go->CreateComponent<Mesh>();
+	go->AddComponent<Mesh>();
 	go->GetComponent<Mesh>()->setModel(model);
 	go->GetComponent<Mesh>()->loadToOpenGL();
-	go->CreateComponent<Material>();
+	go->AddComponent<Material>();
 	go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
-	addChild(go);
+	root()->addChild(go);
 }
 
 void Scene::CreateCylinder()
@@ -338,14 +341,14 @@ void Scene::CreateCylinder()
 	std::shared_ptr<Model> model;
 	modelLoader.load(Shapes::CYLINDER, model);
 	std::shared_ptr<GameObject> go = std::make_shared<GameObject>(model.get()->GetMeshName());
-	go->CreateComponent<Transform>();
+	go->AddComponent<Transform>();
 	go->GetComponent<Transform>()->pos() = vec3(-5, 0, -5);
-	go->CreateComponent<Mesh>();
+	go->AddComponent<Mesh>();
 	go->GetComponent<Mesh>()->setModel(model);
 	go->GetComponent<Mesh>()->loadToOpenGL();
-	go->CreateComponent<Material>();
+	go->AddComponent<Material>();
 	go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
-	addChild(go);
+	root()->addChild(go);
 }
 
 void Scene::CreateCone()
@@ -354,14 +357,14 @@ void Scene::CreateCone()
 	std::shared_ptr<Model> model;
 	modelLoader.load(Shapes::CONE, model);
 	std::shared_ptr<GameObject> go = std::make_shared<GameObject>(model.get()->GetMeshName());
-	go->CreateComponent<Transform>();
+	go->AddComponent<Transform>();
 	go->GetComponent<Transform>()->pos() = vec3(0, 0, -5);
-	go->CreateComponent<Mesh>();
+	go->AddComponent<Mesh>();
 	go->GetComponent<Mesh>()->setModel(model);
 	go->GetComponent<Mesh>()->loadToOpenGL();
-	go->CreateComponent<Material>();
+	go->AddComponent<Material>();
 	go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
-	addChild(go);
+	root()->addChild(go);
 }
 
 void Scene::CreateTorus()
@@ -370,12 +373,12 @@ void Scene::CreateTorus()
 	std::shared_ptr<Model> model;
 	modelLoader.load(Shapes::TORUS, model);
 	std::shared_ptr<GameObject> go = std::make_shared<GameObject>(model.get()->GetMeshName());
-	go->CreateComponent<Transform>();
+	go->AddComponent<Transform>();
 	go->GetComponent<Transform>()->pos() = vec3(5, 0, -5);
-	go->CreateComponent<Mesh>();
+	go->AddComponent<Mesh>();
 	go->GetComponent<Mesh>()->setModel(model);
 	go->GetComponent<Mesh>()->loadToOpenGL();
-	go->CreateComponent<Material>();
+	go->AddComponent<Material>();
 	go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
-	addChild(go);
+	root()->addChild(go);
 }

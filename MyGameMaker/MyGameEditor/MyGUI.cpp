@@ -26,11 +26,11 @@ void MyGUI::Awake(SDL_Window* window, void* context)
 	ImGui_ImplSDL2_InitForOpenGL(window, context);
 	ImGui_ImplOpenGL3_Init();
 
-	_console = new PanelConsole(PanelType::CONSOLE, "Console");
-	_menu = new PanelMenu(PanelType::MENU, "Menu");
-	_inspector = new PanelInspector(PanelType::INSPECTOR, "Inspector");
-	_hierarchy = new PanelHierarchy(PanelType::HIERARCHY, "Hierarchy");
-	_configuration = new PanelConfiguration(PanelType::CONFIGURATION, "Configuration");
+	_console = new PanelConsole("Console");
+	_menu = new PanelMenu("Menu");
+	_inspector = new PanelInspector("Inspector");
+	_hierarchy = new PanelHierarchy("Hierarchy");
+	_configuration = new PanelConfiguration("Configuration");
 
 	addPanel(_console);
 	addPanel(_menu);

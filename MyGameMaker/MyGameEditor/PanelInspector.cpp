@@ -10,7 +10,7 @@
 
 #include "MyGameEngine/Log.h"
 
-PanelInspector::PanelInspector(PanelType type, std::string name) : Panel(type, name, WINDOW_WIDTH * 0.25, WINDOW_HEIGHT - 200)
+PanelInspector::PanelInspector(std::string name) : Panel(name, WINDOW_WIDTH * 0.25, WINDOW_HEIGHT - 200)
 {
 	SwitchState();
 }
@@ -30,7 +30,42 @@ bool PanelInspector::Draw()
         if (selectedGameObject->GetComponent<Transform>()) DrawTransformControls(selectedGameObject);
         if (selectedGameObject->GetComponent<Mesh>()) DrawMeshControls(selectedGameObject);
         if (selectedGameObject->GetComponent<Material>()) DrawMaterialControls(selectedGameObject);
+		ImGui::Text(" ");
 
+		// Add Component
+        ImGui::SetCursorPosX((ImGui::GetContentRegionAvail().x - 180) * 0.5f);
+        if (ImGui::Button("Add Component", ImVec2(200.0f, 25.0))) ImGui::OpenPopup("AddComponentPopup");
+        if (ImGui::BeginPopup("AddComponentPopup"))
+        {
+            ImGui::Text("Select Component to Add:");
+			ImGui::Separator();
+
+            for (auto& componentName : componentOptions)
+            {
+				bool isDisabled = false;
+                if (componentName == "Transform" && selectedGameObject->GetComponent<Transform>() != nullptr)    isDisabled = true;
+                else if (componentName == "Mesh" && selectedGameObject->GetComponent<Mesh>() != nullptr)         isDisabled = true;
+                else if (componentName == "Material" && selectedGameObject->GetComponent<Material>() != nullptr) isDisabled = true;
+
+                if (isDisabled) {
+                    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.5f, 0.5f, 0.5f, 1.0f)); // Dimmed text color
+                    ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.5f); // Reduce opacity
+                }
+
+                if (ImGui::Selectable(componentName.c_str(), false, isDisabled ? ImGuiSelectableFlags_Disabled : 0))
+                {
+                    if (componentName == "Transform" && selectedGameObject->GetComponent<Transform>() == nullptr)       selectedGameObject->AddComponent<Transform>();
+					else if (componentName == "Mesh" && selectedGameObject->GetComponent<Mesh>() == nullptr)            selectedGameObject->AddComponent<Mesh>();
+					else if (componentName == "Material" && selectedGameObject->GetComponent<Material>() == nullptr)    selectedGameObject->AddComponent<Material>();
+                }
+
+                if (isDisabled) {
+                    ImGui::PopStyleVar();
+                    ImGui::PopStyleColor();
+                }
+            }
+            ImGui::EndPopup();
+        }
         ImGui::End();
     }
 
@@ -68,7 +103,7 @@ void PanelInspector::DrawGameObjectControls(GameObject* gameObject)
     ImGui::SetNextItemWidth(100.0f);
     if (ImGui::BeginCombo("##tag", gameObject->tag().c_str()))
     {
-        for (const auto& option : options)
+        for (const auto& option : tagOptions)
         {
             if (ImGui::Selectable(option.c_str(), gameObject->tag() == option))
             {

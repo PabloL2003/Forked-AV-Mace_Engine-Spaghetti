@@ -12,7 +12,7 @@ class PanelInspector : public Panel
 {
 
 public:
-	PanelInspector(PanelType type, std::string name);
+	PanelInspector(std::string name);
 	~PanelInspector();
 
 	std::string currentLayer() const { return _currentLayer; }
@@ -25,12 +25,15 @@ public:
 	void DrawMaterialControls(GameObject* gameObject);
 
 private:
-	// Tag Options
-	std::vector<std::string> options = { "Untagged", "Player", "Other" };
+	// Tag options
+	std::vector<std::string> tagOptions = { "Untagged", "Player", "Other" };
 
-	// Layer Options
+	// Layer options
 	std::string _currentLayer = "Default";
 	std::vector<std::string> layers = { "Default", "TransparentFX", "Ignore Raycast", "Water", "UI", "PostProcessing" };
+
+	// Component options
+	std::vector<std::string> componentOptions = { "Transform", "Mesh", "Material"};
 
 	bool showPerTriangleNormals = false;
 	bool showPerFaceNormals = false;

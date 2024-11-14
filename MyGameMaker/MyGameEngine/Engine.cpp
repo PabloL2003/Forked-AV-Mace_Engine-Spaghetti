@@ -80,7 +80,7 @@ void Engine::Draw()
     drawFloorGrid(16, 0.25);
 
     //draw things
-    scene->Draw();
+    scene->Draw(scene->root());
 
     glViewport(0, 0, window->width(), window->height());
     scene->_camera.aspect = static_cast<double>(window->width()) / window->height();

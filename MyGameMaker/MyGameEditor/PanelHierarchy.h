@@ -10,10 +10,11 @@ class PanelHierarchy : public Panel
 {
 
 public:
-	PanelHierarchy(PanelType type, std::string name);
+	PanelHierarchy(std::string name);
 	~PanelHierarchy();
 
 	bool Draw();
+	void DrawGameObjectTree(GameObject* gameObject);
 	GameObject* selectedGameObject() { return _selectedGameObject; }
 	void SetSelectedGameObject(GameObject* gameObject) { _selectedGameObject = gameObject; }
 

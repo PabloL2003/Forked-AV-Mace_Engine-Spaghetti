@@ -6,7 +6,7 @@
 #include "MyGameEngine/MyWindow.h"
 #include "MyGameEngine/types.h"
 
-PanelConsole::PanelConsole(PanelType type, std::string name) : Panel(type, name, WINDOW_WIDTH, 200)
+PanelConsole::PanelConsole(std::string name) : Panel(name, WINDOW_WIDTH, 200)
 {
 	SwitchState();
 }

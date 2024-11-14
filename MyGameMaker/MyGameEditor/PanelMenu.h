@@ -14,7 +14,7 @@ class PanelMenu : public Panel
 {
 
 public:
-	PanelMenu(PanelType type, std::string name);
+	PanelMenu(std::string name);
 	~PanelMenu();
 
 	bool Draw();
