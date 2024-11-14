@@ -25,9 +25,10 @@ public:
 	bool PreUpdate();
 	void Update(double& dt);
 	void PostUpdate();
-	void Draw();
 
 	void CleanUp();
+
+	void SwapBuffers();
 
 	std::vector<LogInfo> GetLogs();
 	void AddLog(LogType type, const char* entry);

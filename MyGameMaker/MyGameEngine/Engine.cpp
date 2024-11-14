@@ -52,11 +52,6 @@ void Engine::Update(double& dt)
 	scene->Update(dt);
 }
 
-void Engine::PostUpdate()
-{
-	window->swapBuffers();
-}
-
 void drawFloorGrid(int size, double step) {
     glColor3ub(0, 0, 0);
     glBegin(GL_LINES);
@@ -69,7 +64,7 @@ void drawFloorGrid(int size, double step) {
     glEnd();
 }
 
-void Engine::Draw()
+void Engine::PostUpdate()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -77,9 +72,9 @@ void Engine::Draw()
     glMatrixMode(GL_MODELVIEW);
     glLoadMatrixd(&scene->_camera.view()[0][0]);
 
-    drawFloorGrid(16, 0.25);
 
     //draw things
+    drawFloorGrid(16, 0.25);
     scene->Draw(scene->root());
 
     glViewport(0, 0, window->width(), window->height());
@@ -120,4 +115,9 @@ void Engine::CleanLogs()
 Engine::~Engine()
 {
 
+}
+
+void Engine::SwapBuffers()
+{
+    window->swapBuffers();
 }

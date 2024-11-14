@@ -42,18 +42,15 @@ int main(int argc, char* argv[]) {
 		//time start
 		timer.Start();
 
-		//Preupdate
 		engine.PreUpdate();
 
-		//Update
 		engine.Update(dT);
 
-		//draw/Postupdate
-		engine.Draw();
-
+		engine.PostUpdate();
+		
 		gui.render();
 
-		engine.PostUpdate(); //mirar de acabar de posar tots els draws aqui
+		engine.SwapBuffers();
 
 		//time control
 		//current time
