@@ -52,13 +52,11 @@ void Scene::Start()
 		go->GetComponent<Mesh>()->setModel(models[i]);
 		go->GetComponent<Mesh>()->setFilePath("Assets/FBX/BakerHouse.fbx");
 		go->AddComponent<Material>();
-		std::string path = "Assets/Textures/Baker_house.png";
-		go->GetComponent<Material>()->m_Texture = std::make_unique<Texture>(path);
+		go->GetComponent<Material>()->m_Texture = std::make_unique<Texture>("Assets/Textures/Baker_house.png");
 		go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
 		go->GetComponent<Mesh>()->loadToOpenGL();
 		root()->children().back().get()->addChild(go);
 	}
-
 }
 
 void Scene::Update(double& dT)
@@ -171,10 +169,9 @@ void Scene::Update(double& dT)
 	}
 
 	if (Engine::Instance().input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && leftMouse) {
-		if (selectedGameObject != nullptr) {
-
+		if (selectedGameObject != nullptr) 
+		{
 			Engine::Instance().input->GetMousePosition(mouseX, mouseY);
-
 			vec3 targetPos = selectedGameObject->GetComponent<Transform>()->pos();
 
 			// Calcular la distancia y offset inicial entre la cámara y el objeto
@@ -216,7 +213,6 @@ void Scene::Update(double& dT)
 			LOG(LogType::LOG_WARNING, "Select an Object!");
 		}
 	}
-
 }
 
 void Scene::PostUpdate()
@@ -284,7 +280,9 @@ void Scene::CreateGameObject()
 	std::shared_ptr<GameObject> go = std::make_shared<GameObject>("GameObject");
 	go->AddComponent<Transform>();
 	go->GetComponent<Transform>()->pos() = vec3(0, 0, 0);
-	root()->addChild(go);
+
+	if (selectedGameObject == nullptr) root()->addChild(go);
+	else selectedGameObject->addChild(go);
 }
 
 void Scene::CreateCube()
@@ -300,7 +298,9 @@ void Scene::CreateCube()
 	go->GetComponent<Mesh>()->loadToOpenGL();
 	go->AddComponent<Material>();
 	go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
-	root()->addChild(go);
+
+	if (selectedGameObject == nullptr) root()->addChild(go);
+	else selectedGameObject->addChild(go);
 }
 
 void Scene::CreatePlane() 
@@ -316,7 +316,9 @@ void Scene::CreatePlane()
 	go->GetComponent<Mesh>()->loadToOpenGL();
 	go->AddComponent<Material>();
 	go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
-	root()->addChild(go);
+
+	if (selectedGameObject == nullptr) root()->addChild(go);
+	else selectedGameObject->addChild(go);
 }
 
 void Scene::CreateSphere()
@@ -332,7 +334,9 @@ void Scene::CreateSphere()
 	go->GetComponent<Mesh>()->loadToOpenGL();
 	go->AddComponent<Material>();
 	go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
-	root()->addChild(go);
+
+	if (selectedGameObject == nullptr) root()->addChild(go);
+	else selectedGameObject->addChild(go);
 }
 
 void Scene::CreateCylinder()
@@ -348,7 +352,9 @@ void Scene::CreateCylinder()
 	go->GetComponent<Mesh>()->loadToOpenGL();
 	go->AddComponent<Material>();
 	go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
-	root()->addChild(go);
+
+	if (selectedGameObject == nullptr) root()->addChild(go);
+	else selectedGameObject->addChild(go);
 }
 
 void Scene::CreateCone()
@@ -364,7 +370,9 @@ void Scene::CreateCone()
 	go->GetComponent<Mesh>()->loadToOpenGL();
 	go->AddComponent<Material>();
 	go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
-	root()->addChild(go);
+
+	if (selectedGameObject == nullptr) root()->addChild(go);
+	else selectedGameObject->addChild(go);
 }
 
 void Scene::CreateTorus()
@@ -380,5 +388,7 @@ void Scene::CreateTorus()
 	go->GetComponent<Mesh>()->loadToOpenGL();
 	go->AddComponent<Material>();
 	go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
-	root()->addChild(go);
+
+	if (selectedGameObject == nullptr) root()->addChild(go);
+	else selectedGameObject->addChild(go);
 }
