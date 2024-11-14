@@ -69,20 +69,6 @@ void Scene::Update(double& dT)
 		_camera.speed = 10.0f;
 	}
 
-	//camera movement
-	if (Engine::Instance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-		_camera.transform().translate(vec3(0, 0, _camera.speed * dT));
-	}
-	if (Engine::Instance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		_camera.transform().translate(vec3(_camera.speed * dT, 0, 0));
-	}
-	if (Engine::Instance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-		_camera.transform().translate(vec3(0, 0, -_camera.speed * dT));
-	}
-	if (Engine::Instance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		_camera.transform().translate(vec3(-_camera.speed * dT, 0, 0));
-	}
-
 	//camera rotation
 	if (Engine::Instance().input->GetMouseButtonDown(3) == KEY_DOWN) {
 		rightMouse = true;
@@ -93,6 +79,21 @@ void Scene::Update(double& dT)
 	}
 
 	if (rightMouse) {
+
+		//camera movement
+		if (Engine::Instance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+			_camera.transform().translate(vec3(0, 0, _camera.speed * dT));
+		}
+		if (Engine::Instance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+			_camera.transform().translate(vec3(_camera.speed * dT, 0, 0));
+		}
+		if (Engine::Instance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+			_camera.transform().translate(vec3(0, 0, -_camera.speed * dT));
+		}
+		if (Engine::Instance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+			_camera.transform().translate(vec3(-_camera.speed * dT, 0, 0));
+		}
+
 		Engine::Instance().input->GetMousePosition(mouseX, mouseY);
 
 		float dx = (float)(mouseX - lastMouseX);

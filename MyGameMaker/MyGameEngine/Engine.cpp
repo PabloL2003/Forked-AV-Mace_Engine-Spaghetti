@@ -5,6 +5,10 @@
 #include "Renderer.h"
 #include "Scene.h"
 
+//devil
+#include <IL/il.h>
+#include <IL/ilu.h>
+
 void Engine::Awake()
 {
     LOG(LogType::LOG_INFO, "Welcome to AV_Mace Engine!");
@@ -16,6 +20,16 @@ void Engine::Awake()
     LOG(LogType::LOG_CHANGE_ENV, "------------- Application Init -------------");
     window->Awake();
     input->Awake();
+
+    LOG(LogType::LOG_INFO, "# Initializing DevIL...");
+    ilInit();
+    iluInit();
+
+    int devilVersion = ilGetInteger(IL_VERSION_NUM);
+    int iluVersion = ilGetInteger(ILU_VERSION_NUM);
+
+    LOG(LogType::LOG_APPINFO, "DevIL version: %s", std::to_string(devilVersion).c_str());
+    LOG(LogType::LOG_APPINFO, "ILU version: %s", std::to_string(iluVersion).c_str());
 }
 
 void Engine::Start()

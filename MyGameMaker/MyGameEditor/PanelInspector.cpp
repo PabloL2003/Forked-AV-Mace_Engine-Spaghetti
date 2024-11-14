@@ -35,6 +35,7 @@ bool PanelInspector::Draw()
     }
 
     if (!showWindow) {
+        Engine::Instance().input->ActivateTextInput(false);
         SwitchState();
     }
     return true;
@@ -45,17 +46,16 @@ void PanelInspector::DrawGameObjectControls(GameObject* gameObject)
     ImGui::Checkbox("Active", &gameObject->isActive());
     ImGui::SameLine();
 
+    Engine::Instance().input->ActivateTextInput();
+
     // Name input
     ImGui::SetNextItemWidth(160.0f);
     char buffer[128] = {};
     strncpy_s(buffer, gameObject->name().c_str(), sizeof(buffer));
 	if (ImGui::InputText("##gameobject_name", buffer, sizeof(buffer), ImGuiInputTextFlags_None))
     {
-        if (ImGui::IsItemActive()) {
-            Engine::Instance().input->ActivateTextInput();
-            gameObject->name() = buffer;
-        }
-		else if (ImGui::IsItemDeactivatedAfterEdit()) {
+		if (ImGui::IsItemDeactivatedAfterEdit()) {
+			gameObject->name() = buffer;
 			Engine::Instance().input->ActivateTextInput(false);
 		}
     }

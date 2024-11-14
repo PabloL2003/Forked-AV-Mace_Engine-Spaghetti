@@ -1,14 +1,5 @@
-#include <iostream>
-
-//devil
-#include <IL/il.h>
-#include <IL/ilu.h>
-
 //imgui and panels
 #include "MyGUI.h"
-
-//opengl
-#include "MyGameEngine/Renderer.h"
 
 //engine
 #include "MyGameEngine/Engine.h"
@@ -17,22 +8,12 @@
 #include "MyGameEngine/MyWindow.h"
 #include "MyGameEngine/Input.h"
 
-//engine core
-#include "MyGameEngine/Texture.h"
-#include "MyGameEngine/Shader.h"
-#include "MyGameEngine/GameObject.h"
-#include "MyGameEngine/Scene.h"
-
 //utils
 #include "MyGameEngine/PerfTimer.h"
 
 using namespace std;
 
 int main(int argc, char* argv[]) {
-
-	//init DevIL // we have to create a texture manager to initialize it and load textures
-	ilInit();
-	iluInit();
 
 	//start engine
 	Engine& engine = Engine::Instance();
