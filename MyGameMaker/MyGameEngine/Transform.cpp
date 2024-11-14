@@ -3,14 +3,9 @@
 #include <glm/gtc/quaternion.hpp>
 #include <queue>
 
-Transform::Transform(const mat4& mat) : local_mat(mat), global_mat(mat), _rot(glm::quat_cast(local_mat)), _scale(glm::vec3(glm::length(local_mat[0]), glm::length(local_mat[1]), glm::length(local_mat[2]))), isDirty(true) 
-{
-	updateGlobalMatrix();
-}
+Transform::Transform(const mat4& mat) : local_mat(mat), global_mat(mat), _rot(glm::quat_cast(local_mat)), _scale(glm::vec3(glm::length(local_mat[0]), glm::length(local_mat[1]), glm::length(local_mat[2]))), isDirty(true) {}
 
-Transform::Transform(bool active, GameObject* owner) : local_mat(1.0f), global_mat(1.0f), _rot(glm::quat_cast(local_mat)), _scale(glm::vec3(glm::length(local_mat[0]), glm::length(local_mat[1]), glm::length(local_mat[2]))), isDirty(true), Component(active, owner)
-{
-}
+Transform::Transform(bool active, GameObject* owner) : local_mat(1.0f), global_mat(1.0f), _rot(glm::quat_cast(local_mat)), _scale(glm::vec3(glm::length(local_mat[0]), glm::length(local_mat[1]), glm::length(local_mat[2]))), isDirty(true), Component(active, owner) {}
 
 void Transform::translate(float v[])
 {

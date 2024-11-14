@@ -47,7 +47,10 @@ void Scene::Start()
 	for (size_t i = 0; i < models.size(); i++)
 	{
 		std::shared_ptr<GameObject> go = std::make_shared<GameObject>(models[i].get()->GetMeshName());
+		root()->children().back().get()->addChild(go);
+		
 		go->GetComponent<Transform>()->pos() = vec3(0, 0, 0);
+		go->GetComponent<Transform>()->updateGlobalMatrix();
 		go->AddComponent<Mesh>();
 		go->GetComponent<Mesh>()->setModel(models[i]);
 		go->GetComponent<Mesh>()->setFilePath("Assets/FBX/BakerHouse.fbx");
@@ -55,7 +58,6 @@ void Scene::Start()
 		go->GetComponent<Material>()->m_Texture = std::make_unique<Texture>("Assets/Textures/Baker_house.png");
 		go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
 		go->GetComponent<Mesh>()->loadToOpenGL();
-		root()->children().back().get()->addChild(go);
 	}
 }
 
@@ -293,15 +295,17 @@ void Scene::CreateCube()
 	std::shared_ptr<Model> model;
 	modelLoader.load(Shapes::CUBE, model);
 	std::shared_ptr<GameObject> go = std::make_shared<GameObject>(model.get()->GetMeshName());
+	
+	if (selectedGameObject == nullptr) root()->addChild(go);
+	else selectedGameObject->addChild(go);
+	
 	go->GetComponent<Transform>()->pos() = vec3(10, 0, 0);
+	go->GetComponent<Transform>()->updateGlobalMatrix();
 	go->AddComponent<Mesh>();
 	go->GetComponent<Mesh>()->setModel(model);
 	go->GetComponent<Mesh>()->loadToOpenGL();
 	go->AddComponent<Material>();
 	go->GetComponent<Material>()->m_Shader = std::make_unique<Shader>("Assets/Shaders/Basic.shader");
-
-	if (selectedGameObject == nullptr) root()->addChild(go);
-	else selectedGameObject->addChild(go);
 }
 
 void Scene::CreatePlane() 
