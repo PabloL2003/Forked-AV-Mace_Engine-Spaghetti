@@ -48,7 +48,7 @@ void Scene::Start()
 	for (size_t i = 0; i < models.size(); i++)
 	{
 		std::shared_ptr<GameObject> go = std::make_shared<GameObject>(models[i].get()->GetMeshName());
-		root()->children().back().get()->addChild(go);
+		bakerHouse->addChild(go);
 		
 		go->GetComponent<Transform>()->pos() = vec3(0, 0, 0);
 		go->GetComponent<Transform>()->updateGlobalMatrix();
