@@ -6,7 +6,7 @@ Game engine using SDL2, glew, assimp, imgui, glm and devil, made by the Group 4 
 [![Github](https://static.vecteezy.com/system/resources/thumbnails/016/833/880/small_2x/github-logo-git-hub-icon-with-text-on-white-background-free-vector.jpg)](https://github.com/CITM-UPC/AV-Mace_Engine)
 
 
-## Team members
+## Team members of the engine that has been forked
 
 - Joan Marques - [Link](https://github.com/joanmarquesbesses)
 - Pol Celaya - [Link](https://github.com/pcelaya)
